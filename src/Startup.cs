@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using GigLocal.Data;
 
@@ -15,31 +10,28 @@ namespace GigLocal
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
+
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
             Environment = environment;
         }
 
-        public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var mvcBuilder = services.AddRazorPages();
+
             if (Environment.IsDevelopment())
             {
-                services.AddRazorPages().AddRazorRuntimeCompilation();
-            }
-            else
-            {
-                services.AddRazorPages();
+                mvcBuilder.AddRazorRuntimeCompilation();
+                services.AddDatabaseDeveloperPageExceptionFilter();
             }
 
-            services.AddDbContext<GigContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("GigContext")));
-
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddRouting(options => options.LowercaseUrls = true)
+                    .AddDbContext<GigContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GigContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

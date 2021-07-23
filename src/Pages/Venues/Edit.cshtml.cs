@@ -42,7 +42,9 @@ namespace GigLocal.Pages.Venues
                 return NotFound();
             }
 
-            Venue venue = await _context.Venues.FirstOrDefaultAsync(m => m.ID == id);
+            Venue venue = await _context.Venues
+                                        .AsNoTracking()
+                                        .FirstOrDefaultAsync(m => m.ID == id);
 
             if (venue == null)
             {
@@ -62,6 +64,9 @@ namespace GigLocal.Pages.Venues
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
+            if (!ModelState.IsValid)
+                return Page();
+
             if (id == null)
             {
                 return NotFound();
@@ -74,16 +79,13 @@ namespace GigLocal.Pages.Venues
                 return NotFound();
             }
 
-            if (await TryUpdateModelAsync<Venue>(
-                 venueToUpdate,
-                 "venue",   // Prefix for form value.
-                   v => v.Name, v => v.Description, v => v.Website, v => v.Address))
-            {
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
-            }
+            venueToUpdate.Name = Venue.Name;
+            venueToUpdate.Description = Venue.Description;
+            venueToUpdate.Address = Venue.Address;
+            venueToUpdate.Website = Venue.Website;
 
-            return Page();
+            await _context.SaveChangesAsync();
+            return RedirectToPage("./Index");
         }
     }
 }

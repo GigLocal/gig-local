@@ -12,16 +12,6 @@ namespace GigLocal.Pages.Artists
     {
         private readonly GigContext _context;
 
-        public CreateModel(GigContext context)
-        {
-            _context = context;
-        }
-
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
-
         [BindProperty]
         public ArtistCreateModel Artist { get; set; }
 
@@ -39,6 +29,16 @@ namespace GigLocal.Pages.Artists
 
             [Required]
             public string Website { get; set; }
+        }
+
+        public CreateModel(GigContext context)
+        {
+            _context = context;
+        }
+
+        public IActionResult OnGet()
+        {
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()

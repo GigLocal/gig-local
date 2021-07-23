@@ -28,14 +28,18 @@ namespace GigLocal.Pages.Gigs
 
         public class GigDeleteModel
         {
+            [Display(Name = "Artist")]
             public string ArtistName { get; set; }
 
+            [Display(Name = "Venue")]
             public string VenueName { get; set; }
 
             public DateTime Date { get; set; }
 
+            [Display(Name = "Ticket price")]
             public Decimal TicketPrice { get; set; }
 
+            [Display(Name = "Ticket website")]
             public string TicketWebsite { get; set; }
         }
 

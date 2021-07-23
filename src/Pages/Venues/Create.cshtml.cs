@@ -11,16 +11,6 @@ namespace GigLocal.Pages.Venues
     {
         private readonly GigContext _context;
 
-        public CreateModel(GigContext context)
-        {
-            _context = context;
-        }
-
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
-
         [BindProperty]
         public VenueCreateModel Venue { get; set; }
 
@@ -37,6 +27,16 @@ namespace GigLocal.Pages.Venues
 
             [Required]
             public string Website { get; set; }
+        }
+
+        public CreateModel(GigContext context)
+        {
+            _context = context;
+        }
+
+        public IActionResult OnGet()
+        {
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()

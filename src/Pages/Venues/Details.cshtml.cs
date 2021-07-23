@@ -40,8 +40,8 @@ namespace GigLocal.Pages.Venues
             }
 
             Venue venue = await _context.Venues
-                                  .AsNoTracking()
-                                  .FirstOrDefaultAsync(m => m.ID == id);
+                                        .AsNoTracking()
+                                        .FirstOrDefaultAsync(m => m.ID == id);
 
             if (venue == null)
             {

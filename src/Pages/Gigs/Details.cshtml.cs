@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using GigLocal.Data;
 using GigLocal.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace GigLocal.Pages.Gigs
 {
@@ -23,22 +24,23 @@ namespace GigLocal.Pages.Gigs
         {
             public int ID { get; set; }
 
+            [Display(Name = "Artist")]
             public string ArtistName { get; set; }
 
+            [Display(Name = "Venue")]
             public string VenueName { get; set; }
 
             public DateTime Date { get; set; }
 
+            [Display(Name = "Ticket price")]
             public Decimal TicketPrice { get; set; }
 
+            [Display(Name = "Ticket website")]
             public string TicketWebsite { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (!ModelState.IsValid)
-                return Page();
-
             if (id == null)
             {
                 return NotFound();

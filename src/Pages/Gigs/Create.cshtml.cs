@@ -27,8 +27,10 @@ namespace GigLocal.Pages.Gigs
         {
             [Required]
             public string ArtistID { get; set; }
+
             [Required]
             public string VenueID { get; set; }
+
             [Required]
             public DateTime Date { get; set; }
 
@@ -45,7 +47,7 @@ namespace GigLocal.Pages.Gigs
             _logger = logger;
         }
 
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
             await PopulateSelectListsAsync();
 
@@ -54,24 +56,21 @@ namespace GigLocal.Pages.Gigs
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var newGig = new Gig();
+            if (!ModelState.IsValid)
+                return Page();
 
-            var foundArtist = await _context.Artists.FindAsync(int.Parse(Gig.ArtistID));
-            if (foundArtist != null)
-            {
-                newGig.ArtistID = foundArtist.ID;
-            }
-            else
+            var foundArtist = await _context.Artists
+                                            .AsNoTracking()
+                                            .FirstOrDefaultAsync(a => a.ID == int.Parse(Gig.ArtistID));
+            if (foundArtist == null)
             {
                 _logger.LogWarning("Artist {Artist} not found", Gig.ArtistID);
                 return Page();
             }
-            var foundVenue = await _context.Venues.FindAsync(int.Parse(Gig.VenueID));
-            if (foundVenue != null)
-            {
-                newGig.VenueID = foundVenue.ID;
-            }
-            else
+            var foundVenue = await _context.Venues
+                                           .AsNoTracking()
+                                           .FirstOrDefaultAsync(v => v.ID == int.Parse(Gig.VenueID));
+            if (foundVenue == null)
             {
                 _logger.LogWarning("Venue {Venue} not found", Gig.VenueID);
                 return Page();
@@ -79,14 +78,19 @@ namespace GigLocal.Pages.Gigs
 
             try
             {
-                newGig.Date = Gig.Date;
-                newGig.TicketPrice = Gig.TicketPrice;
-                newGig.TicketWebsite = Gig.TicketWebsite;
+                var newGig = new Gig
+                {
+                    ArtistID = foundArtist.ID,
+                    VenueID = foundVenue.ID,
+                    Date = Gig.Date,
+                    TicketPrice = Gig.TicketPrice,
+                    TicketWebsite = Gig.TicketWebsite
+                };
                 _context.Gigs.Add(newGig);
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
                 _logger.LogError(ex.Message);
             }
