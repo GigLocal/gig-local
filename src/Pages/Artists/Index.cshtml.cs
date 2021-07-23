@@ -1,9 +1,6 @@
 ﻿using GigLocal.Data;
-using GigLocal.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,12 +9,10 @@ namespace GigLocal.Pages.Artists
     public class IndexModel : PageModel
     {
         private readonly GigContext _context;
-        private readonly IConfiguration Configuration;
 
-        public IndexModel(GigContext context, IConfiguration configuration)
+        public IndexModel(GigContext context)
         {
             _context = context;
-            Configuration = configuration;
         }
 
         public string CurrentFilter { get; set; }
@@ -63,8 +58,7 @@ namespace GigLocal.Pages.Artists
                 ArtistsIQ = ArtistsIQ.Where(s => s.Name.Contains(searchString)).OrderByDescending(a => a.Name);
             }
 
-            var pageSize = Configuration.GetValue("PageSize", 4);
-            Artists = await PaginatedList<ArtistIndexModel>.CreateAsync(ArtistsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+            Artists = await PaginatedList<ArtistIndexModel>.CreateAsync(ArtistsIQ.AsNoTracking(), pageIndex ?? 1, 10);
         }
     }
 }

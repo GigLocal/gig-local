@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using GigLocal.Data;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace GigLocal.Pages.Artists
 {
@@ -41,7 +42,9 @@ namespace GigLocal.Pages.Artists
                 return NotFound();
             }
 
-            var artist = await _context.Artists.FindAsync(id);
+            var artist = await _context.Artists
+                                       .AsNoTracking()
+                                       .FirstOrDefaultAsync(m => m.ID == id);
 
             if (artist == null)
             {

@@ -1,9 +1,8 @@
 ﻿using GigLocal.Data;
-using GigLocal.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,12 +11,10 @@ namespace GigLocal.Pages.Gigs
     public class IndexModel : PageModel
     {
         private readonly GigContext _context;
-        private readonly IConfiguration Configuration;
 
-        public IndexModel(GigContext context, IConfiguration configuration)
+        public IndexModel(GigContext context)
         {
             _context = context;
-            Configuration = configuration;
         }
 
         public string CurrentFilter { get; set; }
@@ -27,10 +24,19 @@ namespace GigLocal.Pages.Gigs
         public class GigIndexModel
         {
             public int ID { get; set; }
+
+            [Display(Name = "Artist")]
             public string ArtistName { get; set; }
+
+            [Display(Name = "Venue")]
             public string VenueName { get; set; }
+
             public DateTime Date { get; set; }
+
+            [Display(Name = "Ticket price")]
             public Decimal TicketPrice { get; set; }
+
+            [Display(Name = "Ticket website")]
             public string TicketWebsite { get; set; }
         }
 
@@ -65,8 +71,7 @@ namespace GigLocal.Pages.Gigs
                     s.ArtistName.Contains(searchString)|| s.VenueName.Contains(searchString)).OrderByDescending(g => g.Date);
             }
 
-            var pageSize = Configuration.GetValue("PageSize", 4);
-            Gigs = await PaginatedList<GigIndexModel>.CreateAsync(GigsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+            Gigs = await PaginatedList<GigIndexModel>.CreateAsync(GigsIQ.AsNoTracking(), pageIndex ?? 1, 10);
         }
     }
 }

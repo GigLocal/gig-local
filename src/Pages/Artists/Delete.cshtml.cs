@@ -45,8 +45,8 @@ namespace GigLocal.Pages.Artists
             }
 
             Artist artist = await _context.Artists
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == id);
+                                          .AsNoTracking()
+                                          .FirstOrDefaultAsync(m => m.ID == id);
 
             if (artist == null)
             {
