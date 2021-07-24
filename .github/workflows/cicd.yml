@@ -24,6 +24,7 @@ jobs:
       - name: Publish
         run: dotnet publish src -c Release -o publish-artifacts --no-restore
       - name: Upload artifacts
+        if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
         with:
           name: publish-artifacts
@@ -32,6 +33,8 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     needs: [Build]
+    environment:
+      name: Dev
     steps:
     - uses: actions/checkout@v2
     - uses: azure/login@v1
