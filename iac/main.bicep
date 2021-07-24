@@ -97,7 +97,7 @@ resource webSite 'Microsoft.Web/sites@2021-01-15' = {
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
-        linuxFxVersion: 'DOTNETCORE|5.0'
+      linuxFxVersion: 'DOTNET|5.0'
     }
   }
 }
