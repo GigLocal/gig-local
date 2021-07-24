@@ -28,7 +28,7 @@ namespace GigLocal
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRouting(options => options.LowercaseUrls = true)
-                    .AddDbContext<GigContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GigContext")));
+                    .AddDbContext<GigContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAuthentication(options =>
             {

@@ -1,0 +1,63 @@
+name: CI/CD
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      - name: Install dependencies
+        run: dotnet restore backend
+      - name: Build
+        run: dotnet build src -c Release --no-restore
+#      - name: Test
+#        run: dotnet test tests backend --no-restore --verbosity normal
+      - name: Publish
+        run: dotnet publish src -c Release -o publish-artifacts --no-restore
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: publish-artifacts
+  DeployDev:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    needs: [Build]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Deploy Azure Resources
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ secrets.AZURE_RG }}
+        template: ./iac/main.bicep
+        parameters: |
+            appName=GigLocalDev \
+            environment=Dev \
+            containerName=Artists \
+            webAppSku=F1 \
+            webAppSkuCapacity=1 \
+            sqlAdministratorLogin=${{ secrets.AZURE_SQL_LOGIN }} \
+            sqlAdministratorPassword=${{ secrets.AZURE_SQL_PASSWORD }} \
+            sqlDatabaseName=GigLocalDev \
+            sqlDatabaseSku=Basic
+    - name: Download Publish Artifacts
+      uses: actions/download-artifact@v2
+    - name: Deploy Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: GigLocalDev
+        package: publish-artifacts
+    - name: Logout of Azure
+      run: az logout
