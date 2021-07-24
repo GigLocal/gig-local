@@ -50,7 +50,7 @@ jobs:
         parameters: >
             appName=GigLocal
             environment=Dev
-            containerName=Artists
+            containerName=artists
             webAppSku=F1
             webAppSkuCapacity=1
             sqlAdminLogin=${{ secrets.AZURE_SQL_LOGIN }}
