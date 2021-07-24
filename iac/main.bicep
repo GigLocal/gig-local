@@ -36,7 +36,7 @@ var resourceNameSuffix = '${appName}${environment}${uniqueString(resourceGroup()
 var hostingPlanName = 'HostingPlan${resourceNameSuffix}'
 var websiteName = 'Website${resourceNameSuffix}'
 var sqlserverName = 'SqlServer${resourceNameSuffix}'
-var storageName = 'Stg${toLower(resourceNameSuffix)}'
+var storageName = toLower(resourceNameSuffix)
 var appInsightsName = 'AppInsights${resourceNameSuffix}'
 
 // Storage account
