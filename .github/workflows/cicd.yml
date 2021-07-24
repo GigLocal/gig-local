@@ -27,6 +27,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: publish-artifacts
+          path: publish-artifacts
   DeployDev:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
