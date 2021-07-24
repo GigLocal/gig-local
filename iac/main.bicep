@@ -82,6 +82,9 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2021-01-15' = {
   name: hostingPlanName
   location: location
   kind: 'linux'
+  properties: {
+    reserved: true
+  }
   sku: {
     name: webAppSku
     capacity: webAppSkuCapacity
