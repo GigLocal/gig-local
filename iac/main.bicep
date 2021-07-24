@@ -17,10 +17,10 @@ param webAppSku string
 param webAppSkuCapacity int
 
 // Data params
-param sqlAdministratorLogin string
+param sqlAdminLogin string
 
 @secure()
-param sqlAdministratorLoginPassword string
+param sqlAdminPassword string
 
 param sqlDatabaseName string
 
@@ -62,8 +62,8 @@ resource sqlserver 'Microsoft.Sql/servers@2021-02-01-preview' = {
   name: sqlserverName
   location: location
   properties: {
-    administratorLogin: sqlAdministratorLogin
-    administratorLoginPassword: sqlAdministratorLoginPassword
+    administratorLogin: sqlAdminLogin
+    administratorLoginPassword: sqlAdminPassword
   }
 }
 resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
@@ -115,7 +115,7 @@ resource webSiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${webSite.name}/connectionstrings'
   properties: {
     DefaultConnection: {
-      value: 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};User Id=${sqlAdministratorLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdministratorLoginPassword};'
+      value: 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};User Id=${sqlAdminLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdminPassword};'
       type: 'SQLAzure'
     }
   }
