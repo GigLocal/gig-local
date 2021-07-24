@@ -29,6 +29,7 @@ jobs:
         with:
           name: publish-artifacts
           path: publish-artifacts
+# dotnet ef migrations script -i -o sqlscript
   DeployDev:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
