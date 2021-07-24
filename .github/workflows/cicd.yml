@@ -47,14 +47,14 @@ jobs:
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./iac/main.bicep
         parameters: >
-            appName=GigLocalDev
+            appName=GigLocal
             environment=Dev
             containerName=Artists
             webAppSku=F1
             webAppSkuCapacity=1
             sqlAdminLogin=${{ secrets.AZURE_SQL_LOGIN }}
             sqlAdminPassword=${{ secrets.AZURE_SQL_PASSWORD }}
-            sqlDatabaseName=GigLocalDev
+            sqlDatabaseName=GigLocal
             sqlDatabaseSku=Basic
     - name: Download Publish Artifacts
       uses: actions/download-artifact@v2
