@@ -29,9 +29,6 @@ param sqlDatabaseName string
 ])
 param sqlDatabaseSku string
 
-// Managed Identity params
-param roleDefinitionId string = 'b24988ac-6180-42a0-ab88-20f7382dd24c' // Default as contributor role
-
 var location = resourceGroup().location
 var resourceNameSuffix = '${appName}${environment}${uniqueString(resourceGroup().id)}'
 
@@ -40,7 +37,6 @@ var hostingPlanName = 'HostingPlan${resourceNameSuffix}'
 var websiteName = 'Website${resourceNameSuffix}'
 var sqlserverName = 'SqlServer${resourceNameSuffix}'
 var storageName = 'storage${toLower(resourceNameSuffix)}'
-var managedIdentityName = 'ManagedIdentity${resourceNameSuffix}'
 var appInsightsName = 'AppInsights${resourceNameSuffix}'
 
 // Storage account
@@ -104,12 +100,6 @@ resource webSite 'Microsoft.Web/sites@2021-01-15' = {
         linuxFxVersion: 'DOTNETCORE|5.0'
     }
   }
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${managedIdentity.id}': {}
-    }
-  }
 }
 resource webSiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${webSite.name}/connectionstrings'
@@ -118,20 +108,6 @@ resource webSiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
       value: 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};User Id=${sqlAdminLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdminPassword};'
       type: 'SQLAzure'
     }
-  }
-}
-
-// Managed Identity resources
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-  name: managedIdentityName
-  location: location
-}
-resource roleassignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-  name: guid(roleDefinitionId, resourceGroup().id)
-  properties: {
-    principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
-    principalId: managedIdentity.properties.principalId
   }
 }
 
