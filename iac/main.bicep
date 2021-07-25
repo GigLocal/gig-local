@@ -108,7 +108,7 @@ resource website 'Microsoft.Web/sites@2021-01-15' = {
   }
 }
 
-var sqlConnectionString = 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};User Id=${sqlAdminLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdminPassword};'
+var sqlConnectionString = 'Server=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};Persist Security Info=False;User ID=${sqlAdminLogin};Password=${sqlAdminPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
 
 resource websiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${website.name}/connectionstrings'
