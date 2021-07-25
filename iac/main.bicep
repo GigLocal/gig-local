@@ -110,9 +110,12 @@ resource websiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
       value: 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};User Id=${sqlAdminLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdminPassword};'
       type: 'SQLAzure'
     }
-    StorageConnection: {
-      value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.name, storageAccount.apiVersion).keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
-    }
+  }
+}
+resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
+  name: '${website.name}/appsettings'
+  properties: {
+    'Storage__ConnectionString': 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.name, storageAccount.apiVersion).keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
   }
 }
 
