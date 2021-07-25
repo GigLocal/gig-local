@@ -57,12 +57,16 @@ jobs:
             sqlAdminPassword=${{ secrets.AZURE_SQL_PASSWORD }}
             sqlDatabaseName=GigLocal
             sqlDatabaseSku=Basic
-    # - name: Download Publish Artifacts
-    #   uses: actions/download-artifact@v2
-    # - name: Deploy Web App
-    #   uses: azure/webapps-deploy@v2
-    #   with:
-    #     app-name: GigLocalDev
-    #     package: publish-artifacts
-    # - name: Logout of Azure
-    #   run: az logout
+    - name: Set Deployment Outputs
+      id: set_outputs
+      run: |
+        echo "::set-output name=webAppName::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.webAppName.value)"
+    - name: Download Publish Artifacts
+      uses: actions/download-artifact@v2
+    - name: Deploy Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ steps.set_outputs.outputs.webAppName }}
+        package: publish-artifacts
+    - name: Logout of Azure
+      run: az logout
