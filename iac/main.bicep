@@ -29,6 +29,10 @@ param sqlDatabaseName string
 ])
 param sqlDatabaseSku string
 
+// Auth params
+param authGoogleClientId string
+param authGoogleClientSecret string
+
 var location = resourceGroup().location
 var resourceNameSuffix = '${appName}${env}${uniqueString(resourceGroup().id)}'
 
@@ -116,6 +120,8 @@ resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${website.name}/appsettings'
   properties: {
     'Storage__ConnectionString': 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.name, storageAccount.apiVersion).keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
+    'Authentication__Google__ClientId': authGoogleClientId
+    'Authentication__Google__ClientSecret': authGoogleClientSecret
   }
 }
 

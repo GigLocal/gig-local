@@ -57,6 +57,8 @@ jobs:
             sqlAdminPassword=${{ secrets.AZURE_SQL_PASSWORD }}
             sqlDatabaseName=GigLocal
             sqlDatabaseSku=Basic
+            authGoogleClientId=${{ secrets.AUTH_GOOGLE_CLIENT_ID }}
+            authGoogleClientSecret=${{ secrets.AUTH_GOOGLE_CLIENT_SECRET }}
     - name: Set Deployment Outputs
       id: set_outputs
       run: |
