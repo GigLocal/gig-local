@@ -74,7 +74,7 @@ jobs:
       uses: azure/sql-action@v1
       with:
         server-name: ${{ steps.set_outputs.outputs.sqlServerName }}
-        connection-string: ${{ steps.set_outputs.outputs.sqlConnectionString }}
+        connection-string: '${{ steps.set_outputs.outputs.sqlConnectionString }}'
         sql-file: publish-artifacts/sql/script.sql
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
