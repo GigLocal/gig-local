@@ -60,9 +60,11 @@ jobs:
     - name: Set Deployment Outputs
       id: set_outputs
       run: |
-        echo "::set-output name=webAppName::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.webAppName.value)"
+        echo "::set-output name=webAppName::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.webAppName.value | tr -d '"')"
     - name: Download Publish Artifacts
       uses: actions/download-artifact@v2
+      with:
+        name: publish-artifacts
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
       with:
