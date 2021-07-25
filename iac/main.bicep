@@ -39,7 +39,7 @@ var resourceNameSuffix = '${appName}${env}${uniqueString(resourceGroup().id)}'
 // Variables
 var hostingPlanName = 'HostingPlan${resourceNameSuffix}'
 var websiteName = 'Website${resourceNameSuffix}'
-var sqlserverName = 'SqlServer${resourceNameSuffix}'
+var sqlServerName = 'SqlServer${resourceNameSuffix}'
 var storageName = toLower(resourceNameSuffix)
 var appInsightsName = 'AppInsights${resourceNameSuffix}'
 
@@ -58,7 +58,7 @@ resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices
 
 // Data resources
 resource sqlserver 'Microsoft.Sql/servers@2021-02-01-preview' = {
-  name: sqlserverName
+  name: sqlServerName
   location: location
   properties: {
     administratorLogin: sqlAdminLogin
@@ -107,11 +107,14 @@ resource website 'Microsoft.Web/sites@2021-01-15' = {
     }
   }
 }
+
+var sqlConnectionString = 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};User Id=${sqlAdminLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdminPassword};'
+
 resource websiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${website.name}/connectionstrings'
   properties: {
     DefaultConnection: {
-      value: 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};User Id=${sqlAdminLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdminPassword};'
+      value: sqlConnectionString
       type: 'SQLAzure'
     }
   }
@@ -139,4 +142,6 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-output webAppName string = websiteName
+output websiteName string = websiteName
+output sqlServerName string = sqlServerName
+output sqlConnectionString string = sqlConnectionString

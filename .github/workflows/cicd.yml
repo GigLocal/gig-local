@@ -21,15 +21,18 @@ jobs:
         run: dotnet build src -c Release --no-restore
 #      - name: Test
 #        run: dotnet test tests backend --no-restore --verbosity normal
-      - name: Publish
-        run: dotnet publish src -c Release -o publish-artifacts --no-restore
+      - name: Publish app
+        run: dotnet publish src -c Release -o publish-artifacts/app --no-restore
+      - name: Publish SQL script
+        run: |
+          dotnet tool install -g dotnet-ef
+          dotnet ef migrations script -i -p src -o publish-artifacts/sql/script.sql
       - name: Upload artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
         with:
           name: publish-artifacts
           path: publish-artifacts
-# dotnet ef migrations script -i -o sqlscript
   DeployDev:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -62,13 +65,21 @@ jobs:
     - name: Set Deployment Outputs
       id: set_outputs
       run: |
-        echo "::set-output name=webAppName::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.webAppName.value | tr -d '"')"
+        echo "::set-output name=websiteName::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.websiteName.value | tr -d '"')"
+        echo "::set-output name=sqlServerName::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.sqlServerName.value | tr -d '"')"
+        echo "::set-output name=sqlConnectionString::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.sqlConnectionString.value | tr -d '"')"
     - name: Download Publish Artifacts
       uses: actions/download-artifact@v2
+    - name: Deploy SQL
+      uses: azure/sql-action@v1
+      with:
+        server-name: ${{ steps.set_outputs.outputs.sqlServerName }}
+        connection-string: ${{ steps.set_outputs.outputs.sqlConnectionString }}
+        sql-file: publish-artifacts/sql/script.sql
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ steps.set_outputs.outputs.webAppName }}
-        package: publish-artifacts
+        app-name: ${{ steps.set_outputs.outputs.websiteName }}
+        package: publish-artifacts/app
     - name: Logout of Azure
       run: az logout
