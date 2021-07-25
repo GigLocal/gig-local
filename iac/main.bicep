@@ -2,7 +2,7 @@
 param appName string
 
 // Environment name for deployment
-param environment string
+param env string
 
 // Storage account container name
 param containerName string
@@ -30,7 +30,7 @@ param sqlDatabaseName string
 param sqlDatabaseSku string
 
 var location = resourceGroup().location
-var resourceNameSuffix = '${appName}${environment}${uniqueString(resourceGroup().id)}'
+var resourceNameSuffix = '${appName}${env}${uniqueString(resourceGroup().id)}'
 
 // Variables
 var hostingPlanName = 'HostingPlan${resourceNameSuffix}'
@@ -51,7 +51,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
 resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
     name: '${storageAccount.name}/default/${containerName}'
 }
-
 
 // Data resources
 resource sqlserver 'Microsoft.Sql/servers@2021-02-01-preview' = {
@@ -90,7 +89,7 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2021-01-15' = {
     capacity: webAppSkuCapacity
   }
 }
-resource webSite 'Microsoft.Web/sites@2021-01-15' = {
+resource website 'Microsoft.Web/sites@2021-01-15' = {
   name: websiteName
   location: location
   tags: {
@@ -104,12 +103,15 @@ resource webSite 'Microsoft.Web/sites@2021-01-15' = {
     }
   }
 }
-resource webSiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
-  name: '${webSite.name}/connectionstrings'
+resource websiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
+  name: '${website.name}/connectionstrings'
   properties: {
     DefaultConnection: {
       value: 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};User Id=${sqlAdminLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdminPassword};'
       type: 'SQLAzure'
+    }
+    StorageConnection: {
+      value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.name, storageAccount.apiVersion)[0].value};EndpointSuffix=${environment().suffixes.storage}'
     }
   }
 }
@@ -119,7 +121,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: appInsightsName
   location: location
   tags: {
-    'hidden-link:${webSite.id}': 'Resource'
+    'hidden-link:${website.id}': 'Resource'
     displayName: 'AppInsightsComponent'
   }
   kind: 'web'
@@ -127,3 +129,5 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
     Application_Type: 'web'
   }
 }
+
+output webAppName string = websiteName
