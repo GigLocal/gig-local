@@ -111,7 +111,7 @@ resource websiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
       type: 'SQLAzure'
     }
     StorageConnection: {
-      value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.name, storageAccount.apiVersion)[0].value};EndpointSuffix=${environment().suffixes.storage}'
+      value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.name, storageAccount.apiVersion).keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
     }
   }
 }
