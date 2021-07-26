@@ -143,5 +143,5 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
 }
 
 output websiteName string = websiteName
-output sqlServerName string = sqlServerName
+output sqlServerName string = sqlserver.properties.fullyQualifiedDomainName
 output sqlConnectionString string = sqlConnectionString
