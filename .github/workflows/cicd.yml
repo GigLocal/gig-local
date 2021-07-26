@@ -65,16 +65,16 @@ jobs:
     - name: Set Deployment Outputs
       id: set_outputs
       run: |
-        echo "::set-output name=websiteName::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.websiteName.value | tr -d '"')"
-        echo "::set-output name=sqlServerName::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.sqlServerName.value | tr -d '"')"
-        echo "::set-output name=sqlConnectionString::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.sqlConnectionString.value | tr -d '"')"
+        echo "::set-output name=websiteName::$($(az deployment group show -g GroupGigLocalDev -n main --query properties.outputs.websiteName.value) -replace '"', '')"
+        echo "::set-output name=sqlServerName::$($(az deployment group show -g GroupGigLocalDev -n main --query properties.outputs.sqlServerName.value) -replace '"', '')"
+        echo "::set-output name=sqlConnectionString::$($(az deployment group show -g GroupGigLocalDev -n main --query properties.outputs.sqlConnectionString.value) -replace '"', '')"
     - name: Download Publish Artifacts
       uses: actions/download-artifact@v2
     - name: Deploy SQL
       uses: azure/sql-action@v1
       with:
         server-name: ${{ steps.set_outputs.outputs.sqlServerName }}
-        connection-string: '${{ steps.set_outputs.outputs.sqlConnectionString }}'
+        connection-string: ${{ steps.set_outputs.outputs.sqlConnectionString }}
         sql-file: publish-artifacts/sql/script.sql
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
