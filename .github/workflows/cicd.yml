@@ -14,9 +14,13 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '5.0.8'
       - name: Install dependencies
         run: dotnet restore src
+      - name: Install tools
+        run: dotnet tool restore
+      - name: Install libs
+        run: libman restore
       - name: Build
         run: dotnet build src -c Release --no-restore
 #      - name: Test
@@ -24,9 +28,7 @@ jobs:
       - name: Publish app
         run: dotnet publish src -c Release -o publish-artifacts/app --no-restore
       - name: Publish SQL script
-        run: |
-          dotnet tool install -g dotnet-ef
-          dotnet ef migrations script -i -p src -o publish-artifacts/sql/script.sql
+        run: dotnet ef migrations script -i -p src -o publish-artifacts/sql/script.sql
       - name: Upload artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
