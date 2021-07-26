@@ -103,7 +103,9 @@ resource website 'Microsoft.Web/sites@2021-01-15' = {
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
+      netFrameworkVersion: 'v5.0'
       linuxFxVersion: 'DOTNET|5.0'
+      http20Enabled: true
     }
   }
 }
