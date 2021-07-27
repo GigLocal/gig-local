@@ -57,7 +57,7 @@ resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices
 }
 
 // Data resources
-resource sqlserver 'Microsoft.Sql/servers@2021-02-01-preview' = {
+resource sqlServer 'Microsoft.Sql/servers@2021-02-01-preview' = {
   name: sqlServerName
   location: location
   properties: {
@@ -66,14 +66,14 @@ resource sqlserver 'Microsoft.Sql/servers@2021-02-01-preview' = {
   }
 }
 resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
-  name: '${sqlserver.name}/${sqlDatabaseName}'
+  name: '${sqlServer.name}/${sqlDatabaseName}'
   location: location
   sku: {
     name: sqlDatabaseSku
   }
 }
 resource sqlServerFirewall 'Microsoft.Sql/servers/firewallRules@2021-02-01-preview' = {
-  name: '${sqlserver.name}/AllowAllWindowsAzureIps'
+  name: '${sqlServer.name}/AllowAllWindowsAzureIps'
   properties: {
     endIpAddress: '0.0.0.0'
     startIpAddress: '0.0.0.0'
@@ -109,7 +109,23 @@ resource website 'Microsoft.Web/sites@2021-01-15' = {
   }
 }
 
-var sqlConnectionString = 'Server=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};Persist Security Info=False;User ID=${sqlAdminLogin};Password=${sqlAdminPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+// Monitor
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+    name: appInsightsName
+    location: location
+    tags: {
+      'hidden-link:${website.id}': 'Resource'
+      displayName: 'AppInsightsComponent'
+    }
+    kind: 'web'
+    properties: {
+      Application_Type: 'web'
+    }
+  }
+
+// Configuration
+var sqlConnectionString = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};Persist Security Info=False;User ID=${sqlAdminLogin};Password=${sqlAdminPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.name, storageAccount.apiVersion).keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
 
 resource websiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${website.name}/connectionstrings'
@@ -123,26 +139,13 @@ resource websiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
 resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${website.name}/appsettings'
   properties: {
-    'Storage__ConnectionString': 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.name, storageAccount.apiVersion).keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
+    'Storage__ConnectionString': storageConnectionString
     'Authentication__Google__ClientId': authGoogleClientId
     'Authentication__Google__ClientSecret': authGoogleClientSecret
-  }
-}
-
-// Monitor
-resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: appInsightsName
-  location: location
-  tags: {
-    'hidden-link:${website.id}': 'Resource'
-    displayName: 'AppInsightsComponent'
-  }
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
+    'ApplicationInsights__ConnectionString': appInsights.properties.ConnectionString
   }
 }
 
 output websiteName string = websiteName
-output sqlServerName string = sqlserver.properties.fullyQualifiedDomainName
+output sqlServerName string = sqlServer.properties.fullyQualifiedDomainName
 output sqlConnectionString string = sqlConnectionString
