@@ -26,9 +26,11 @@ namespace GigLocal.Pages.Admin.Gigs
         public class GigCreateModel
         {
             [Required]
+            [Display(Name = "Artist")]
             public string ArtistID { get; set; }
 
             [Required]
+            [Display(Name = "Venue")]
             public string VenueID { get; set; }
 
             [Required]
