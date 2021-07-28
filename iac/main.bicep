@@ -54,6 +54,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
 }
 resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
     name: '${storageAccount.name}/default/${containerName}'
+    properties: {
+        publicAccess: 'Blob'
+    }
 }
 
 // Data resources
