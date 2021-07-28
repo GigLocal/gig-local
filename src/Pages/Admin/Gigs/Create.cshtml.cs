@@ -34,6 +34,8 @@ namespace GigLocal.Pages.Admin.Gigs
             public string VenueID { get; set; }
 
             [Required]
+            [FutureDate(ErrorMessage = "The date must be in the future.")]
+            [Display(Name = "Date and time")]
             public DateTime Date { get; set; }
 
             [Display(Name = "Ticket price")]
@@ -59,7 +61,10 @@ namespace GigLocal.Pages.Admin.Gigs
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
+            {
+                await PopulateSelectListsAsync();
                 return Page();
+            }
 
             var foundArtist = await _context.Artists
                                             .AsNoTracking()
@@ -96,8 +101,6 @@ namespace GigLocal.Pages.Admin.Gigs
             {
                 _logger.LogError(ex.Message);
             }
-
-            await PopulateSelectListsAsync();
 
             return Page();
         }
