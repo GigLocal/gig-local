@@ -33,6 +33,8 @@ namespace GigLocal.Pages.Admin.Gigs
             public string VenueID { get; set; }
 
             [Required]
+            [FutureDate(ErrorMessage = "The date must be in the future.")]
+            [Display(Name = "Date and time")]
             public DateTime Date { get; set; }
 
             [Display(Name = "Ticket price")]
