@@ -4,16 +4,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using GigLocal.Data;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using GigLocal.Services;
 
 namespace GigLocal.Pages.Admin.Artists
 {
     public class EditModel : PageModel
     {
         private readonly GigContext _context;
+        private readonly IStorageService _storageService;
 
-        public EditModel(GigContext context)
+        public EditModel(GigContext context, IStorageService storageService)
         {
             _context = context;
+            _storageService = storageService;
         }
 
         [BindProperty]
@@ -33,6 +37,9 @@ namespace GigLocal.Pages.Admin.Artists
 
             [Required]
             public string Website { get; set; }
+
+            [Display(Name = "Image")]
+            public IFormFile FormFile { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -78,6 +85,16 @@ namespace GigLocal.Pages.Admin.Artists
             artistToUpdate.Description = Artist.Description;
             artistToUpdate.Genre = Artist.Genre;
             artistToUpdate.Website = Artist.Website;
+
+            if (Artist.FormFile?.Length > 0)
+            {
+                await _storageService.DeleteArtistImageAsync(artistToUpdate.ID);
+
+                using var formFileStream = Artist.FormFile.OpenReadStream();
+                var imageUrl = await _storageService.UploadArtistImageAsync(artistToUpdate.ID, formFileStream);
+
+                artistToUpdate.ImageUrl = imageUrl;
+            }
 
             await _context.SaveChangesAsync();
             return RedirectToPage("./Index");

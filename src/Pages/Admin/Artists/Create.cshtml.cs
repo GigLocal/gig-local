@@ -57,7 +57,6 @@ namespace GigLocal.Pages.Admin.Artists
                 return Page();
             }
 
-            // TODO: put into a re-useable class to use in Edit.cshtml.cs
             var newArtist = new Artist
             {
                 Name = Artist.Name,
@@ -71,15 +70,13 @@ namespace GigLocal.Pages.Admin.Artists
 
             if (Artist.FormFile?.Length > 0)
             {
-                using var memStream = new MemoryStream();
-                var fileBytes = Artist.FormFile.CopyToAsync(memStream);
+                using var formFileStream = Artist.FormFile.OpenReadStream();
 
-                var imageUrl = await _storageService.UploadAsync("public", $"artists/{newArtist.ID}",  memStream);
+                var imageUrl = await _storageService.UploadArtistImageAsync(newArtist.ID, formFileStream);
 
                 newArtist.ImageUrl = imageUrl;
                 await _context.SaveChangesAsync();
             }
-            //////// End re-usable
 
             return RedirectToPage("./Index");
         }

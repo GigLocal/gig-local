@@ -81,8 +81,11 @@ namespace GigLocal.Pages.Admin.Gigs
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                await PopulateSelectListsAsync();
                 return Page();
+            }
 
             var gigToUpdate = await _context.Gigs.FindAsync(id);
 
@@ -97,6 +100,7 @@ namespace GigLocal.Pages.Admin.Gigs
             if (foundArtist == null)
             {
                 _logger.LogWarning("Artist {Artist} not found", Gig.ArtistID);
+                await PopulateSelectListsAsync();
                 return Page();
             }
             var foundVenue = await _context.Venues
@@ -105,6 +109,7 @@ namespace GigLocal.Pages.Admin.Gigs
             if (foundVenue == null)
             {
                 _logger.LogWarning("Venue {Venue} not found", Gig.VenueID);
+                await PopulateSelectListsAsync();
                 return Page();
             }
 
@@ -125,7 +130,6 @@ namespace GigLocal.Pages.Admin.Gigs
             }
 
             await PopulateSelectListsAsync();
-
             return Page();
         }
 

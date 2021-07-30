@@ -1,5 +1,6 @@
 ﻿using GigLocal.Data;
 using GigLocal.Models;
+using GigLocal.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +15,15 @@ namespace GigLocal.Pages.Admin.Artists
     {
         private readonly GigContext _context;
         private readonly ILogger<DeleteModel> _logger;
+        private readonly IStorageService _storageService;
 
         public DeleteModel(GigContext context,
-                           ILogger<DeleteModel> logger)
+                           ILogger<DeleteModel> logger,
+                           IStorageService storageService)
         {
             _context = context;
             _logger = logger;
+            _storageService = storageService;
         }
 
         public string ErrorMessage { get; set; }
@@ -35,6 +39,8 @@ namespace GigLocal.Pages.Admin.Artists
             public string Genre { get; set; }
 
             public string Website { get; set; }
+
+            public string ImageUrl { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
@@ -64,7 +70,8 @@ namespace GigLocal.Pages.Admin.Artists
                     Name = artist.Name,
                     Description = artist.Description,
                     Genre = artist.Genre,
-                    Website = artist.Website
+                    Website = artist.Website,
+                    ImageUrl = artist.ImageUrl
                 };
             }
 
@@ -90,6 +97,7 @@ namespace GigLocal.Pages.Admin.Artists
 
             try
             {
+                await _storageService.DeleteArtistImageAsync(artist.ID);
                 _context.Artists.Remove(artist);
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
