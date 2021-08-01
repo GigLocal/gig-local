@@ -81,7 +81,7 @@ namespace GigLocal.Pages.Admin.Gigs
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 await PopulateSelectListsAsync();
                 return Page();
