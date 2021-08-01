@@ -28,6 +28,12 @@ namespace GigLocal.Services
             _options = optionsAccessor.Value;
         }
 
+        private BlobClient GetArtistBlobClient(int artistID)
+        {
+            var blobName = $"artists/{artistID}/image.jpg";
+            return new BlobClient(_options.ConnectionString, "public", blobName);
+        }
+
         public async Task<string> UploadArtistImageAsync(int artistID, Stream stream)
         {
             using MemoryStream outStream = new();
@@ -36,14 +42,12 @@ namespace GigLocal.Services
                 i => i.Resize(new ResizeOptions {
                     Mode = ResizeMode.Crop,
                     Position = AnchorPositionMode.Center,
-                    Size = new Size(300, 300)
+                    Size = new Size(640, 640)
                 })
             );
 
             await image.SaveAsJpegAsync(outStream);
-
-            var blobName = $"artists/{artistID}/image.jpg";
-            var blobClient = new BlobClient(_options.ConnectionString, "public", blobName);
+            var blobClient = GetArtistBlobClient(artistID);
             var binaryContent = new BinaryData(outStream.GetBuffer());
             await blobClient.UploadAsync(binaryContent);
             return blobClient.Uri.ToString();
@@ -51,8 +55,7 @@ namespace GigLocal.Services
 
         public Task DeleteArtistImageAsync(int artistID)
         {
-            var blobName = $"artists/{artistID}/image.jpg";
-            var blobClient = new BlobClient(_options.ConnectionString, "public", blobName);
+            var blobClient = GetArtistBlobClient(artistID);
             return blobClient.DeleteAsync();
         }
     }
