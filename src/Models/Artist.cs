@@ -14,6 +14,8 @@ namespace GigLocal.Models
 
         public string Website { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public ICollection<Gig> Gigs { get; set; }
     }
 }

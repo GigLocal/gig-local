@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using GigLocal.Data;
 using GigLocal.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace GigLocal.Pages.Admin.Artists
 {
@@ -32,6 +33,9 @@ namespace GigLocal.Pages.Admin.Artists
             public string Genre { get; set; }
 
             public string Website { get; set; }
+
+            [Display(Name = "Image")]
+            public string ImageUrl { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -59,7 +63,8 @@ namespace GigLocal.Pages.Admin.Artists
                 Name = artist.Name,
                 Description = artist.Description,
                 Genre = artist.Genre,
-                Website = artist.Website
+                Website = artist.Website,
+                ImageUrl = artist.ImageUrl
             };
 
             return Page();
