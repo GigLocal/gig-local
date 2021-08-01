@@ -42,7 +42,7 @@ namespace GigLocal.Services
                 i => i.Resize(new ResizeOptions {
                     Mode = ResizeMode.Crop,
                     Position = AnchorPositionMode.Center,
-                    Size = new Size(640, 640)
+                    Size = new Size(1280, 720)
                 })
             );
 
