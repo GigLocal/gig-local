@@ -88,8 +88,6 @@ namespace GigLocal.Pages.Admin.Artists
 
             if (Artist.FormFile?.Length > 0)
             {
-                await _storageService.DeleteArtistImageAsync(artistToUpdate.ID);
-
                 using var formFileStream = Artist.FormFile.OpenReadStream();
                 var imageUrl = await _storageService.UploadArtistImageAsync(artistToUpdate.ID, formFileStream);
 
