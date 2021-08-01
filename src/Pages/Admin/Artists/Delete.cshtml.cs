@@ -97,7 +97,10 @@ namespace GigLocal.Pages.Admin.Artists
 
             try
             {
-                await _storageService.DeleteArtistImageAsync(artist.ID);
+                if (artist.ImageUrl != null)
+                {
+                    await _storageService.DeleteArtistImageAsync(artist.ID);
+                }
                 _context.Artists.Remove(artist);
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
