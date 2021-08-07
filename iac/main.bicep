@@ -32,6 +32,7 @@ param sqlDatabaseSku string
 // Auth params
 param authGoogleClientId string
 param authGoogleClientSecret string
+param authAdminEmail string
 
 var location = resourceGroup().location
 var resourceNameSuffix = '${appName}${env}${uniqueString(resourceGroup().id)}'
@@ -145,6 +146,7 @@ resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
     'Storage__ConnectionString': storageConnectionString
     'Authentication__Google__ClientId': authGoogleClientId
     'Authentication__Google__ClientSecret': authGoogleClientSecret
+    'Authentication__Admin__Email': authAdminEmail
     'ApplicationInsights__ConnectionString': appInsights.properties.ConnectionString
   }
 }
