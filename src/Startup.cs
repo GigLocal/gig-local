@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using GigLocal.Services;
+using Microsoft.OpenApi.Models;
 
 namespace GigLocal
 {
@@ -62,6 +63,12 @@ namespace GigLocal
                 options.Conventions.AuthorizeFolder("/Admin", "AllowedUsersOnly");
             });
 
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Gig Local", Version = "v1" });
+            });
+
             if (Environment.IsDevelopment())
             {
                 mvcBuilder.AddRazorRuntimeCompilation();
@@ -80,6 +87,8 @@ namespace GigLocal
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Web API v1"));
             }
             else
             {
@@ -100,6 +109,7 @@ namespace GigLocal
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
