@@ -20,13 +20,15 @@ jobs:
           dotnet tool install -g dotnet-ef --version 5.0.8
           dotnet tool install -g Microsoft.Web.LibraryManager.Cli --version 2.1.113
       - name: Install dependencies
-        run: dotnet restore src
+        run: |
+          dotnet restore src
+          dotnet restore tests
       - name: Install libs
         run: cd src && libman restore
       - name: Build
         run: dotnet build src -c Release --no-restore
       - name: Test
-        run: dotnet test tests -c Release --no-restore
+        run: dotnet test tests -c Release --verbosity normal --no-restore
       - name: Publish app
         run: dotnet publish src -c Release -o publish-artifacts/app --no-restore
       - name: Publish SQL script
