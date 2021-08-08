@@ -41,6 +41,7 @@ namespace GigLocal.Controllers
                                 ArtistName = g.Artist.Name,
                                 ArtistGenre = g.Artist.Genre,
                                 ArtistWebsite = g.Artist.Website,
+                                ArtistImage = g.Artist.ImageUrl,
                                 VenueName = g.Venue.Name,
                                 VenueWebsite = g.Venue.Website,
                                 VenueAddress = g.Venue.Address
@@ -58,6 +59,7 @@ namespace GigLocal.Controllers
                 g.ArtistName,
                 g.ArtistGenre,
                 g.ArtistWebsite,
+                g.ArtistImage,
                 g.VenueName,
                 g.VenueWebsite,
                 g.VenueAddress));
@@ -73,6 +75,7 @@ namespace GigLocal.Controllers
         string ArtistName,
         string ArtistGenre,
         string ArtistWebsite,
+        string ArtistImage,
         string VenueName,
         string VenueWebsite,
         string VenueAddres
