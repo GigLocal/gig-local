@@ -26,41 +26,54 @@ namespace GigLocal.Controllers
         }
 
         [HttpGet]
-        public async Task<GigList> Get(string startDate, string endDate, int page)
+        public async Task<GigList> Get(
+            string startDate,
+            string endDate,
+            string stateSuburb,
+            string venue,
+            int page)
         {
-            var startDateTime = DateTime.Parse(startDate);
-            var endDateTime = DateTime.Parse(endDate);
+            var startDateTime = startDate is null ? DateTime.Now : DateTime.Parse(startDate);
+            var endDateTime = endDate is null ? DateTime.Now.AddDays(365) : DateTime.Parse(endDate).AddDays(1);
 
             var gigCount = await _context.Gigs
-                            .Where(g => g.Date >= startDateTime && g.Date <= endDateTime)
-                            .CountAsync();
+                .Where(g => g.Date >= startDateTime && g.Date <= endDateTime)
+                .CountAsync();
 
             var pages = (int)Math.Ceiling(gigCount / (double)_pageSize);
 
-            var result = await _context.Gigs
-                            .Include(g => g.Artist)
-                            .Include(g => g.Venue)
-                            .Where(g => g.Date >= startDateTime && g.Date <= endDateTime)
-                            .Select(g => new {
-                                Date = g.Date,
-                                TicketPrice = g.TicketPrice,
-                                TicketWebsite = g.TicketWebsite,
-                                ArtistName = g.Artist.Name,
-                                ArtistGenre = g.Artist.Genre,
-                                ArtistWebsite = g.Artist.Website,
-                                ArtistImage = g.Artist.ImageUrl,
-                                VenueName = g.Venue.Name,
-                                VenueWebsite = g.Venue.Website,
-                                VenueAddress = g.Venue.Address
-                            })
-                            .OrderBy(g => g.Date)
-                            .Skip(page * _pageSize)
-                            .Take(_pageSize)
-                            .ToArrayAsync();
+            var query = _context.Gigs
+                .Include(g => g.Artist)
+                .Include(g => g.Venue)
+                .Where(g => g.Date >= startDateTime && g.Date <= endDateTime);
+
+            if (!string.IsNullOrEmpty(stateSuburb))
+                query = query.Where(g => g.Venue.Address.Contains(stateSuburb));
+
+            if (!string.IsNullOrEmpty(venue))
+                query = query.Where(g => EF.Functions.Like(g.Venue.Name, $"%{venue}%"));
+
+            var queryResult = await query
+                .Select(g => new {
+                    Date = g.Date,
+                    TicketPrice = g.TicketPrice,
+                    TicketWebsite = g.TicketWebsite,
+                    ArtistName = g.Artist.Name,
+                    ArtistGenre = g.Artist.Genre,
+                    ArtistWebsite = g.Artist.Website,
+                    ArtistImage = g.Artist.ImageUrl,
+                    VenueName = g.Venue.Name,
+                    VenueWebsite = g.Venue.Website,
+                    VenueAddress = g.Venue.Address
+                })
+                .OrderBy(g => g.Date)
+                .Skip(page * _pageSize)
+                .Take(_pageSize)
+                .ToArrayAsync();
 
             return new GigList(
                 pages,
-                result.Select(g => new GigRecord(
+                queryResult.Select(g => new GigRecord(
                     g.Date.ToDayOfWeekDateMonthName(),
                     g.Date.ToTimeHourMinuteAmPm(),
                     g.TicketPrice,
@@ -75,6 +88,7 @@ namespace GigLocal.Controllers
                 )
             );
         }
+
     }
 
     public record GigRecord
