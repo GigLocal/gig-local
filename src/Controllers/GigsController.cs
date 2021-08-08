@@ -26,10 +26,17 @@ namespace GigLocal.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<GigRecord>> Get(string startDate, string endDate, int page)
+        public async Task<GigList> Get(string startDate, string endDate, int page)
         {
             var startDateTime = DateTime.Parse(startDate);
             var endDateTime = DateTime.Parse(endDate);
+
+            var gigCount = await _context.Gigs
+                            .Where(g => g.Date >= startDateTime && g.Date <= endDateTime)
+                            .CountAsync();
+
+            var pages = (int)Math.Ceiling(gigCount / (double)_pageSize);
+
             var result = await _context.Gigs
                             .Include(g => g.Artist)
                             .Include(g => g.Venue)
@@ -51,18 +58,22 @@ namespace GigLocal.Controllers
                             .Take(_pageSize)
                             .ToArrayAsync();
 
-            return result.Select(g => new GigRecord(
-                g.Date.ToDayOfWeekDateMonthName(),
-                g.Date.ToTimeHourMinuteAmPm(),
-                g.TicketPrice,
-                g.TicketWebsite,
-                g.ArtistName,
-                g.ArtistGenre,
-                g.ArtistWebsite,
-                g.ArtistImage,
-                g.VenueName,
-                g.VenueWebsite,
-                g.VenueAddress));
+            return new GigList(
+                pages,
+                result.Select(g => new GigRecord(
+                    g.Date.ToDayOfWeekDateMonthName(),
+                    g.Date.ToTimeHourMinuteAmPm(),
+                    g.TicketPrice,
+                    g.TicketWebsite,
+                    g.ArtistName,
+                    g.ArtistGenre,
+                    g.ArtistWebsite,
+                    g.ArtistImage,
+                    g.VenueName,
+                    g.VenueWebsite,
+                    g.VenueAddress)
+                )
+            );
         }
     }
 
@@ -79,5 +90,11 @@ namespace GigLocal.Controllers
         string VenueName,
         string VenueWebsite,
         string VenueAddres
+    );
+
+    public record GigList
+    (
+        int Pages,
+        IEnumerable<GigRecord> Gigs
     );
 }
