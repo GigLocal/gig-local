@@ -11,7 +11,7 @@ namespace GigLocal
             {
                 return value;
             }
-            return $"{value.Substring(0, Math.Min(value.Length, maxLength))}...";
+            return $"{value.Substring(0, Math.Min(value.Length, maxLength-3))}...";
         }
 
         public static string ToDaySuffix(this int day)
@@ -35,7 +35,7 @@ namespace GigLocal
 
         public static string ToDayOfWeekDateMonthName(this DateTime dateTime)
         {
-            return $"{dateTime.Day}{dateTime.Day.ToDaySuffix()} {dateTime.ToString("dddd")} {dateTime.ToString("MMMM")}";
+            return $"{dateTime.ToString("dddd")} {dateTime.Day}{dateTime.Day.ToDaySuffix()} {dateTime.ToString("MMMM")}";
         }
 
         public static string ToTimeHourMinuteAmPm(this DateTime dateTime)
