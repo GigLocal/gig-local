@@ -26,18 +26,18 @@ namespace GigLocal.Controllers
         }
 
         [HttpGet]
-        public async Task<GigList> Get(
-            string startDate,
-            string endDate,
+        public async Task<ActionResult<GigList>> Get(
+            DateTime startDate,
+            DateTime endDate,
             string stateSuburb,
             string venue,
             int page)
         {
-            var startDateTime = startDate is null ? DateTime.Now : DateTime.Parse(startDate);
-            var endDateTime = endDate is null ? DateTime.Now.AddDays(365) : DateTime.Parse(endDate).AddDays(1);
+            startDate = startDate == default ? DateTime.Now : startDate;
+            endDate = endDate == default ? startDate.AddDays(365) : endDate.AddDays(1);
 
             var gigCount = await _context.Gigs
-                .Where(g => g.Date >= startDateTime && g.Date <= endDateTime)
+                .Where(g => g.Date >= startDate && g.Date <= endDate)
                 .CountAsync();
 
             var pages = (int)Math.Ceiling(gigCount / (double)_pageSize);
@@ -45,7 +45,7 @@ namespace GigLocal.Controllers
             var query = _context.Gigs
                 .Include(g => g.Artist)
                 .Include(g => g.Venue)
-                .Where(g => g.Date >= startDateTime && g.Date <= endDateTime);
+                .Where(g => g.Date >= startDate && g.Date <= endDate);
 
             if (!string.IsNullOrEmpty(stateSuburb))
                 query = query.Where(g => g.Venue.Address.Contains(stateSuburb));
@@ -54,7 +54,8 @@ namespace GigLocal.Controllers
                 query = query.Where(g => EF.Functions.Like(g.Venue.Name, $"%{venue}%"));
 
             var queryResult = await query
-                .Select(g => new {
+                .Select(g => new
+                {
                     Date = g.Date,
                     TicketPrice = g.TicketPrice,
                     TicketWebsite = g.TicketWebsite,
