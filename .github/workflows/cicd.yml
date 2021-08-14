@@ -4,17 +4,17 @@ on:
   push:
     branches: ['main']
     paths:
-      - 'iac'
-      - 'src'
-      - 'tests'
-      - '.github/workflows'
+      - 'iac/**'
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/**'
   pull_request:
     branches: ['main']
     paths:
-      - 'iac'
-      - 'src'
-      - 'tests'
-      - '.github/workflows'
+      - 'iac/**'
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/**'
 
 jobs:
   Build:
