@@ -129,7 +129,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
 
 // Configuration
 var sqlConnectionString = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabaseName};Persist Security Info=False;User ID=${sqlAdminLogin};Password=${sqlAdminPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
-var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.name, storageAccount.apiVersion).keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
+var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
 
 resource websiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${website.name}/connectionstrings'
