@@ -30,17 +30,15 @@ jobs:
           dotnet tool install -g dotnet-ef --version 5.0.8
           dotnet tool install -g Microsoft.Web.LibraryManager.Cli --version 2.1.113
       - name: Install dependencies
-        run: |
-          dotnet restore src
-          dotnet restore tests
+        run: dotnet restore
       - name: Install libs
         run: cd src && libman restore
       - name: Build
-        run: dotnet build src -c Release --no-restore
+        run: dotnet build -c Release --no-restore
       - name: Test
-        run: dotnet test tests -c Release --verbosity normal --no-restore
+        run: dotnet test -c Release --verbosity normal --no-build
       - name: Publish app
-        run: dotnet publish src -c Release -o publish-artifacts/app --no-restore
+        run: dotnet publish src -c Release -o publish-artifacts/app --no-build
       - name: Publish SQL script
         run: dotnet ef migrations script -i -p src -o publish-artifacts/sql/script.sql
       - name: Upload artifacts
