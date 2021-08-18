@@ -8,7 +8,10 @@ namespace GigLocal
         public override bool IsValid(object value)
         {
             DateTime d = Convert.ToDateTime(value);
-            return d >= DateTime.Now;
+            var now = DateTime.Now;
+            var nowDate = new DateTime(now.Year, now.Month, now.Day);
+            var futureDate = new DateTime(d.Year, d.Month, d.Day);
+            return futureDate >= nowDate;
         }
     }
 }

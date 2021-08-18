@@ -8,6 +8,7 @@ namespace GigLocal.Tests
     {
         [Theory]
         [InlineData(1, true)]
+        [InlineData(0, true)]
         [InlineData(-1, false)]
         public void FutureDateTest(int daysDiff, bool expected)
         {
