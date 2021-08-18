@@ -23,6 +23,8 @@ namespace GigLocal.Pages.Admin.Venues
 
         public class VenueDetailsModel
         {
+            public int ID { get; set; }
+
             public string Name { get; set; }
 
             public string Description { get; set; }
@@ -50,6 +52,7 @@ namespace GigLocal.Pages.Admin.Venues
 
             Venue = new Venue
             {
+                ID = venue.ID,
                 Name = venue.Name,
                 Description = venue.Description,
                 Address = venue.Address,
