@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using GigLocal.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Standards.AspNetCore;
 
 namespace GigLocal.Controllers
 {
@@ -27,15 +29,11 @@ namespace GigLocal.Controllers
 
         [HttpGet]
         public async Task<ActionResult<GigList>> Get(
-            DateTime startDate,
-            DateTime endDate,
-            string stateSuburb,
-            string venue,
+            [Required] [ModelBinder(typeof(IsoDateModelBinder))] DateTime startDate,
+            [Required] [ModelBinder(typeof(IsoDateModelBinder))] DateTime endDate,
+            [Required] string stateSuburb,
             int page)
         {
-            startDate = startDate == default ? DateTime.Now : startDate;
-            endDate = endDate == default ? startDate.AddDays(365) : endDate.AddDays(1);
-
             var gigCount = await _context.Gigs
                 .Where(g => g.Date >= startDate && g.Date <= endDate)
                 .CountAsync();
@@ -46,12 +44,6 @@ namespace GigLocal.Controllers
                 .Include(g => g.Artist)
                 .Include(g => g.Venue)
                 .Where(g => g.Date >= startDate && g.Date <= endDate);
-
-            if (!string.IsNullOrEmpty(stateSuburb))
-                query = query.Where(g => g.Venue.Address.Contains(stateSuburb));
-
-            if (!string.IsNullOrEmpty(venue))
-                query = query.Where(g => EF.Functions.Like(g.Venue.Name, $"%{venue}%"));
 
             var queryResult = await query
                 .Select(g => new

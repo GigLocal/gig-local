@@ -21,7 +21,7 @@ namespace GigLocal.Tests
             // Assert
             Assert.Equal(expectedLength, truncated.Length);
             if (stringLength > truncateLength)
-                Assert.True(truncated.EndsWith("..."));
+                Assert.EndsWith("...", truncated);
         }
 
         [Theory]
