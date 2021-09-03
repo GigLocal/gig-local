@@ -49,7 +49,7 @@ namespace GigLocal.Services
             await image.SaveAsJpegAsync(outStream);
             var blobClient = GetArtistBlobClient(artistID);
             var binaryContent = new BinaryData(outStream.GetBuffer());
-            await blobClient.UploadAsync(binaryContent);
+            await blobClient.UploadAsync(binaryContent, overwrite: true);
             return blobClient.Uri.ToString();
         }
 
