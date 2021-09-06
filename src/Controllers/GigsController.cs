@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using GigLocal.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Standards.AspNetCore;
 
 namespace GigLocal.Controllers
@@ -15,37 +14,31 @@ namespace GigLocal.Controllers
     [Route("api/[controller]")]
     public class GigsController : ControllerBase
     {
-        private readonly ILogger<GigsController> _logger;
         private readonly GigContext _context;
-        private readonly int _pageSize;
 
-        public GigsController(ILogger<GigsController> logger,
-            GigContext context)
+        public GigsController(GigContext context)
         {
-            _logger = logger;
             _context = context;
-            _pageSize = 20;
         }
 
         [HttpGet]
-        public async Task<ActionResult<GigList>> Get(
-            [Required] [ModelBinder(typeof(IsoDateModelBinder))] DateTime startDate,
-            [Required] [ModelBinder(typeof(IsoDateModelBinder))] DateTime endDate,
-            [Required] string stateSuburb,
-            int page)
+        public async Task<IEnumerable<GigRecord>> Get(
+            [Required, ModelBinder(typeof(IsoDateModelBinder))] DateTime startDate,
+            [Required, ModelBinder(typeof(IsoDateModelBinder))] DateTime endDate,
+            [Required] string location,
+            [Required, Range(0, int.MaxValue)] int page,
+            [Required, Range(0, 50)] int pageSize)
         {
-            var gigCount = await _context.Gigs
-                .Where(g => g.Date >= startDate && g.Date <= endDate)
-                .CountAsync();
 
-            var pages = (int)Math.Ceiling(gigCount / (double)_pageSize);
-
-            var query = _context.Gigs
+            var gigsQuery = _context.Gigs
+                .AsNoTracking()
                 .Include(g => g.Artist)
                 .Include(g => g.Venue)
-                .Where(g => g.Date >= startDate && g.Date <= endDate);
+                .Where(g => g.Date >= startDate
+                    && g.Date <= endDate
+                    && EF.Functions.Like(g.Venue.Address, $"%{location}%"));
 
-            var queryResult = await query
+            var queryResult = await gigsQuery
                 .Select(g => new
                 {
                     Date = g.Date,
@@ -60,13 +53,11 @@ namespace GigLocal.Controllers
                     VenueAddress = g.Venue.Address
                 })
                 .OrderBy(g => g.Date)
-                .Skip(page * _pageSize)
-                .Take(_pageSize)
+                .Skip(page * pageSize)
+                .Take(pageSize)
                 .ToArrayAsync();
 
-            return new GigList(
-                pages,
-                queryResult.Select(g => new GigRecord(
+            return queryResult.Select(g => new GigRecord(
                     g.Date.ToDayOfWeekDateMonthName(),
                     g.Date.ToTimeHourMinuteAmPm(),
                     g.TicketPrice,
@@ -77,11 +68,28 @@ namespace GigLocal.Controllers
                     g.ArtistImage,
                     g.VenueName,
                     g.VenueWebsite,
-                    g.VenueAddress)
-                )
-            );
+                    g.VenueAddress));
         }
 
+        [HttpGet("pages")]
+        public async Task<GigsInfo> GetCount(
+            [Required, ModelBinder(typeof(IsoDateModelBinder))] DateTime startDate,
+            [Required, ModelBinder(typeof(IsoDateModelBinder))] DateTime endDate,
+            [Required] string location,
+            [Required, Range(0, 50)] int pageSize)
+        {
+            var gigsQuery = _context.Gigs
+                .AsNoTracking()
+                .Include(g => g.Venue)
+                .Where(g => g.Date >= startDate
+                    && g.Date <= endDate
+                    && EF.Functions.Like(g.Venue.Address, $"%{location}%"));
+
+            var gigsCount = await gigsQuery.CountAsync();
+            var pages = (int)Math.Ceiling(gigsCount / (double) pageSize);
+
+            return new GigsInfo(pages);
+        }
     }
 
     public record GigRecord
@@ -99,9 +107,5 @@ namespace GigLocal.Controllers
         string VenueAddres
     );
 
-    public record GigList
-    (
-        int Pages,
-        IEnumerable<GigRecord> Gigs
-    );
+    public record GigsInfo(int Pages);
 }
