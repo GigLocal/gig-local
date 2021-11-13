@@ -86,8 +86,10 @@ jobs:
         echo "::set-output name=sqlConnectionString::$(deployment group show -g GroupGigLocalDev -n main --query properties.outputs.sqlConnectionString.value | tr -d '"')"
     - name: Download Publish Artifacts
       uses: actions/download-artifact@v2
-    - name: Deploy SQL
-      run: ./publish-artifacts/migrations/bundle --connection ${{ steps.set_outputs.outputs.sqlConnectionString }}
+    - name: Run EF Migrations
+      run: |
+        chmod +x ./publish-artifacts/migrations/bundle
+        ./publish-artifacts/migrations/bundle --connection ${{ steps.set_outputs.outputs.sqlConnectionString }}
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
       with:
