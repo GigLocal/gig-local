@@ -1,60 +1,52 @@
-﻿using GigLocal.Data;
-using GigLocal.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿namespace GigLocal.Pages.Admin.Venues;
 
-namespace GigLocal.Pages.Admin.Venues
+public class CreateModel : PageModel
 {
-    public class CreateModel : PageModel
+    private readonly GigContext _context;
+
+    [BindProperty]
+    public VenueCreateModel Venue { get; set; }
+
+    public class VenueCreateModel
     {
-        private readonly GigContext _context;
+        [Required]
+        public string Name { get; set; }
 
-        [BindProperty]
-        public VenueCreateModel Venue { get; set; }
+        [Required]
+        public string Description { get; set; }
 
-        public class VenueCreateModel
-        {
-            [Required]
-            public string Name { get; set; }
+        [Required]
+        public string Address { get; set; }
 
-            [Required]
-            public string Description { get; set; }
+        [Required]
+        public string Website { get; set; }
+    }
 
-            [Required]
-            public string Address { get; set; }
+    public CreateModel(GigContext context)
+    {
+        _context = context;
+    }
 
-            [Required]
-            public string Website { get; set; }
-        }
+    public IActionResult OnGet()
+    {
+        return Page();
+    }
 
-        public CreateModel(GigContext context)
-        {
-            _context = context;
-        }
-
-        public IActionResult OnGet()
-        {
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
             return Page();
-        }
 
-        public async Task<IActionResult> OnPostAsync()
+        var newVenue = new Venue
         {
-            if (!ModelState.IsValid)
-                return Page();
+            Name = Venue.Name,
+            Description = Venue.Description,
+            Address = Venue.Address,
+            Website = Venue.Website
+        };
 
-            var newVenue = new Venue
-            {
-                Name = Venue.Name,
-                Description = Venue.Description,
-                Address = Venue.Address,
-                Website = Venue.Website
-            };
-
-            _context.Venues.Add(newVenue);
-            await _context.SaveChangesAsync();
-            return RedirectToPage("./Index");
-        }
+        _context.Venues.Add(newVenue);
+        await _context.SaveChangesAsync();
+        return RedirectToPage("./Index");
     }
 }

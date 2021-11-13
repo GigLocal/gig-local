@@ -1,26 +1,21 @@
-using System;
-using Xunit;
-using GigLocal;
+namespace GigLocal.Tests;
 
-namespace GigLocal.Tests
+public class ValidatorTests
 {
-    public class ValidatorTests
+    [Theory]
+    [InlineData(1, true)]
+    [InlineData(0, true)]
+    [InlineData(-1, false)]
+    public void FutureDateTest(int daysDiff, bool expected)
     {
-        [Theory]
-        [InlineData(1, true)]
-        [InlineData(0, true)]
-        [InlineData(-1, false)]
-        public void FutureDateTest(int daysDiff, bool expected)
-        {
-            // Arrange
-            var value = DateTime.Now.AddDays(daysDiff);
-            var attrib = new FutureDate();
+        // Arrange
+        var value = DateTime.Now.AddDays(daysDiff);
+        var attrib = new FutureDate();
 
-            // Act
-            var result = attrib.IsValid(value);
+        // Act
+        var result = attrib.IsValid(value);
 
-            // Assert
-            Assert.Equal(expected, result);
-        }
+        // Assert
+        Assert.Equal(expected, result);
     }
 }

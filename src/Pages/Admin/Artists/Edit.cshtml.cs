@@ -1,101 +1,91 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using GigLocal.Data;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using GigLocal.Services;
+﻿namespace GigLocal.Pages.Admin.Artists;
 
-namespace GigLocal.Pages.Admin.Artists
+public class EditModel : PageModel
 {
-    public class EditModel : PageModel
+    private readonly GigContext _context;
+    private readonly IStorageService _storageService;
+
+    public EditModel(GigContext context, IStorageService storageService)
     {
-        private readonly GigContext _context;
-        private readonly IStorageService _storageService;
+        _context = context;
+        _storageService = storageService;
+    }
 
-        public EditModel(GigContext context, IStorageService storageService)
+    [BindProperty]
+    public ArtistEditModel Artist { get; set; }
+
+    public class ArtistEditModel
+    {
+        [Required]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        [Required]
+        public string Description { get; set; }
+
+        [Required]
+        public string Genre { get; set; }
+
+        [Required]
+        public string Website { get; set; }
+
+        [Display(Name = "Image")]
+        public IFormFile FormFile { get; set; }
+    }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _context = context;
-            _storageService = storageService;
+            return NotFound();
         }
 
-        [BindProperty]
-        public ArtistEditModel Artist { get; set; }
+        var artist = await _context.Artists
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(m => m.ID == id);
 
-        public class ArtistEditModel
+        if (artist == null)
         {
-            [Required]
-            [StringLength(50)]
-            public string Name { get; set; }
-
-            [Required]
-            public string Description { get; set; }
-
-            [Required]
-            public string Genre { get; set; }
-
-            [Required]
-            public string Website { get; set; }
-
-            [Display(Name = "Image")]
-            public IFormFile FormFile { get; set; }
+            return NotFound();
         }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        Artist = new ArtistEditModel
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Name = artist.Name,
+            Description = artist.Description,
+            Genre = artist.Genre,
+            Website = artist.Website
+        };
 
-            var artist = await _context.Artists
-                                       .AsNoTracking()
-                                       .FirstOrDefaultAsync(m => m.ID == id);
+        return Page();
+    }
 
-            if (artist == null)
-            {
-                return NotFound();
-            }
-
-            Artist = new ArtistEditModel
-            {
-                Name = artist.Name,
-                Description = artist.Description,
-                Genre = artist.Genre,
-                Website = artist.Website
-            };
-
+    public async Task<IActionResult> OnPostAsync(int id)
+    {
+        if (!ModelState.IsValid)
             return Page();
-        }
 
-        public async Task<IActionResult> OnPostAsync(int id)
+        var artistToUpdate = await _context.Artists.FindAsync(id);
+
+        if (artistToUpdate == null)
         {
-            if (!ModelState.IsValid)
-                return Page();
-
-            var artistToUpdate = await _context.Artists.FindAsync(id);
-
-            if (artistToUpdate == null)
-            {
-                return NotFound();
-            }
-
-            artistToUpdate.Name = Artist.Name;
-            artistToUpdate.Description = Artist.Description;
-            artistToUpdate.Genre = Artist.Genre;
-            artistToUpdate.Website = Artist.Website;
-
-            if (Artist.FormFile?.Length > 0)
-            {
-                using var formFileStream = Artist.FormFile.OpenReadStream();
-                var imageUrl = await _storageService.UploadArtistImageAsync(artistToUpdate.ID, formFileStream);
-
-                artistToUpdate.ImageUrl = imageUrl;
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToPage("./Index");
+            return NotFound();
         }
+
+        artistToUpdate.Name = Artist.Name;
+        artistToUpdate.Description = Artist.Description;
+        artistToUpdate.Genre = Artist.Genre;
+        artistToUpdate.Website = Artist.Website;
+
+        if (Artist.FormFile?.Length > 0)
+        {
+            using var formFileStream = Artist.FormFile.OpenReadStream();
+            var imageUrl = await _storageService.UploadArtistImageAsync(artistToUpdate.ID, formFileStream);
+
+            artistToUpdate.ImageUrl = imageUrl;
+        }
+
+        await _context.SaveChangesAsync();
+        return RedirectToPage("./Index");
     }
 }

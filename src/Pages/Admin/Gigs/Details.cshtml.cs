@@ -1,73 +1,63 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using GigLocal.Data;
-using GigLocal.Models;
-using System.ComponentModel.DataAnnotations;
+﻿namespace GigLocal.Pages.Admin.Gigs;
 
-namespace GigLocal.Pages.Admin.Gigs
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly GigContext _context;
+
+    public DetailsModel(GigContext context)
     {
-        private readonly GigContext _context;
+        _context = context;
+    }
 
-        public DetailsModel(GigContext context)
+    public GigDetialsModel Gig { get; set; }
+
+    public class GigDetialsModel
+    {
+        public int ID { get; set; }
+
+        [Display(Name = "Artist")]
+        public string ArtistName { get; set; }
+
+        [Display(Name = "Venue")]
+        public string VenueName { get; set; }
+
+        public DateTime Date { get; set; }
+
+        [Display(Name = "Ticket price")]
+        public Decimal TicketPrice { get; set; }
+
+        [Display(Name = "Ticket website")]
+        public string TicketWebsite { get; set; }
+    }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        public GigDetialsModel Gig { get; set; }
+        Gig gig = await _context.Gigs
+            .AsNoTracking()
+            .Include(g => g.Artist)
+            .Include(g => g.Venue)
+            .FirstOrDefaultAsync(m => m.ID == id);
 
-        public class GigDetialsModel
+        if (gig == null)
         {
-            public int ID { get; set; }
-
-            [Display(Name = "Artist")]
-            public string ArtistName { get; set; }
-
-            [Display(Name = "Venue")]
-            public string VenueName { get; set; }
-
-            public DateTime Date { get; set; }
-
-            [Display(Name = "Ticket price")]
-            public Decimal TicketPrice { get; set; }
-
-            [Display(Name = "Ticket website")]
-            public string TicketWebsite { get; set; }
+            return NotFound();
         }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        Gig = new GigDetialsModel
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            ID = gig.ID,
+            ArtistName = gig.Artist.Name,
+            VenueName = gig.Venue.Name,
+            Date = gig.Date,
+            TicketPrice = gig.TicketPrice,
+            TicketWebsite = gig.TicketWebsite
+        };
 
-            Gig gig = await _context.Gigs
-                .AsNoTracking()
-                .Include(g => g.Artist)
-                .Include(g => g.Venue)
-                .FirstOrDefaultAsync(m => m.ID == id);
-
-            if (gig == null)
-            {
-                return NotFound();
-            }
-
-            Gig = new GigDetialsModel
-            {
-                ID = gig.ID,
-                ArtistName = gig.Artist.Name,
-                VenueName = gig.Venue.Name,
-                Date = gig.Date,
-                TicketPrice = gig.TicketPrice,
-                TicketWebsite = gig.TicketWebsite
-            };
-
-            return Page();
-        }
+        return Page();
     }
 }
