@@ -39,8 +39,10 @@ jobs:
         run: dotnet test -c Release --verbosity normal --no-build
       - name: Publish app
         run: dotnet publish src -c Release -o publish-artifacts/app --no-build
-      - name: Publish SQL script
-        run: dotnet ef migrations script -i -p src -o publish-artifacts/sql/script.sql
+      - name: Create migrations bundle
+        run: |
+          mkdir publish-artifacts/migrations
+          dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/migrations/bundle --self-contained --no-build
       - name: Upload artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
@@ -49,7 +51,7 @@ jobs:
           path: publish-artifacts
   DeployDev:
     if: github.event_name == 'push'
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: [Build]
     environment:
       name: Dev
@@ -80,17 +82,12 @@ jobs:
     - name: Set Deployment Outputs
       id: set_outputs
       run: |
-        echo "::set-output name=websiteName::$($(az deployment group show -g GroupGigLocalDev -n main --query properties.outputs.websiteName.value) -replace '"', '')"
-        echo "::set-output name=sqlServerName::$($(az deployment group show -g GroupGigLocalDev -n main --query properties.outputs.sqlServerName.value) -replace '"', '')"
-        echo "::set-output name=sqlConnectionString::$($(az deployment group show -g GroupGigLocalDev -n main --query properties.outputs.sqlConnectionString.value) -replace '"', '')"
+        echo "::set-output name=websiteName::$(deployment group show -g GroupGigLocalDev -n main --query properties.outputs.websiteName.value | tr -d '"')"
+        echo "::set-output name=sqlConnectionString::$(deployment group show -g GroupGigLocalDev -n main --query properties.outputs.sqlConnectionString.value | tr -d '"')"
     - name: Download Publish Artifacts
       uses: actions/download-artifact@v2
     - name: Deploy SQL
-      uses: azure/sql-action@v1
-      with:
-        server-name: ${{ steps.set_outputs.outputs.sqlServerName }}
-        connection-string: ${{ steps.set_outputs.outputs.sqlConnectionString }}
-        sql-file: publish-artifacts/sql/script.sql
+      run: ./publish-artifacts/migrations/bundle --connection ${{ steps.set_outputs.outputs.sqlConnectionString }}
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
       with:
