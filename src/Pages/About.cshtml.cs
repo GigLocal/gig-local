@@ -1,16 +1,13 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
+namespace GigLocal.Pages;
 
-namespace GigLocal.Pages
+public class AboutModel : PageModel
 {
-    public class AboutModel : PageModel
+    public AboutModel()
     {
-        public AboutModel()
-        {
-        }
+    }
 
-        public void OnGet()
-        {
+    public void OnGet()
+    {
 
-        }
     }
 }

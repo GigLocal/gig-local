@@ -1,65 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using GigLocal.Data;
-using GigLocal.Models;
+﻿namespace GigLocal.Pages.Admin.Venues;
 
-namespace GigLocal.Pages.Admin.Venues
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly GigContext _context;
+
+    public DetailsModel(GigContext context)
     {
-        private readonly GigContext _context;
+        _context = context;
+    }
 
-        public DetailsModel(GigContext context)
+    public Venue Venue { get; set; }
+
+    public class VenueDetailsModel
+    {
+        public int ID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public string Address { get; set; }
+
+        public string Website { get; set; }
+    }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        public Venue Venue { get; set; }
+        Venue venue = await _context.Venues
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(m => m.ID == id);
 
-        public class VenueDetailsModel
+        if (venue == null)
         {
-            public int ID { get; set; }
-
-            public string Name { get; set; }
-
-            public string Description { get; set; }
-
-            public string Address { get; set; }
-
-            public string Website { get; set; }
+            return NotFound();
         }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        Venue = new Venue
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            ID = venue.ID,
+            Name = venue.Name,
+            Description = venue.Description,
+            Address = venue.Address,
+            Website = venue.Website
+        };
 
-            Venue venue = await _context.Venues
-                                        .AsNoTracking()
-                                        .FirstOrDefaultAsync(m => m.ID == id);
-
-            if (venue == null)
-            {
-                return NotFound();
-            }
-
-            Venue = new Venue
-            {
-                ID = venue.ID,
-                Name = venue.Name,
-                Description = venue.Description,
-                Address = venue.Address,
-                Website = venue.Website
-            };
-
-            return Page();
-        }
+        return Page();
     }
 }

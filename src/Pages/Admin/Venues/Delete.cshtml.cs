@@ -1,105 +1,94 @@
-﻿using GigLocal.Data;
-using GigLocal.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿namespace GigLocal.Pages.Admin.Venues;
 
-namespace GigLocal.Pages.Admin.Venues
+public class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
+    private readonly GigContext _context;
+    private readonly ILogger<DeleteModel> _logger;
+
+    public DeleteModel(GigContext context,
+                        ILogger<DeleteModel> logger)
     {
-        private readonly GigContext _context;
-        private readonly ILogger<DeleteModel> _logger;
+        _context = context;
+        _logger = logger;
+    }
 
-        public DeleteModel(GigContext context,
-                           ILogger<DeleteModel> logger)
+    public string ErrorMessage { get; set; }
+
+    public VenueDeleteModel Venue { get; set; }
+
+    public class VenueDeleteModel
+    {
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public string Address { get; set; }
+
+        public string Website { get; set; }
+    }
+
+    public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
+    {
+        if (id == null)
         {
-            _context = context;
-            _logger = logger;
+            return NotFound();
         }
 
-        public string ErrorMessage { get; set; }
+        Venue venue = await _context.Venues
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(m => m.ID == id);
 
-        public VenueDeleteModel Venue { get; set; }
-
-        public class VenueDeleteModel
+        if (venue == null)
         {
-            public string Name { get; set; }
-
-            public string Description { get; set; }
-
-            public string Address { get; set; }
-
-            public string Website { get; set; }
+            return NotFound();
         }
 
-        public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
+        if (saveChangesError.GetValueOrDefault())
         {
-            if (id == null)
+            ErrorMessage = String.Format("Delete {ID} failed. Try again", id);
+        }
+        else
+        {
+            Venue = new VenueDeleteModel
             {
-                return NotFound();
-            }
+                Name = venue.Name,
+                Description = venue.Description,
+                Address = venue.Address,
+                Website = venue.Website
+            };
+        }
 
-            Venue venue = await _context.Venues
-                                        .AsNoTracking()
-                                        .FirstOrDefaultAsync(m => m.ID == id);
+        return Page();
+    }
 
-            if (venue == null)
-            {
-                return NotFound();
-            }
-
-            if (saveChangesError.GetValueOrDefault())
-            {
-                ErrorMessage = String.Format("Delete {ID} failed. Try again", id);
-            }
-            else
-            {
-                Venue = new VenueDeleteModel
-                {
-                    Name = venue.Name,
-                    Description = venue.Description,
-                    Address = venue.Address,
-                    Website = venue.Website
-                };
-            }
-
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        if (!ModelState.IsValid)
             return Page();
+
+        if (id == null)
+        {
+            return NotFound(new { message = "hello"});
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        var venue = await _context.Venues.FindAsync(id);
+
+        if (venue == null)
         {
-            if (!ModelState.IsValid)
-                return Page();
+            return NotFound();
+        }
 
-            if (id == null)
-            {
-                return NotFound(new { message = "hello"});
-            }
+        try
+        {
+            _context.Venues.Remove(venue);
+            await _context.SaveChangesAsync();
+            return RedirectToPage("./Index");
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, ErrorMessage);
 
-            var venue = await _context.Venues.FindAsync(id);
-
-            if (venue == null)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                _context.Venues.Remove(venue);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
-            }
-            catch (DbUpdateException ex)
-            {
-                _logger.LogError(ex, ErrorMessage);
-
-                return RedirectToAction("./Delete", new { id, saveChangesError = true });
-            }
+            return RedirectToAction("./Delete", new { id, saveChangesError = true });
         }
     }
 }
