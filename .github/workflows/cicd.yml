@@ -42,7 +42,7 @@ jobs:
       - name: Create migrations bundle
         run: |
           mkdir publish-artifacts/migrations
-          dotnet ef migrations bundle -c Release -p src -o publish-artifacts/migrations/bundle --self-contained --no-build
+          dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/migrations/bundle --self-contained --no-build
       - name: Upload artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
