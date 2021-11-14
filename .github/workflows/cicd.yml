@@ -86,8 +86,9 @@ jobs:
       uses: actions/download-artifact@v2
     - name: Run EF Migrations
       run: |
-        chmod +x ./publish-artifacts/bundle
-        ./publish-artifacts/bundle --connection "${{ steps.set_outputs.outputs.sqlConnectionString }}" -v
+        cd publish-artifacts
+        chmod +x bundle
+        ./bundle --connection "${{ steps.set_outputs.outputs.sqlConnectionString }}" -v
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
       with:
