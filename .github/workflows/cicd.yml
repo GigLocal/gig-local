@@ -89,6 +89,7 @@ jobs:
         cd publish-artifacts
         chmod +x bundle
         ./bundle --connection "${{ steps.set_outputs.outputs.sqlConnectionString }}" -v
+        rm bundle
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
       with:
