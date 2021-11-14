@@ -3,22 +3,23 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 var environment = builder.Environment;
 
-builder.Services.AddRouting(options => options.LowercaseUrls = true)
-        .AddDbContext<GigContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.AddDbContext<GigContext>(
+    options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+);
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-})
-.AddCookie(options => {
+}).AddCookie(options => {
     options.AccessDeniedPath = new PathString("/AccessDenied");
-})
-.AddGoogle(options =>
+}).AddGoogle(options =>
 {
     options.ClientId = configuration["Authentication:Google:ClientId"];
     options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
 });
+
 builder.Services.AddAuthorization(options =>
 {
     // Temporary for now, until we have a better way to handle this
@@ -38,13 +39,13 @@ var mvcBuilder = builder.Services.AddRazorPages(options => {
 });
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Gig Local", Version = "v1" });
-});
 
 if (environment.IsDevelopment())
 {
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Gig Local", Version = "v1" });
+    });
     mvcBuilder.AddRazorRuntimeCompilation();
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 }
@@ -77,10 +78,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapRazorPages();
-    endpoints.MapControllers();
-});
+app.MapRazorPages();
+app.MapControllers();
 
 app.Run();

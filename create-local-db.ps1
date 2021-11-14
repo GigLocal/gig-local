@@ -1,3 +1,5 @@
+#!/usr/bin/env pwsh
+
 docker stop mssql-server-gigs
 docker rm mssql-server-gigs
 docker pull mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04

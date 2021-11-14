@@ -38,11 +38,9 @@ jobs:
       - name: Test
         run: dotnet test -c Release --verbosity normal --no-build
       - name: Publish app
-        run: dotnet publish src -c Release -o publish-artifacts/app --no-build
+        run: dotnet publish src -c Release -o publish-artifacts --no-build
       - name: Create migrations bundle
-        run: |
-          mkdir publish-artifacts/migrations
-          dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/migrations/bundle --self-contained --no-build
+        run: dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/bundle --self-contained --no-build
       - name: Upload artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
@@ -88,12 +86,12 @@ jobs:
       uses: actions/download-artifact@v2
     - name: Run EF Migrations
       run: |
-        chmod +x ./publish-artifacts/migrations/bundle
-        ./publish-artifacts/migrations/bundle --connection "${{ steps.set_outputs.outputs.sqlConnectionString }}" -v
+        chmod +x ./publish-artifacts/bundle
+        ./publish-artifacts/bundle --connection "${{ steps.set_outputs.outputs.sqlConnectionString }}" -v
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ steps.set_outputs.outputs.websiteName }}
-        package: publish-artifacts/app
+        package: publish-artifacts
     - name: Logout of Azure
       run: az logout
