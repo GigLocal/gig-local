@@ -47,7 +47,7 @@ public class IndexModel : PageModel
             g.TicketPrice,
             g.TicketWebsite,
             g.Artist.Name,
-            g.Artist.Description,
+            g.Artist.Description.Truncate(200),
             g.Artist.Website,
             g.Artist.ImageUrl,
             g.Venue.Name,
