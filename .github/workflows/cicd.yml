@@ -40,7 +40,7 @@ jobs:
       - name: Publish app
         run: dotnet publish src -c Release -o publish-artifacts --no-build
       - name: Create migrations bundle
-        run: dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/bundle --self-contained --no-build
+        run: dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/bundle --no-build
       - name: Upload artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
@@ -55,6 +55,10 @@ jobs:
       name: Dev
     steps:
     - uses: actions/checkout@v2
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}

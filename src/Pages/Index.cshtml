@@ -16,9 +16,10 @@
             <div class="card">
                 <img class="img-fluid" src="@gig.ArtistImage" alt="Image of artist @gig.ArtistName.">
                 <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="@gig.VenueWebsite">@gig.VenueName</a> | <a href="@gig.ArtistWebsite">@gig.ArtistName</a>
-                    </h5>
+                    <h4 class="card-title">
+                        <a href="@gig.VenueWebsite" class="text-reset">@gig.VenueName</a> |
+                        <a href="@gig.ArtistWebsite" class="text-reset">@gig.ArtistName</a>
+                    </h4>
                     @{
                         var ticketPrice = gig.TicketPrice == 0 ? "Free" : $"${gig.TicketPrice}";
                         <p class="card-text">@gig.Date | @gig.Time | @ticketPrice</p>
