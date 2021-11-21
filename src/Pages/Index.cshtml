@@ -9,12 +9,12 @@
 </h3>
 <br/>
 
-<div class="row row-cols-1 row-cols-md-2">
+<div class="row row-cols-1 row-cols-md-3">
     @foreach (var gig in Model.Gigs)
     {
         <div class="col mb-4">
             <div class="card">
-                <img src="@gig.ArtistImage" alt="Image of artist @gig.ArtistName.">
+                <img class="img-fluid" src="@gig.ArtistImage" alt="Image of artist @gig.ArtistName.">
                 <div class="card-body">
                     <h5 class="card-title">
                         <a href="@gig.VenueWebsite">@gig.VenueName</a> | <a href="@gig.ArtistWebsite">@gig.ArtistName</a>
