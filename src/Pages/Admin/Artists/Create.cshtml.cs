@@ -20,7 +20,6 @@ public class CreateModel : PageModel
         [Required]
         public string Genre { get; set; }
 
-        [Required]
         public string Website { get; set; }
 
         [Display(Name = "Image")]
