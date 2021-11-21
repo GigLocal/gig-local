@@ -68,7 +68,7 @@ jobs:
             appName=GigLocal
             env=Dev
             containerName=public
-            webAppSku=F1
+            webAppSku=B1
             webAppSkuCapacity=1
             sqlAdminLogin=${{ secrets.AZURE_SQL_LOGIN }}
             sqlAdminPassword=${{ secrets.AZURE_SQL_PASSWORD }}
