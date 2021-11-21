@@ -22,7 +22,7 @@
                     </h4>
                     @{
                         var ticketPrice = gig.TicketPrice == 0 ? "Free" : $"${gig.TicketPrice}";
-                        <p class="card-text">@gig.Date | @gig.Time | @ticketPrice</p>
+                        <p class="card-text font-weight-bold">@gig.Date | @gig.Time | @ticketPrice</p>
                     }
                     <p>
                         @gig.ArtistDescription
