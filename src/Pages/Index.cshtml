@@ -4,7 +4,30 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to Gig Local</h1>
-    <p>TODO: implement gig list</p>
+<h3>
+    Upcoming Gigs in Northcote:
+</h3>
+<br/>
+
+<div class="row row-cols-1 row-cols-md-2">
+    @foreach (var gig in Model.Gigs)
+    {
+        <div class="col mb-4">
+            <div class="card">
+                <img src="@gig.ArtistImage" alt="Image of artist @gig.ArtistName.">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="@gig.VenueWebsite">@gig.VenueName</a> | <a href="@gig.ArtistWebsite">@gig.ArtistName</a>
+                    </h5>
+                    @{
+                        var ticketPrice = gig.TicketPrice == 0 ? "Free" : $"${gig.TicketPrice}";
+                        <p class="card-text">@gig.Date | @gig.Time | @ticketPrice</p>
+                    }
+                    <p>
+                        @gig.ArtistDescription
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
 </div>
