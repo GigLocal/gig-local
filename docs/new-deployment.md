@@ -9,6 +9,7 @@ Create a new Azure Subscription via the Portal. Name it: `SubscriptionGigLocal[D
 - Microsoft.Web
 - Microsoft.Sql
 - Microsoft.Storage
+- microsoft.insights
 
 ## Step 2: Resource Group
 
@@ -23,7 +24,7 @@ az group create --location australiaeast --name GroupGigLocal[Deployment] --subs
 Create a Service Principal via the CLI. Name it: `ServicePrincipalGigLocal[Deployment]` e.g. `ServicePrincipalGigLocalProd`:
 
 ```
-az ad sp create-for-rbac --name ServicePrincipalGigLocalProd --role contributor --scopes /subscriptions/[subscription-id]/resourceGroups/[resource-group-name] --sdk-auth
+az ad sp create-for-rbac --name ServicePrincipalGigLocal[Deployment] --role contributor --scopes /subscriptions/[subscription-id]/resourceGroups/[resource-group-name] --sdk-auth
 ```
 
 Save the output JSON as this is needed in the next step.
@@ -42,4 +43,4 @@ Create a GitHub environment via github.com. Name it `[Deployment]` e.g. `Prod`. 
 
 ## Step 5: GitHub Deployment
 
-Add a new deployment section in the GitHub CI/CD workflow file for the new environment. Be sure to update the environment name according to the deployment name - it should only be 3 letters long.
+Add a new deployment section in the GitHub CI/CD workflow file for the new environment. Be sure to update the environment name according to the deployment name - it must only be 3 letters long.
