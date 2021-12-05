@@ -28,8 +28,11 @@ builder.Services.AddAuthorization(options =>
         policy.RequireAssertion(context =>
         {
             var email = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            var adminEmail = configuration["Authentication:Admin:Email"];
-            return email is not null && email.Equals(adminEmail);
+            if (email is null)
+                return false;
+
+            var adminEmails = configuration["Authentication:Admin:Emails"].Split(',');
+            return adminEmails.Contains(email);
         });
     });
 });

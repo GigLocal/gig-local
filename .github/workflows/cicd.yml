@@ -80,7 +80,7 @@ jobs:
             sqlDatabaseSku=Basic
             authGoogleClientId=${{ secrets.AUTH_GOOGLE_CLIENT_ID }}
             authGoogleClientSecret=${{ secrets.AUTH_GOOGLE_CLIENT_SECRET }}
-            authAdminEmail=${{ secrets.AUTH_ADMIN_EMAIL }}
+            authAdminEmail=${{ secrets.AUTH_ADMIN_EMAILS }}
     - name: Set Deployment Outputs
       id: set_outputs
       run: |

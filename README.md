@@ -13,7 +13,7 @@ This is the repository for the Gig Local Backend; an ASP.NET Core web app.
     - Azure Storage Connection String: `Storage:ConnectionString`
     - Google Authentication client id: `Authentication:Google:ClientId`
     - Google Authentication client secret: `Authentication:Google:ClientSecret`
-    - Admin email address: `Authentication:Admin:Email`
+    - Google email address: `Authentication:Admin:Emails`
 
 ## Running locally
 
