@@ -146,7 +146,7 @@ resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
     'Storage__ConnectionString': storageConnectionString
     'Authentication__Google__ClientId': authGoogleClientId
     'Authentication__Google__ClientSecret': authGoogleClientSecret
-    'Authentication__Admin__Email': authAdminEmail
+    'Authentication__Admin__Emails': authAdminEmail
     'ApplicationInsights__ConnectionString': appInsights.properties.ConnectionString
   }
 }
