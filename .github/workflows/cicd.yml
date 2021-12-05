@@ -92,7 +92,7 @@ jobs:
       run: |
         cd publish-artifacts
         chmod +x bundle
-        ./bundle --connection "${{ steps.set_outputs.outputs.sqlConnectionString }}" -v
+        ./bundle --connection "${{ steps.set_outputs.outputs.sqlConnectionString }}"
         rm bundle
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
@@ -124,7 +124,7 @@ jobs:
         template: ./iac/main.bicep
         parameters: >
             appName=GigLocal
-            env=Prod
+            env=Prd
             containerName=public
             webAppSku=B1
             webAppSkuCapacity=1
@@ -146,7 +146,7 @@ jobs:
       run: |
         cd publish-artifacts
         chmod +x bundle
-        ./bundle --connection "${{ steps.set_outputs.outputs.sqlConnectionString }}" -v
+        ./bundle --connection "${{ steps.set_outputs.outputs.sqlConnectionString }}"
         rm bundle
     - name: Deploy Web App
       uses: azure/webapps-deploy@v2
