@@ -30,7 +30,7 @@ public class IndexModel : PageModel
     public void OnGet()
     {
         var startDate = DateTime.Now;
-        var endDate = startDate.AddDays(7);
+        var endDate = startDate.AddDays(14);
         var gigsQuery = _context.Gigs
             .AsNoTracking()
             .Include(g => g.Artist)
@@ -39,6 +39,7 @@ public class IndexModel : PageModel
                         && g.Date <= endDate
                         && EF.Functions.Like(g.Venue.Address, $"%, Northcote VIC%"))
             .OrderBy(g => g.Date)
+            .Take(50)
             .ToArray();
 
         Gigs = gigsQuery.Select(g => new GigRecord(
