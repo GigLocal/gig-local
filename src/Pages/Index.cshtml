@@ -1,34 +1,11 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
 
-<h3>
-    Upcoming Gigs in Northcote:
-</h3>
-<br/>
+<h1>
+    Gig Local
+</h1>
 
-<div class="row row-cols-1 row-cols-md-3">
-    @foreach (var gig in Model.Gigs)
-    {
-        <div class="col mb-4">
-            <div class="card">
-                <img class="img-fluid" src="@gig.ArtistImage" alt="Image of artist @gig.ArtistName.">
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="@gig.VenueWebsite" class="text-reset">@gig.VenueName</a> |
-                        <a href="@gig.ArtistWebsite" class="text-reset">@gig.ArtistName</a>
-                    </h4>
-                    @{
-                        var ticketPrice = gig.TicketPrice == 0 ? "Free" : $"${gig.TicketPrice}";
-                        <p class="card-text font-weight-bold">@gig.Date | @gig.Time | @ticketPrice</p>
-                    }
-                    <p>
-                        @gig.ArtistDescription
-                    </p>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+<a asp-page="/Gigs">Gig List</a>
