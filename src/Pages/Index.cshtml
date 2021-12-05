@@ -1,11 +1,16 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Find local gigs near you";
 }
 
-<h1>
-    Gig Local
-</h1>
-
-<a asp-page="/Gigs">Gig List</a>
+<div class="text-center">
+    <div class="jumbotron bg-white">
+    <h1 class="display-4">Gig Local</h1>
+    <p class="lead">Find local gigs near you</p>
+    <hr class="my-4">
+    <p>Gig Local is a non-for-profit community driven website for listing local gigs in your area!</p>
+    <br>
+    <a asp-page="/Gigs" class="btn btn-primary btn-lg" role="button">View Gigs</a>
+    </div>
+</div>
