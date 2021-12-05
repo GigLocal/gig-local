@@ -38,14 +38,8 @@ var mvcBuilder = builder.Services.AddRazorPages(options => {
     options.Conventions.AuthorizeFolder("/Admin", "AllowedUsersOnly");
 });
 
-builder.Services.AddControllers();
-
 if (environment.IsDevelopment())
 {
-    builder.Services.AddSwaggerGen(c =>
-    {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Gig Local", Version = "v1" });
-    });
     mvcBuilder.AddRazorRuntimeCompilation();
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 }
@@ -60,8 +54,6 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web API v1"));
 }
 else
 {
@@ -79,6 +71,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
-app.MapControllers();
 
 app.Run();
