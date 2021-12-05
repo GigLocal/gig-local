@@ -23,6 +23,7 @@ public class IndexModel : PageModel
         [Display(Name = "Venue")]
         public string VenueName { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
         public DateTime Date { get; set; }
 
         [Display(Name = "Ticket price")]
