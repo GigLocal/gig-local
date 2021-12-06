@@ -25,8 +25,8 @@ public class CreateModel : PageModel
         [Display(Name = "Date and time")]
         public DateTime Date { get; set; }
 
-        [Display(Name = "Ticket price")]
-        [Range(0, 50, ErrorMessage = "The ticket price must be between $0 and $50.")]
+        [Display(Name = "Ticket price ($)")]
+        [Range(0, 20, ErrorMessage = "The ticket price must be between $0 and $20.")]
         public Decimal TicketPrice { get; set; }
 
         [Display(Name = "Ticket website")]
