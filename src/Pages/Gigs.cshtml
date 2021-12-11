@@ -15,20 +15,8 @@
                         <a href="@gig.VenueWebsite" class="text-reset">@gig.VenueName</a> |
                         <a href="@gig.ArtistWebsite" class="text-reset">@gig.ArtistName</a>
                     </h4>
-                    @{
-                        var ticketPrice = gig.TicketPrice == 0 ? "Free" : $"${gig.TicketPrice}";
-                        <p class="card-text font-weight-bold">@gig.Date | @gig.Time | @ticketPrice</p>
-                        if (gig.TicketWebsite != null)
-                        {
-                            <p class="card-text">
-                                <a href="@gig.TicketWebsite" class="btn btn-secondary">Buy Tickets</a>
-                            </p>
-                        }
-                    }
-
-                    <p>
-                        @gig.ArtistDescription
-                    </p>
+                    <p class="card-text font-weight-bold">@gig.Date | @gig.Time</p>
+                    <p>@gig.ArtistDescription</p>
                 </div>
             </div>
         </div>
