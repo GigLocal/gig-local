@@ -6,14 +6,14 @@ This is the repository for the Gig Local Backend; an ASP.NET Core web app.
 
 ## Getting started
 
-1. Install latest [.NET 5.0 SDK](https://dotnet.microsoft.com/download/dotnet/5.0)
+1. Install latest [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
 2. Install [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1)
 2. Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
 3. Add the [dotnet user secrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=linux#set-a-secret). Please request these from a repository owner.
     - Azure Storage Connection String: `Storage:ConnectionString`
     - Google Authentication client id: `Authentication:Google:ClientId`
     - Google Authentication client secret: `Authentication:Google:ClientSecret`
-    - Google email address: `Authentication:Admin:Emails`
+    - Google email address: `Authentication:Admin:Emails` as a comma separate list
 
 ## Running locally
 
