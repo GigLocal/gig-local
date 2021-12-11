@@ -9,6 +9,7 @@ param containerName string
 
 // Web App params
 @allowed([
+    'F1'
     'B1'
 ])
 param webAppSku string
@@ -26,6 +27,7 @@ param sqlDatabaseName string
 
 @allowed([
     'Basic'
+    'Standard'
 ])
 param sqlDatabaseSku string
 

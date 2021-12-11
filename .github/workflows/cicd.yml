@@ -48,6 +48,7 @@ jobs:
           name: publish-artifacts
           path: publish-artifacts
   DeployDev:
+    name: Deploy to Dev
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     needs: [Build]
@@ -72,7 +73,7 @@ jobs:
             appName=GigLocal
             env=Dev
             containerName=public
-            webAppSku=B1
+            webAppSku=F1
             webAppSkuCapacity=1
             sqlAdminLogin=${{ secrets.AZURE_SQL_LOGIN }}
             sqlAdminPassword=${{ secrets.AZURE_SQL_PASSWORD }}
@@ -102,6 +103,7 @@ jobs:
     - name: Logout of Azure
       run: az logout
   DeployProd:
+    name: Deploy to Prod
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     needs: [DeployDev]
@@ -131,7 +133,7 @@ jobs:
             sqlAdminLogin=${{ secrets.AZURE_SQL_LOGIN }}
             sqlAdminPassword=${{ secrets.AZURE_SQL_PASSWORD }}
             sqlDatabaseName=GigLocal
-            sqlDatabaseSku=Basic
+            sqlDatabaseSku=Standard
             authGoogleClientId=${{ secrets.AUTH_GOOGLE_CLIENT_ID }}
             authGoogleClientSecret=${{ secrets.AUTH_GOOGLE_CLIENT_SECRET }}
             authAdminEmail=${{ secrets.AUTH_ADMIN_EMAILS }}
