@@ -133,7 +133,7 @@ jobs:
             sqlAdminLogin=${{ secrets.AZURE_SQL_LOGIN }}
             sqlAdminPassword=${{ secrets.AZURE_SQL_PASSWORD }}
             sqlDatabaseName=GigLocal
-            sqlDatabaseSku=Standard
+            sqlDatabaseSku=Basic
             authGoogleClientId=${{ secrets.AUTH_GOOGLE_CLIENT_ID }}
             authGoogleClientSecret=${{ secrets.AUTH_GOOGLE_CLIENT_SECRET }}
             authAdminEmail=${{ secrets.AUTH_ADMIN_EMAILS }}
