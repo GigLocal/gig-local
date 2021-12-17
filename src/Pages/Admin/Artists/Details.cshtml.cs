@@ -19,8 +19,6 @@ public class DetailsModel : PageModel
 
         public string Description { get; set; }
 
-        public string Genre { get; set; }
-
         public string Website { get; set; }
 
         [Display(Name = "Image")]
@@ -51,7 +49,6 @@ public class DetailsModel : PageModel
             ID = artist.ID,
             Name = artist.Name,
             Description = artist.Description,
-            Genre = artist.Genre,
             Website = artist.Website,
             ImageUrl = artist.ImageUrl
         };

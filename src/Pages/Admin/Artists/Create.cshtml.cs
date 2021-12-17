@@ -17,9 +17,6 @@ public class CreateModel : PageModel
         [Required]
         public string Description { get; set; }
 
-        [Required]
-        public string Genre { get; set; }
-
         public string Website { get; set; }
 
         [Display(Name = "Image")]
@@ -48,8 +45,7 @@ public class CreateModel : PageModel
         {
             Name = Artist.Name,
             Description = Artist.Description,
-            Genre = Artist.Genre,
-            Website = Artist.Website,
+            Website = Artist.Website
         };
 
         _context.Artists.Add(newArtist);

@@ -24,9 +24,6 @@ public class EditModel : PageModel
         public string Description { get; set; }
 
         [Required]
-        public string Genre { get; set; }
-
-        [Required]
         public string Website { get; set; }
 
         [Display(Name = "Image")]
@@ -53,7 +50,6 @@ public class EditModel : PageModel
         {
             Name = artist.Name,
             Description = artist.Description,
-            Genre = artist.Genre,
             Website = artist.Website
         };
 
@@ -74,7 +70,6 @@ public class EditModel : PageModel
 
         artistToUpdate.Name = Artist.Name;
         artistToUpdate.Description = Artist.Description;
-        artistToUpdate.Genre = Artist.Genre;
         artistToUpdate.Website = Artist.Website;
 
         if (Artist.FormFile?.Length > 0)

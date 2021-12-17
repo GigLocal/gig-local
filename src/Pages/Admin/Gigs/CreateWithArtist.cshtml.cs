@@ -21,9 +21,6 @@ public class CreateWithArtistModel : PageModel
         [Display(Name = "Artist description")]
         public string ArtistDescription { get; set; }
 
-        [Display(Name = "Artist genre")]
-        public string ArtistGenre { get; set; }
-
         [Display(Name = "Artist website")]
         public string ArtistWebsite { get; set; }
 
@@ -80,7 +77,6 @@ public class CreateWithArtistModel : PageModel
             {
                 Name = Gig.ArtistName,
                 Description = Gig.ArtistDescription,
-                Genre = Gig.ArtistGenre,
                 Website = Gig.ArtistWebsite
             };
             _context.Artists.Add(newArtist);

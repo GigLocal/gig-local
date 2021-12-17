@@ -8,8 +8,6 @@ public class Artist
 
     public string Description { get; set; }
 
-    public string Genre { get; set; }
-
     public string Website { get; set; }
 
     public string ImageUrl { get; set; }

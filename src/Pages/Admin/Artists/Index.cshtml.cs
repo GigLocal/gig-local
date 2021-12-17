@@ -21,8 +21,6 @@ public class IndexModel : PageModel
 
         public string Description { get; set; }
 
-        public string Genre { get; set; }
-
         public string Website { get; set; }
     }
 
@@ -43,7 +41,6 @@ public class IndexModel : PageModel
             ID = a.ID,
             Name = a.Name,
             Description = a.Description,
-            Genre = a.Genre,
             Website = a.Website
         });
 

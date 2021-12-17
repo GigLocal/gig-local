@@ -25,8 +25,6 @@ public class DeleteModel : PageModel
 
         public string Description { get; set; }
 
-        public string Genre { get; set; }
-
         public string Website { get; set; }
 
         public string ImageUrl { get; set; }
@@ -58,7 +56,6 @@ public class DeleteModel : PageModel
             {
                 Name = artist.Name,
                 Description = artist.Description,
-                Genre = artist.Genre,
                 Website = artist.Website,
                 ImageUrl = artist.ImageUrl
             };
