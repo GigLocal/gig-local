@@ -25,12 +25,6 @@ public class DeleteModel : PageModel
         public string VenueName { get; set; }
 
         public DateTime Date { get; set; }
-
-        [Display(Name = "Ticket price")]
-        public Decimal TicketPrice { get; set; }
-
-        [Display(Name = "Ticket website")]
-        public string TicketWebsite { get; set; }
     }
 
     public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
@@ -61,9 +55,7 @@ public class DeleteModel : PageModel
             {
                 ArtistName = gig.Artist.Name,
                 VenueName = gig.Venue.Name,
-                Date = gig.Date,
-                TicketPrice = gig.TicketPrice,
-                TicketWebsite = gig.TicketWebsite
+                Date = gig.Date
             };
         }
 

@@ -22,12 +22,6 @@ public class DetailsModel : PageModel
         public string VenueName { get; set; }
 
         public DateTime Date { get; set; }
-
-        [Display(Name = "Ticket price")]
-        public Decimal TicketPrice { get; set; }
-
-        [Display(Name = "Ticket website")]
-        public string TicketWebsite { get; set; }
     }
 
     public async Task<IActionResult> OnGetAsync(int? id)
@@ -53,9 +47,7 @@ public class DetailsModel : PageModel
             ID = gig.ID,
             ArtistName = gig.Artist.Name,
             VenueName = gig.Venue.Name,
-            Date = gig.Date,
-            TicketPrice = gig.TicketPrice,
-            TicketWebsite = gig.TicketWebsite
+            Date = gig.Date
         };
 
         return Page();

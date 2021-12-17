@@ -24,13 +24,6 @@ public class CreateModel : PageModel
         [FutureDate(ErrorMessage = "The date must be in the future.")]
         [Display(Name = "Date and time")]
         public DateTime Date { get; set; }
-
-        [Display(Name = "Ticket price ($)")]
-        [Range(0, 20, ErrorMessage = "The ticket price must be between $0 and $20.")]
-        public Decimal TicketPrice { get; set; }
-
-        [Display(Name = "Ticket website")]
-        public string TicketWebsite { get; set; }
     }
 
     public CreateModel(GigContext context, ILogger<CreateModel> logger)
@@ -78,9 +71,7 @@ public class CreateModel : PageModel
             {
                 ArtistID = foundArtist.ID,
                 VenueID = foundVenue.ID,
-                Date = Gig.Date,
-                TicketPrice = Gig.TicketPrice,
-                TicketWebsite = Gig.TicketWebsite
+                Date = Gig.Date
             };
             _context.Gigs.Add(newGig);
             await _context.SaveChangesAsync();

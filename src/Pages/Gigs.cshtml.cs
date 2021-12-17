@@ -16,8 +16,6 @@ public class GigsModel : PageModel
     (
         string Date,
         string Time,
-        Decimal TicketPrice,
-        string TicketWebsite,
         string ArtistName,
         string ArtistDescription,
         string ArtistWebsite,
@@ -45,8 +43,6 @@ public class GigsModel : PageModel
         Gigs = gigsQuery.Select(g => new GigRecord(
             g.Date.ToDayOfWeekDateMonthName(),
             g.Date.ToTimeHourMinuteAmPm(),
-            g.TicketPrice,
-            g.TicketWebsite,
             g.Artist.Name,
             g.Artist.Description.Truncate(200),
             g.Artist.Website,

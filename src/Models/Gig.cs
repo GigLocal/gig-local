@@ -10,10 +10,6 @@ public class Gig
 
     public DateTime Date { get; set; }
 
-    public Decimal TicketPrice { get; set; }
-
-    public string TicketWebsite { get; set; }
-
     public Artist Artist { get; set; }
 
     public Venue Venue { get; set; }

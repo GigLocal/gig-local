@@ -24,12 +24,6 @@ public class EditModel : PageModel
         [FutureDate(ErrorMessage = "The date must be in the future.")]
         [Display(Name = "Date and time")]
         public DateTime Date { get; set; }
-
-        [Display(Name = "Ticket price")]
-        public Decimal TicketPrice { get; set; }
-
-        [Display(Name = "Ticket website")]
-        public string TicketWebsite { get; set; }
     }
 
     public EditModel(GigContext context, ILogger<EditModel> logger)
@@ -57,9 +51,7 @@ public class EditModel : PageModel
         {
             ArtistID = gig.ArtistID.ToString(),
             VenueID = gig.VenueID.ToString(),
-            Date = gig.Date,
-            TicketPrice = gig.TicketPrice,
-            TicketWebsite = gig.TicketWebsite
+            Date = gig.Date
         };
 
         await PopulateSelectListsAsync();
@@ -106,8 +98,6 @@ public class EditModel : PageModel
             gigToUpdate.ArtistID = foundArtist.ID;
             gigToUpdate.VenueID = foundVenue.ID;
             gigToUpdate.Date = Gig.Date;
-            gigToUpdate.TicketPrice = Gig.TicketPrice;
-            gigToUpdate.TicketWebsite = Gig.TicketWebsite;
 
             await _context.SaveChangesAsync();
             return RedirectToPage("./Index");

@@ -38,12 +38,6 @@
                 @Html.DisplayNameFor(model => model.Gigs[0].Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Gigs[0].TicketPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gigs[0].TicketWebsite)
-            </th>
-            <th>
                 Action
             </th>
         </tr>
@@ -60,12 +54,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketPrice)
-                </td>
-                <td>
-                    <a href="@item.TicketWebsite" target="_blank" rel="noopener noreferrer">@item.TicketWebsite</a>
                 </td>
                 <td>
                     <div class="btn-group-sm" role="group" aria-label="Action buttons">

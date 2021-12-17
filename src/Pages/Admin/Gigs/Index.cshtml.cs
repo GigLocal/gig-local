@@ -25,12 +25,6 @@ public class IndexModel : PageModel
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
         public DateTime Date { get; set; }
-
-        [Display(Name = "Ticket price")]
-        public Decimal TicketPrice { get; set; }
-
-        [Display(Name = "Ticket website")]
-        public string TicketWebsite { get; set; }
     }
 
     public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
@@ -53,9 +47,7 @@ public class IndexModel : PageModel
                 ID = a.ID,
                 ArtistName = a.Artist.Name,
                 VenueName = a.Venue.Name,
-                Date = a.Date,
-                TicketPrice = a.TicketPrice,
-                TicketWebsite = a.TicketWebsite
+                Date = a.Date
             });
 
         if (!string.IsNullOrEmpty(searchString))
