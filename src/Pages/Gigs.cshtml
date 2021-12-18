@@ -12,8 +12,14 @@
                 <img class="img-fluid" src="@gig.ArtistImage" alt="Image of artist @gig.ArtistName.">
                 <div class="card-body">
                     <h4 class="card-title">
-                        <a href="@gig.VenueWebsite" class="text-reset">@gig.VenueName</a> |
-                        <a href="@gig.ArtistWebsite" class="text-reset">@gig.ArtistName</a>
+                        @if (gig.ArtistWebsite != null)
+                        {
+                            <a href="@gig.ArtistWebsite" class="text-reset">@gig.ArtistName</a>
+                        }
+                        else {
+                            @gig.ArtistName
+                        }
+                        | <a href="@gig.VenueWebsite" class="text-reset">@gig.VenueName</a>
                     </h4>
                     <p class="card-text font-weight-bold">@gig.Date | @gig.Time</p>
                     <p>@gig.ArtistDescription</p>

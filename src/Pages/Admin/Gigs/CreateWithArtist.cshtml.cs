@@ -13,12 +13,13 @@ public class CreateWithArtistModel : PageModel
     public class GigCreateWithArtistModel
     {
         [Required]
-        [StringLength(50)]
+        [MaxLength(50)]
         [Display(Name = "Artist name")]
         public string ArtistName { get; set; }
 
         [Required]
         [Display(Name = "Artist description")]
+        [MaxLength(200)]
         public string ArtistDescription { get; set; }
 
         [Display(Name = "Artist website")]
