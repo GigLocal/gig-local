@@ -34,7 +34,7 @@ public class StorageService : IStorageService
             i => i.Resize(new ResizeOptions {
                 Mode = ResizeMode.Crop,
                 Position = AnchorPositionMode.Center,
-                Size = new Size(1280, 720)
+                Size = new Size(640, 360)
             })
         );
 
