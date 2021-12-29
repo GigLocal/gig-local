@@ -37,7 +37,6 @@ public class GigsModel : PageModel
                         && g.Date <= endDate
                         && EF.Functions.Like(g.Venue.Address, $"%, Northcote VIC%"))
             .OrderBy(g => g.Date)
-            .Take(50)
             .ToArray();
 
         Gigs = gigsQuery.Select(g => new GigRecord(
