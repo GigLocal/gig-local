@@ -1,8 +1,8 @@
-# Gig Local - Backend
+# Gig Local
 
 [![CI/CD](https://github.com/GigLocal/gig-local-backend/actions/workflows/cicd.yml/badge.svg)](https://github.com/GigLocal/gig-local-backend/actions/workflows/cicd.yml)
 
-This is the repository for the Gig Local Backend; an ASP.NET Core web app.
+Gig Local website, an ASP.NET Core web app.
 
 ## Getting started
 
