@@ -8,23 +8,7 @@ public class EditModel : PageModel
     public IEnumerable<SelectListItem> Venues { get; set; }
 
     [BindProperty]
-    public GigEditModel Gig { get; set; }
-
-    public class GigEditModel
-    {
-        [Required]
-        [Display(Name = "Artist")]
-        public string ArtistID { get; set; }
-
-        [Required]
-        [Display(Name = "Venue")]
-        public string VenueID { get; set; }
-
-        [Required]
-        [FutureDate(ErrorMessage = "The date must be in the future.")]
-        [Display(Name = "Date and time")]
-        public DateTime Date { get; set; }
-    }
+    public GigCreateModel Gig { get; set; }
 
     public EditModel(GigContext context, ILogger<EditModel> logger)
     {
@@ -47,7 +31,7 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        Gig = new GigEditModel
+        Gig = new GigCreateModel
         {
             ArtistID = gig.ArtistID.ToString(),
             VenueID = gig.VenueID.ToString(),

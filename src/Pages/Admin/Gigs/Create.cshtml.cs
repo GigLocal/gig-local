@@ -10,22 +10,6 @@ public class CreateModel : PageModel
     [BindProperty]
     public GigCreateModel Gig { get; set; }
 
-    public class GigCreateModel
-    {
-        [Required]
-        [Display(Name = "Artist")]
-        public string ArtistID { get; set; }
-
-        [Required]
-        [Display(Name = "Venue")]
-        public string VenueID { get; set; }
-
-        [Required]
-        [FutureDate(ErrorMessage = "The date must be in the future.")]
-        [Display(Name = "Date and time")]
-        public DateTime Date { get; set; }
-    }
-
     public CreateModel(GigContext context, ILogger<CreateModel> logger)
     {
         _context = context;
@@ -98,4 +82,20 @@ public class CreateModel : PageModel
                                         .ToListAsync())
                                         .Select(v => new SelectListItem(v.Name, v.ID.ToString()));
     }
+}
+
+public class GigCreateModel
+{
+    [Required]
+    [Display(Name = "Artist")]
+    public string ArtistID { get; set; }
+
+    [Required]
+    [Display(Name = "Venue")]
+    public string VenueID { get; set; }
+
+    [Required]
+    [FutureDate(ErrorMessage = "The date must be in the future.")]
+    [Display(Name = "Date and time")]
+    public DateTime Date { get; set; }
 }

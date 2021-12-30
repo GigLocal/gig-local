@@ -13,17 +13,6 @@ public class IndexModel : PageModel
 
     public PaginatedList<ArtistIndexModel> Artists { get; set; }
 
-    public class ArtistIndexModel
-    {
-        public int ID { get; set; }
-
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public string Website { get; set; }
-    }
-
     public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
     {
         if (searchString != null)
@@ -51,4 +40,15 @@ public class IndexModel : PageModel
 
         Artists = await PaginatedList<ArtistIndexModel>.CreateAsync(ArtistsIQ.AsNoTracking(), pageIndex ?? 1, 10);
     }
+}
+
+public class ArtistIndexModel
+{
+    public int ID { get; set; }
+
+    public string Name { get; set; }
+
+    public string Description { get; set; }
+
+    public string Website { get; set; }
 }

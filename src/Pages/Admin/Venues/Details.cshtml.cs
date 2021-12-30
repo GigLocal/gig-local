@@ -9,20 +9,7 @@ public class DetailsModel : PageModel
         _context = context;
     }
 
-    public Venue Venue { get; set; }
-
-    public class VenueDetailsModel
-    {
-        public int ID { get; set; }
-
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public string Address { get; set; }
-
-        public string Website { get; set; }
-    }
+    public VenueDetailsModel Venue { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
@@ -40,7 +27,7 @@ public class DetailsModel : PageModel
             return NotFound();
         }
 
-        Venue = new Venue
+        Venue = new VenueDetailsModel
         {
             ID = venue.ID,
             Name = venue.Name,
@@ -51,4 +38,9 @@ public class DetailsModel : PageModel
 
         return Page();
     }
+}
+
+public class VenueDetailsModel : VenueReadModel
+{
+    public int ID { get; set; }
 }

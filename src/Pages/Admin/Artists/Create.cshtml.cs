@@ -8,22 +8,6 @@ public class CreateModel : PageModel
     [BindProperty]
     public ArtistCreateModel Artist { get; set; }
 
-    public class ArtistCreateModel
-    {
-        [Required]
-        [MaxLength(50)]
-        public string Name { get; set; }
-
-        [Required]
-        [MaxLength(200)]
-        public string Description { get; set; }
-
-        public string Website { get; set; }
-
-        [Display(Name = "Image")]
-        public IFormFile FormFile { get; set; }
-    }
-
     public CreateModel(GigContext context, IStorageService storageService)
     {
         _context = context;
@@ -39,6 +23,12 @@ public class CreateModel : PageModel
     {
         if (!ModelState.IsValid)
         {
+            return Page();
+        }
+
+        if (_context.Artists.Any(a => a.Name.ToLower() == Artist.Name.ToLower()))
+        {
+            ModelState.AddModelError(string.Empty, $"Artist with name '{Artist.Name}' already exists.");
             return Page();
         }
 
@@ -64,4 +54,20 @@ public class CreateModel : PageModel
 
         return RedirectToPage("./Index");
     }
+}
+
+public class ArtistCreateModel
+{
+    [Required]
+    [MaxLength(50)]
+    public string Name { get; set; }
+
+    [Required]
+    [MaxLength(200)]
+    public string Description { get; set; }
+
+    public string Website { get; set; }
+
+    [Display(Name = "Image")]
+    public IFormFile FormFile { get; set; }
 }

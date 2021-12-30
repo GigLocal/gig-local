@@ -13,19 +13,6 @@ public class IndexModel : PageModel
 
     public PaginatedList<VenueIndexModel> Venues { get; set; }
 
-    public class VenueIndexModel
-    {
-        public int ID { get; set; }
-
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public string Address { get; set; }
-
-        public string Website { get; set; }
-    }
-
     public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
     {
         if (searchString != null)
@@ -54,4 +41,17 @@ public class IndexModel : PageModel
 
         Venues = await PaginatedList<VenueIndexModel>.CreateAsync(VenuesIQ.AsNoTracking(), pageIndex ?? 1, 10);
     }
+}
+
+public class VenueIndexModel
+{
+    public int ID { get; set; }
+
+    public string Name { get; set; }
+
+    public string Description { get; set; }
+
+    public string Address { get; set; }
+
+    public string Website { get; set; }
 }

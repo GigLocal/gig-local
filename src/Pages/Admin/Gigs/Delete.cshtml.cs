@@ -14,18 +14,7 @@ public class DeleteModel : PageModel
 
     public string ErrorMessage { get; set; }
 
-    public GigDeleteModel Gig { get; set; }
-
-    public class GigDeleteModel
-    {
-        [Display(Name = "Artist")]
-        public string ArtistName { get; set; }
-
-        [Display(Name = "Venue")]
-        public string VenueName { get; set; }
-
-        public DateTime Date { get; set; }
-    }
+    public GigReadModel Gig { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
     {
@@ -51,7 +40,7 @@ public class DeleteModel : PageModel
         }
         else
         {
-            Gig = new GigDeleteModel
+            Gig = new GigReadModel
             {
                 ArtistName = gig.Artist.Name,
                 VenueName = gig.Venue.Name,
@@ -92,4 +81,15 @@ public class DeleteModel : PageModel
             return RedirectToAction("./Delete", new { id, saveChangesError = true });
         }
     }
+}
+
+public class GigReadModel
+{
+    [Display(Name = "Artist")]
+    public string ArtistName { get; set; }
+
+    [Display(Name = "Venue")]
+    public string VenueName { get; set; }
+
+    public DateTime Date { get; set; }
 }

@@ -7,21 +7,6 @@ public class CreateModel : PageModel
     [BindProperty]
     public VenueCreateModel Venue { get; set; }
 
-    public class VenueCreateModel
-    {
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
-        public string Description { get; set; }
-
-        [Required]
-        public string Address { get; set; }
-
-        [Required]
-        public string Website { get; set; }
-    }
-
     public CreateModel(GigContext context)
     {
         _context = context;
@@ -49,4 +34,19 @@ public class CreateModel : PageModel
         await _context.SaveChangesAsync();
         return RedirectToPage("./Index");
     }
+}
+
+public class VenueCreateModel
+{
+    [Required]
+    public string Name { get; set; }
+
+    [Required]
+    public string Description { get; set; }
+
+    [Required]
+    public string Address { get; set; }
+
+    [Required]
+    public string Website { get; set; }
 }

@@ -11,20 +11,6 @@ public class DetailsModel : PageModel
 
     public ArtistDetialsModel Artist { get; set; }
 
-    public class ArtistDetialsModel
-    {
-        public int ID { get; set; }
-
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public string Website { get; set; }
-
-        [Display(Name = "Image")]
-        public string ImageUrl { get; set; }
-    }
-
     public async Task<IActionResult> OnGetAsync(int? id)
     {
         if (!ModelState.IsValid)
@@ -55,4 +41,9 @@ public class DetailsModel : PageModel
 
         return Page();
     }
+}
+
+public class ArtistDetialsModel : ArtistReadModel
+{
+    public int ID { get; set; }
 }

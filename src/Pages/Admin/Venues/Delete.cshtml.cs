@@ -14,18 +14,7 @@ public class DeleteModel : PageModel
 
     public string ErrorMessage { get; set; }
 
-    public VenueDeleteModel Venue { get; set; }
-
-    public class VenueDeleteModel
-    {
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public string Address { get; set; }
-
-        public string Website { get; set; }
-    }
+    public VenueReadModel Venue { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
     {
@@ -49,7 +38,7 @@ public class DeleteModel : PageModel
         }
         else
         {
-            Venue = new VenueDeleteModel
+            Venue = new VenueReadModel
             {
                 Name = venue.Name,
                 Description = venue.Description,
@@ -91,4 +80,15 @@ public class DeleteModel : PageModel
             return RedirectToAction("./Delete", new { id, saveChangesError = true });
         }
     }
+}
+
+public class VenueReadModel
+{
+    public string Name { get; set; }
+
+    public string Description { get; set; }
+
+    public string Address { get; set; }
+
+    public string Website { get; set; }
 }

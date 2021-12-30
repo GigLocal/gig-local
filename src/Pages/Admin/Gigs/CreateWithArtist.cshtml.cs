@@ -10,34 +10,6 @@ public class CreateWithArtistModel : PageModel
     [BindProperty]
     public GigCreateWithArtistModel Gig { get; set; }
 
-    public class GigCreateWithArtistModel
-    {
-        [Required]
-        [MaxLength(50)]
-        [Display(Name = "Artist name")]
-        public string ArtistName { get; set; }
-
-        [Required]
-        [Display(Name = "Artist description")]
-        [MaxLength(200)]
-        public string ArtistDescription { get; set; }
-
-        [Display(Name = "Artist website")]
-        public string ArtistWebsite { get; set; }
-
-        [Display(Name = "Artist image")]
-        public IFormFile FormFile { get; set; }
-
-        [Required]
-        [Display(Name = "Venue")]
-        public string VenueID { get; set; }
-
-        [Required]
-        [FutureDate(ErrorMessage = "The date must be in the future.")]
-        [Display(Name = "Date and time")]
-        public DateTime Date { get; set; }
-    }
-
     public CreateWithArtistModel(
         GigContext context,
         IStorageService storageService,
@@ -118,4 +90,32 @@ public class CreateWithArtistModel : PageModel
                                         .ToListAsync())
                                         .Select(v => new SelectListItem(v.Name, v.ID.ToString()));
     }
+}
+
+public class GigCreateWithArtistModel
+{
+    [Required]
+    [MaxLength(50)]
+    [Display(Name = "Artist name")]
+    public string ArtistName { get; set; }
+
+    [Required]
+    [Display(Name = "Artist description")]
+    [MaxLength(200)]
+    public string ArtistDescription { get; set; }
+
+    [Display(Name = "Artist website")]
+    public string ArtistWebsite { get; set; }
+
+    [Display(Name = "Artist image")]
+    public IFormFile FormFile { get; set; }
+
+    [Required]
+    [Display(Name = "Venue")]
+    public string VenueID { get; set; }
+
+    [Required]
+    [FutureDate(ErrorMessage = "The date must be in the future.")]
+    [Display(Name = "Date and time")]
+    public DateTime Date { get; set; }
 }

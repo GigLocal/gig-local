@@ -11,19 +11,6 @@ public class DetailsModel : PageModel
 
     public GigDetialsModel Gig { get; set; }
 
-    public class GigDetialsModel
-    {
-        public int ID { get; set; }
-
-        [Display(Name = "Artist")]
-        public string ArtistName { get; set; }
-
-        [Display(Name = "Venue")]
-        public string VenueName { get; set; }
-
-        public DateTime Date { get; set; }
-    }
-
     public async Task<IActionResult> OnGetAsync(int? id)
     {
         if (id == null)
@@ -52,4 +39,9 @@ public class DetailsModel : PageModel
 
         return Page();
     }
+}
+
+public class GigDetialsModel : GigReadModel
+{
+    public int ID { get; set; }
 }

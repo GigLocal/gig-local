@@ -10,22 +10,7 @@ public class EditModel : PageModel
     }
 
     [BindProperty]
-    public VenueEditModel Venue { get; set; }
-
-    public class VenueEditModel
-    {
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
-        public string Description { get; set; }
-
-        [Required]
-        public string Address { get; set; }
-
-        [Required]
-        public string Website { get; set; }
-    }
+    public VenueCreateModel Venue { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
@@ -43,7 +28,7 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        Venue = new VenueEditModel
+        Venue = new VenueCreateModel
         {
             Name = venue.Name,
             Description = venue.Description,

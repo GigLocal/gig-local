@@ -12,23 +12,7 @@ public class EditModel : PageModel
     }
 
     [BindProperty]
-    public ArtistEditModel Artist { get; set; }
-
-    public class ArtistEditModel
-    {
-        [Required]
-        [MaxLength(50)]
-        public string Name { get; set; }
-
-        [Required]
-        [MaxLength(200)]
-        public string Description { get; set; }
-
-        public string Website { get; set; }
-
-        [Display(Name = "Image")]
-        public IFormFile FormFile { get; set; }
-    }
+    public ArtistCreateModel Artist { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
@@ -46,7 +30,7 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        Artist = new ArtistEditModel
+        Artist = new ArtistCreateModel
         {
             Name = artist.Name,
             Description = artist.Description,

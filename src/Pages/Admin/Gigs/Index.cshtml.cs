@@ -13,20 +13,6 @@ public class IndexModel : PageModel
 
     public PaginatedList<GigIndexModel> Gigs { get; set; }
 
-    public class GigIndexModel
-    {
-        public int ID { get; set; }
-
-        [Display(Name = "Artist")]
-        public string ArtistName { get; set; }
-
-        [Display(Name = "Venue")]
-        public string VenueName { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
-        public DateTime Date { get; set; }
-    }
-
     public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
     {
         if (searchString != null)
@@ -58,4 +44,18 @@ public class IndexModel : PageModel
 
         Gigs = await PaginatedList<GigIndexModel>.CreateAsync(GigsIQ.AsNoTracking(), pageIndex ?? 1, 10);
     }
+}
+
+public class GigIndexModel
+{
+    public int ID { get; set; }
+
+    [Display(Name = "Artist")]
+    public string ArtistName { get; set; }
+
+    [Display(Name = "Venue")]
+    public string VenueName { get; set; }
+
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
+    public DateTime Date { get; set; }
 }

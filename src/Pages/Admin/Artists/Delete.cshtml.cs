@@ -17,18 +17,7 @@ public class DeleteModel : PageModel
 
     public string ErrorMessage { get; set; }
 
-    public ArtistDeleteModel Artist { get; set; }
-
-    public class ArtistDeleteModel
-    {
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public string Website { get; set; }
-
-        public string ImageUrl { get; set; }
-    }
+    public ArtistReadModel Artist { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
     {
@@ -52,7 +41,7 @@ public class DeleteModel : PageModel
         }
         else
         {
-            Artist = new ArtistDeleteModel
+            Artist = new ArtistReadModel
             {
                 Name = artist.Name,
                 Description = artist.Description,
@@ -98,4 +87,17 @@ public class DeleteModel : PageModel
             return RedirectToAction("./Delete", new { id, saveChangesError = true });
         }
     }
+}
+
+public class ArtistReadModel
+{
+    public string Name { get; set; }
+
+    public string Description { get; set; }
+
+    public string Website { get; set; }
+
+
+    [Display(Name = "Image")]
+    public string ImageUrl { get; set; }
 }
