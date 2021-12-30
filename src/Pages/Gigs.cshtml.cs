@@ -35,7 +35,7 @@ public class GigsModel : PageModel
             .Include(g => g.Venue)
             .Where(g => g.Date >= startDate
                         && g.Date <= endDate
-                        && EF.Functions.Like(g.Venue.Address, $"%, Northcote VIC%"))
+                        && EF.Functions.Like(g.Venue.Address, $"%Northcote VIC%"))
             .OrderBy(g => g.Date)
             .ToArray();
 
