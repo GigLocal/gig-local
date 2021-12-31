@@ -50,7 +50,7 @@ if (environment.IsDevelopment())
 builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Services.Configure<StorageOptions>(configuration.GetSection("Storage"));
-builder.Services.AddSingleton<IStorageService, StorageService>();
+builder.Services.AddScoped<IArtistService, ArtistService>();
 
 var app = builder.Build();
 

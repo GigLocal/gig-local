@@ -3,21 +3,20 @@
 public class CreateWithArtistModel : PageModel
 {
     private readonly GigContext _context;
-    private readonly IStorageService _storageService;
-    private readonly ILogger<CreateModel> _logger;
-    public IEnumerable<SelectListItem> Venues { get; set; }
+    private readonly IArtistService _artistService;
 
     [BindProperty]
-    public GigCreateWithArtistModel Gig { get; set; }
+    public GigVenueModel Gig { get; set; }
+    [BindProperty]
+    public ArtistCreateModel Artist { get; set; }
+    public IEnumerable<SelectListItem> Venues { get; set; }
 
     public CreateWithArtistModel(
         GigContext context,
-        IStorageService storageService,
-        ILogger<CreateModel> logger)
+        IArtistService storageService)
     {
         _context = context;
-        _storageService = storageService;
-        _logger = logger;
+        _artistService = storageService;
     }
 
     public async Task<IActionResult> OnGetAsync()
@@ -28,9 +27,10 @@ public class CreateWithArtistModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        await PopulateSelectListsAsync();
+
         if (!ModelState.IsValid)
         {
-            await PopulateSelectListsAsync();
             return Page();
         }
 
@@ -39,48 +39,29 @@ public class CreateWithArtistModel : PageModel
                                         .FirstOrDefaultAsync(v => v.ID == int.Parse(Gig.VenueID));
         if (foundVenue == null)
         {
-            _logger.LogWarning("Venue {Venue} not found", Gig.VenueID);
-            await PopulateSelectListsAsync();
-            return Page();
+            return NotFound($"Venue with ID '{Gig.VenueID}' could not be found.");
         }
 
         try
         {
-            var newArtist = new Artist
-            {
-                Name = Gig.ArtistName,
-                Description = Gig.ArtistDescription,
-                Website = Gig.ArtistWebsite
-            };
-            _context.Artists.Add(newArtist);
-            await _context.SaveChangesAsync();
-
-            if (Gig.FormFile?.Length > 0)
-            {
-                using var formFileStream = Gig.FormFile.OpenReadStream();
-
-                var imageUrl = await _storageService.UploadArtistImageAsync(newArtist.ID, formFileStream);
-
-                newArtist.ImageUrl = imageUrl;
-                await _context.SaveChangesAsync();
-            }
+            Artist newArtist = await _artistService.CreateAsync(Artist);
             var newGig = new Gig
             {
                 ArtistID = newArtist.ID,
                 VenueID = foundVenue.ID,
                 Date = Gig.Date
             };
+
             _context.Gigs.Add(newGig);
             await _context.SaveChangesAsync();
-            return RedirectToPage("./Index");
         }
-        catch (DbUpdateException ex)
+        catch (InvalidOperationException ex)
         {
-            _logger.LogError(ex.Message);
+            ModelState.AddModelError(string.Empty, ex.Message);
+            return Page();
         }
 
-        await PopulateSelectListsAsync();
-        return Page();
+        return RedirectToPage("./Index");
     }
 
     public async Task PopulateSelectListsAsync()
@@ -92,24 +73,8 @@ public class CreateWithArtistModel : PageModel
     }
 }
 
-public class GigCreateWithArtistModel
+public class GigVenueModel
 {
-    [Required]
-    [MaxLength(50)]
-    [Display(Name = "Artist name")]
-    public string ArtistName { get; set; }
-
-    [Required]
-    [Display(Name = "Artist description")]
-    [MaxLength(200)]
-    public string ArtistDescription { get; set; }
-
-    [Display(Name = "Artist website")]
-    public string ArtistWebsite { get; set; }
-
-    [Display(Name = "Artist image")]
-    public IFormFile FormFile { get; set; }
-
     [Required]
     [Display(Name = "Venue")]
     public string VenueID { get; set; }

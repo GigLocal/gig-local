@@ -3,12 +3,12 @@
 public class EditModel : PageModel
 {
     private readonly GigContext _context;
-    private readonly IStorageService _storageService;
+    private readonly IArtistService _artistService;
 
-    public EditModel(GigContext context, IStorageService storageService)
+    public EditModel(GigContext context, IArtistService storageService)
     {
         _context = context;
-        _storageService = storageService;
+        _artistService = storageService;
     }
 
     [BindProperty]
@@ -45,26 +45,16 @@ public class EditModel : PageModel
         if (!ModelState.IsValid)
             return Page();
 
-        var artistToUpdate = await _context.Artists.FindAsync(id);
-
-        if (artistToUpdate == null)
+        try
         {
-            return NotFound();
+            await _artistService.UpdateAsync(id, Artist);
+        }
+        catch (InvalidOperationException ex)
+        {
+            ModelState.AddModelError(string.Empty, ex.Message);
+            return Page();
         }
 
-        artistToUpdate.Name = Artist.Name;
-        artistToUpdate.Description = Artist.Description;
-        artistToUpdate.Website = Artist.Website;
-
-        if (Artist.FormFile?.Length > 0)
-        {
-            using var formFileStream = Artist.FormFile.OpenReadStream();
-            var imageUrl = await _storageService.UploadArtistImageAsync(artistToUpdate.ID, formFileStream);
-
-            artistToUpdate.ImageUrl = imageUrl;
-        }
-
-        await _context.SaveChangesAsync();
         return RedirectToPage("./Index");
     }
 }

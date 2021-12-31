@@ -4,15 +4,15 @@ public class DeleteModel : PageModel
 {
     private readonly GigContext _context;
     private readonly ILogger<DeleteModel> _logger;
-    private readonly IStorageService _storageService;
+    private readonly IArtistService _artistService;
 
     public DeleteModel(GigContext context,
                         ILogger<DeleteModel> logger,
-                        IStorageService storageService)
+                        IArtistService artistService)
     {
         _context = context;
         _logger = logger;
-        _storageService = storageService;
+        _artistService = artistService;
     }
 
     public string ErrorMessage { get; set; }
@@ -74,7 +74,7 @@ public class DeleteModel : PageModel
         {
             if (artist.ImageUrl != null)
             {
-                await _storageService.DeleteArtistImageAsync(artist.ID);
+                await _artistService.DeleteImageAsync(artist.ID);
             }
             _context.Artists.Remove(artist);
             await _context.SaveChangesAsync();
@@ -87,17 +87,4 @@ public class DeleteModel : PageModel
             return RedirectToAction("./Delete", new { id, saveChangesError = true });
         }
     }
-}
-
-public class ArtistReadModel
-{
-    public string Name { get; set; }
-
-    public string Description { get; set; }
-
-    public string Website { get; set; }
-
-
-    [Display(Name = "Image")]
-    public string ImageUrl { get; set; }
 }

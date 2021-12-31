@@ -42,8 +42,3 @@ public class DetailsModel : PageModel
         return Page();
     }
 }
-
-public class ArtistDetialsModel : ArtistReadModel
-{
-    public int ID { get; set; }
-}
