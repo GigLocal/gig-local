@@ -9,6 +9,7 @@ public interface IImageService
 public class ImageService : IImageService
 {
     private readonly StorageOptions _options;
+    private const string ContainerName = "public";
 
     public ImageService(IOptions<StorageOptions> optionsAccessor)
     {
@@ -18,7 +19,7 @@ public class ImageService : IImageService
     private BlobClient GetBlobClient()
     {
         var blobName = $"images/{Guid.NewGuid()}.jpg";
-        return new BlobClient(_options.ConnectionString, "public", blobName);
+        return new BlobClient(_options.ConnectionString, ContainerName, blobName);
     }
 
     public async Task<string> UploadImageAsync(Stream stream)
@@ -42,24 +43,8 @@ public class ImageService : IImageService
 
     public Task DeleteImageAsync(string imageUrl)
     {
-        var blobClient = new BlobClient(new Uri(imageUrl));
+        var blobName = imageUrl.Split("public/")[1];
+        var blobClient = new BlobClient(_options.ConnectionString, ContainerName, blobName);
         return blobClient.DeleteAsync();
     }
-    // public async Task<Artist> CreateAsync(IFormFile formFile)
-    // {
-    //     _context.Artists.Add(newArtist);
-    //     await _context.SaveChangesAsync();
-
-    //     if (formFile?.Length > 0)
-    //     {
-    //         using var formFileStream = formFile.OpenReadStream();
-
-    //         var imageUrl = await UploadImageAsync(formFileStream);
-
-    //         newArtist.ImageUrl = imageUrl;
-    //         await _context.SaveChangesAsync();
-    //     }
-
-    //     return newArtist;
-    // }
 }

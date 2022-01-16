@@ -70,7 +70,10 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        await _imageService.DeleteImageAsync(gigToUpdate.ImageUrl);
+        if (gigToUpdate.ImageUrl != null)
+        {
+            await _imageService.DeleteImageAsync(gigToUpdate.ImageUrl);
+        }
 
         using var imageStream = Gig.FormFile.OpenReadStream();
         var imageUrl = await _imageService.UploadImageAsync(imageStream);

@@ -38,16 +38,17 @@ public class CreateWithArtistModel : PageModel
                                         .FirstOrDefaultAsync(v => v.ID == int.Parse(Gig.VenueID));
         if (foundVenue == null)
         {
-            return NotFound($"Venue with ID '{Gig.VenueID}' could not be found.");
+            return NotFound();
         }
 
         using var imageStream = Gig.FormFile.OpenReadStream();
         var imageUrl = await _imageService.UploadImageAsync(imageStream);
 
+        // To preserve existing data model, can be removed in future
+        // once all old data is no longer needed.
         var placeholderArtist = new Artist();
-
-        // To preserve existing data model, can be removed in future.
         _context.Artists.Add(placeholderArtist);
+        await _context.SaveChangesAsync();
 
         var newGig = new Gig
         {

@@ -3,20 +3,19 @@
 public class DeleteModel : PageModel
 {
     private readonly GigContext _context;
-    private readonly ILogger<DeleteModel> _logger;
+    private IImageService _imageService;
 
-    public DeleteModel(GigContext context,
-                        ILogger<DeleteModel> logger)
+    public DeleteModel(GigContext context, IImageService imageService)
     {
         _context = context;
-        _logger = logger;
+        _imageService = imageService;
     }
 
     public string ErrorMessage { get; set; }
 
     public GigReadModel Gig { get; set; }
 
-    public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
+    public async Task<IActionResult> OnGetAsync(int? id)
     {
         if (id == null)
         {
@@ -34,22 +33,15 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        if (saveChangesError.GetValueOrDefault())
+        Gig = new GigReadModel
         {
-            ErrorMessage = String.Format("Delete {ID} failed. Try again", id);
-        }
-        else
-        {
-            Gig = new GigReadModel
-            {
-                ArtistName = gig.ArtistName ?? gig.Artist.Name,
-                VenueName = gig.Venue.Name,
-                Date = gig.Date,
-                Description = gig.Description ?? gig.Artist.Description,
-                EventUrl = gig.EventUrl ?? gig.Venue.Website,
-                ImageUrl = gig.ImageUrl ?? gig.Artist.ImageUrl
-            };
-        }
+            ArtistName = gig.ArtistName ?? gig.Artist.Name,
+            VenueName = gig.Venue.Name,
+            Date = gig.Date,
+            Description = gig.Description ?? gig.Artist.Description,
+            EventUrl = gig.EventUrl ?? gig.Venue.Website,
+            ImageUrl = gig.ImageUrl ?? gig.Artist.ImageUrl
+        };
 
         return Page();
     }
@@ -71,18 +63,13 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        try
+        _context.Gigs.Remove(gig);
+        await _context.SaveChangesAsync();
+        if (gig.ImageUrl != null)
         {
-            _context.Gigs.Remove(gig);
-            await _context.SaveChangesAsync();
-            return RedirectToPage("./Index");
+            await _imageService.DeleteImageAsync(gig.ImageUrl);
         }
-        catch (DbUpdateException ex)
-        {
-            _logger.LogError(ex, ErrorMessage);
-
-            return RedirectToAction("./Delete", new { id, saveChangesError = true });
-        }
+        return RedirectToPage("./Index");
     }
 }
 
