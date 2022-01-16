@@ -1,6 +1,6 @@
 ﻿namespace GigLocal.Pages.Admin.Gigs;
 
-public class CreateWithArtistModel : PageModel
+public class CreateModel : PageModel
 {
     private readonly GigContext _context;
     private readonly IImageService _imageService;
@@ -10,7 +10,7 @@ public class CreateWithArtistModel : PageModel
 
     public IEnumerable<SelectListItem> Venues { get; set; }
 
-    public CreateWithArtistModel(
+    public CreateModel(
         GigContext context,
         IImageService storageService)
     {
