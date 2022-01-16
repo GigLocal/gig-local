@@ -32,9 +32,12 @@ public class DetailsModel : PageModel
         Gig = new GigDetialsModel
         {
             ID = gig.ID,
-            ArtistName = gig.Artist.Name,
+            ArtistName = gig.ArtistName ?? gig.Artist.Name,
             VenueName = gig.Venue.Name,
-            Date = gig.Date
+            Date = gig.Date,
+            Description = gig.Description ?? gig.Artist.Description,
+            EventUrl = gig.EventUrl ?? gig.Venue.Website,
+            ImageUrl = gig.ImageUrl ?? gig.Artist.ImageUrl
         };
 
         return Page();

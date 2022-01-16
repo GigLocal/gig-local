@@ -3,17 +3,16 @@
 public class EditModel : PageModel
 {
     private readonly GigContext _context;
-    private ILogger<EditModel> _logger;
-    public IEnumerable<SelectListItem> Artists { get; set; }
+    private IImageService _imageService;
     public IEnumerable<SelectListItem> Venues { get; set; }
 
     [BindProperty]
     public GigCreateModel Gig { get; set; }
 
-    public EditModel(GigContext context, ILogger<EditModel> logger)
+    public EditModel(GigContext context, IImageService imageService)
     {
         _context = context;
-        _logger = logger;
+        _imageService = imageService;
     }
 
     public async Task<IActionResult> OnGetAsync(int? id)
@@ -24,6 +23,8 @@ public class EditModel : PageModel
         }
 
         var gig = await _context.Gigs.AsNoTracking()
+                                        .Include(g => g.Artist)
+                                        .Include(g => g.Venue)
                                         .FirstOrDefaultAsync(g => g.ID == id);
 
         if (gig == null)
@@ -33,9 +34,11 @@ public class EditModel : PageModel
 
         Gig = new GigCreateModel
         {
-            ArtistID = gig.ArtistID.ToString(),
             VenueID = gig.VenueID.ToString(),
-            Date = gig.Date
+            Date = gig.Date,
+            ArtistName = gig.ArtistName ?? gig.Artist.Name,
+            Description = gig.Description ?? gig.Artist.Description,
+            EventUrl = gig.EventUrl ?? gig.Venue.Website
         };
 
         await PopulateSelectListsAsync();
@@ -45,9 +48,10 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(int id)
     {
+        await PopulateSelectListsAsync();
+
         if (!ModelState.IsValid)
         {
-            await PopulateSelectListsAsync();
             return Page();
         }
 
@@ -58,50 +62,32 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        var foundArtist = await _context.Artists
-                                        .AsNoTracking()
-                                        .FirstOrDefaultAsync(a => a.ID == int.Parse(Gig.ArtistID));
-        if (foundArtist == null)
-        {
-            _logger.LogWarning("Artist {Artist} not found", Gig.ArtistID);
-            await PopulateSelectListsAsync();
-            return Page();
-        }
         var foundVenue = await _context.Venues
                                         .AsNoTracking()
                                         .FirstOrDefaultAsync(v => v.ID == int.Parse(Gig.VenueID));
         if (foundVenue == null)
         {
-            _logger.LogWarning("Venue {Venue} not found", Gig.VenueID);
-            await PopulateSelectListsAsync();
-            return Page();
+            return NotFound();
         }
 
-        try
-        {
-            gigToUpdate.ArtistID = foundArtist.ID;
-            gigToUpdate.VenueID = foundVenue.ID;
-            gigToUpdate.Date = Gig.Date;
+        await _imageService.DeleteImageAsync(gigToUpdate.ImageUrl);
 
-            await _context.SaveChangesAsync();
-            return RedirectToPage("./Index");
-        }
-        catch (DbUpdateException ex)
-        {
-            _logger.LogError(ex.Message);
-        }
+        using var imageStream = Gig.FormFile.OpenReadStream();
+        var imageUrl = await _imageService.UploadImageAsync(imageStream);
 
-        await PopulateSelectListsAsync();
-        return Page();
+        gigToUpdate.VenueID = foundVenue.ID;
+        gigToUpdate.Date = Gig.Date;
+        gigToUpdate.ArtistName = Gig.ArtistName;
+        gigToUpdate.Description = Gig.Description;
+        gigToUpdate.EventUrl = Gig.EventUrl;
+        gigToUpdate.ImageUrl = imageUrl;
+
+        await _context.SaveChangesAsync();
+        return RedirectToPage("./Index");
     }
 
     public async Task PopulateSelectListsAsync()
     {
-        Artists = (await _context.Artists.Select(a => new {Name = a.Name, ID = a.ID})
-                                            .OrderBy(a => a.Name)
-                                            .ToListAsync())
-                                            .Select(a => new SelectListItem(a.Name, a.ID.ToString()));
-
         Venues = (await _context.Venues.Select(v => new {Name = v.Name, ID = v.ID})
                                         .OrderBy(v => v.Name)
                                         .ToListAsync())

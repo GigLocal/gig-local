@@ -50,7 +50,7 @@ if (environment.IsDevelopment())
 builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Services.Configure<StorageOptions>(configuration.GetSection("Storage"));
-builder.Services.AddScoped<IArtistService, ArtistService>();
+builder.Services.AddSingleton<IImageService, ImageService>();
 
 var app = builder.Build();
 
@@ -64,7 +64,10 @@ else
     app.UseHsts();
 }
 
+app.UseStatusCodePages();
+
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
