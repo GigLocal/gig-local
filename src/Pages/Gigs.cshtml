@@ -9,20 +9,13 @@
     {
         <div class="col mb-4">
             <div class="card">
-                <img class="img-fluid" src="@gig.ArtistImage" alt="Image of artist @gig.ArtistName.">
+                <img class="img-fluid" src="@gig.Image" alt="Image of music artist @gig.ArtistName.">
                 <div class="card-body">
                     <h4 class="card-title">
-                        @if (gig.ArtistWebsite != null)
-                        {
-                            <a href="@gig.ArtistWebsite" class="text-reset">@gig.ArtistName</a>
-                        }
-                        else {
-                            @gig.ArtistName
-                        }
-                        | <a href="@gig.VenueWebsite" class="text-reset">@gig.VenueName</a>
+                        <a href="@gig.EventUrl" class="text-reset">@gig.ArtistName | @gig.VenueName</a>
                     </h4>
                     <p class="card-text font-weight-bold">@gig.Date | @gig.Time</p>
-                    <p>@gig.ArtistDescription</p>
+                    <p>@gig.Description</p>
                 </div>
             </div>
         </div>

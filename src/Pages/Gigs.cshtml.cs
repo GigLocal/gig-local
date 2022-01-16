@@ -17,12 +17,10 @@ public class GigsModel : PageModel
         string Date,
         string Time,
         string ArtistName,
-        string ArtistDescription,
-        string ArtistWebsite,
-        string ArtistImage,
-        string VenueName,
-        string VenueWebsite,
-        string VenueAddress
+        string Description,
+        string EventUrl,
+        string Image,
+        string VenueName
     );
 
     public void OnGet()
@@ -35,19 +33,18 @@ public class GigsModel : PageModel
             .Include(g => g.Venue)
             .Where(g => g.Date >= startDate
                         && g.Date <= endDate
-                        && EF.Functions.Like(g.Venue.Address, $"%Northcote VIC%"))
+                        && (EF.Functions.Like(g.Venue.Address, $"%Northcote VIC%")
+                            || EF.Functions.Like(g.Venue.Address, $"%Thornbury VIC%")))
             .OrderBy(g => g.Date)
             .ToArray();
 
         Gigs = gigsQuery.Select(g => new GigRecord(
             g.Date.ToDayOfWeekDateMonthName(),
             g.Date.ToTimeHourMinuteAmPm(),
-            g.Artist.Name,
-            g.Artist.Description.Truncate(200),
-            g.Artist.Website,
-            g.Artist.ImageUrl,
-            g.Venue.Name,
-            g.Venue.Website,
-            g.Venue.Address));
+            g.ArtistName ?? g.Artist.Name,
+            g.Description ?? g.Artist.Description,
+            g.EventUrl ?? g.Venue.Website,
+            g.ImageUrl ?? g.Artist.ImageUrl,
+            g.Venue.Name));
     }
 }

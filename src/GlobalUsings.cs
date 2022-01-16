@@ -22,6 +22,4 @@ global using GigLocal.Services;
 global using GigLocal.Models;
 global using GigLocal.Data;
 global using GigLocal.Options;
-global using GigLocal.ViewModels;
 global using Azure.Storage.Blobs;
-

@@ -11,12 +11,28 @@
 <h4>Gig</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form method="post">
+    <div class="col-md-6">
+        <form enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Gig.ArtistID" class="control-label"></label>
-                <select asp-for="Gig.ArtistID" asp-items="Model.Artists" class="custom-select"></select>
+                <label asp-for="Gig.ArtistName" class="control-label"></label>
+                <input asp-for="Gig.ArtistName" class="form-control" />
+                <span asp-validation-for="Gig.ArtistName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gig.Description" class="control-label"></label>
+                <textarea asp-for="Gig.Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Gig.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gig.EventUrl" class="control-label"></label>
+                <input asp-for="Gig.EventUrl" class="form-control" />
+                <span asp-validation-for="Gig.EventUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gig.FormFile"></label>
+                <input asp-for="Gig.FormFile" type="file" accept="image/*" />
+                <span asp-validation-for="Gig.FormFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Gig.VenueID" class="control-label"></label>
@@ -24,7 +40,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Gig.Date" class="control-label"></label>
-                <input asp-for="Gig.Date" class="form-control" />
+                <input asp-for="Gig.Date" class="form-control" placeholder="yyyy-mm-dd" />
                 <span asp-validation-for="Gig.Date" class="text-danger"></span>
             </div>
             <div class="form-group">

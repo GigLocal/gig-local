@@ -31,7 +31,7 @@ public class IndexModel : PageModel
             .Include(g => g.Venue)
             .Select(a => new GigIndexModel{
                 ID = a.ID,
-                ArtistName = a.Artist.Name,
+                ArtistName = a.ArtistName ?? a.Artist.Name,
                 VenueName = a.Venue.Name,
                 Date = a.Date
             });

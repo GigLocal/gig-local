@@ -3,17 +3,19 @@
 public class CreateModel : PageModel
 {
     private readonly GigContext _context;
-    private readonly ILogger<CreateModel> _logger;
-    public IEnumerable<SelectListItem> Artists { get; set; }
-    public IEnumerable<SelectListItem> Venues { get; set; }
+    private readonly IImageService _imageService;
 
     [BindProperty]
     public GigCreateModel Gig { get; set; }
 
-    public CreateModel(GigContext context, ILogger<CreateModel> logger)
+    public IEnumerable<SelectListItem> Venues { get; set; }
+
+    public CreateModel(
+        GigContext context,
+        IImageService storageService)
     {
         _context = context;
-        _logger = logger;
+        _imageService = storageService;
     }
 
     public async Task<IActionResult> OnGetAsync()
@@ -24,59 +26,49 @@ public class CreateModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        await PopulateSelectListsAsync();
+
         if (!ModelState.IsValid)
         {
-            await PopulateSelectListsAsync();
             return Page();
         }
 
-        var foundArtist = await _context.Artists
-                                        .AsNoTracking()
-                                        .FirstOrDefaultAsync(a => a.ID == int.Parse(Gig.ArtistID));
-        if (foundArtist == null)
-        {
-            _logger.LogWarning("Artist {Artist} not found", Gig.ArtistID);
-            await PopulateSelectListsAsync();
-            return Page();
-        }
         var foundVenue = await _context.Venues
                                         .AsNoTracking()
                                         .FirstOrDefaultAsync(v => v.ID == int.Parse(Gig.VenueID));
         if (foundVenue == null)
         {
-            _logger.LogWarning("Venue {Venue} not found", Gig.VenueID);
-            await PopulateSelectListsAsync();
-            return Page();
+            return NotFound();
         }
 
-        try
-        {
-            var newGig = new Gig
-            {
-                ArtistID = foundArtist.ID,
-                VenueID = foundVenue.ID,
-                Date = Gig.Date
-            };
-            _context.Gigs.Add(newGig);
-            await _context.SaveChangesAsync();
-            return RedirectToPage("./Index");
-        }
-        catch (DbUpdateException ex)
-        {
-            _logger.LogError(ex.Message);
-        }
+        using var imageStream = Gig.FormFile.OpenReadStream();
+        var imageUrl = await _imageService.UploadImageAsync(imageStream);
 
-        await PopulateSelectListsAsync();
-        return Page();
+        // To preserve existing data model, can be removed in future
+        // once all old data is no longer needed.
+        var placeholderArtist = new Artist();
+        _context.Artists.Add(placeholderArtist);
+        await _context.SaveChangesAsync();
+
+        var newGig = new Gig
+        {
+            ArtistID = placeholderArtist.ID,
+            VenueID = foundVenue.ID,
+            Date = Gig.Date,
+            ArtistName = Gig.ArtistName,
+            Description = Gig.Description,
+            EventUrl = Gig.EventUrl,
+            ImageUrl = imageUrl
+        };
+
+        _context.Gigs.Add(newGig);
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Index");
     }
 
     public async Task PopulateSelectListsAsync()
     {
-        Artists = (await _context.Artists.Select(a => new {Name = a.Name, ID = a.ID})
-                                            .OrderBy(a => a.Name)
-                                            .ToListAsync())
-                                            .Select(a => new SelectListItem(a.Name, a.ID.ToString()));
-
         Venues = (await _context.Venues.Select(v => new {Name = v.Name, ID = v.ID})
                                         .OrderBy(v => v.Name)
                                         .ToListAsync())
@@ -87,10 +79,6 @@ public class CreateModel : PageModel
 public class GigCreateModel
 {
     [Required]
-    [Display(Name = "Artist")]
-    public string ArtistID { get; set; }
-
-    [Required]
     [Display(Name = "Venue")]
     public string VenueID { get; set; }
 
@@ -98,4 +86,21 @@ public class GigCreateModel
     [FutureDate(ErrorMessage = "The date must be in the future.")]
     [Display(Name = "Date and time")]
     public DateTime Date { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    [Display(Name = "Artist Name")]
+    public string ArtistName { get; set; }
+
+    [Required]
+    [MaxLength(300)]
+    public string Description { get; set; }
+
+    [Required]
+    [Display(Name = "Event URL")]
+    public string EventUrl { get; set; }
+
+    [Required]
+    [Display(Name = "Image")]
+    public IFormFile FormFile { get; set; }
 }
