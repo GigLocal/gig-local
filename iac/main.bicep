@@ -35,6 +35,8 @@ param sqlDatabaseSku string
 param authGoogleClientId string
 param authGoogleClientSecret string
 param authAdminEmail string
+param recaptchaSiteKey string
+param recaptchaSecretKey string
 
 var location = resourceGroup().location
 var resourceNameSuffix = '${appName}${env}${uniqueString(resourceGroup().id)}'
@@ -150,6 +152,8 @@ resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
     'Authentication__Google__ClientSecret': authGoogleClientSecret
     'Authentication__Admin__Emails': authAdminEmail
     'ApplicationInsights__ConnectionString': appInsights.properties.ConnectionString
+    'Recaptcha__SiteKey': recaptchaSiteKey
+    'Recaptcha__SecretKey': recaptchaSecretKey
   }
 }
 
