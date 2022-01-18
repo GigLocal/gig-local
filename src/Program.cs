@@ -39,6 +39,7 @@ builder.Services.AddAuthorization(options =>
 
 var mvcBuilder = builder.Services.AddRazorPages(options => {
     options.Conventions.AuthorizeFolder("/Admin", "AllowedUsersOnly");
+    options.Conventions.AllowAnonymousToPage("/Admin/Gigs/Create");
 });
 
 if (environment.IsDevelopment())
@@ -50,7 +51,9 @@ if (environment.IsDevelopment())
 builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Services.Configure<StorageOptions>(configuration.GetSection("Storage"));
+builder.Services.Configure<RecaptchaOptions>(configuration.GetSection("Recaptcha"));
 builder.Services.AddSingleton<IImageService, ImageService>();
+builder.Services.AddHttpClient<IRecaptchaService, RecaptchaService>();
 
 var app = builder.Build();
 

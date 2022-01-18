@@ -1,12 +1,15 @@
 ﻿@page
-@model GigLocal.Pages.Admin.Gigs.DetailsModel
+@model GigLocal.Pages.Admin.Gigs.ApproveModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Approve";
 }
 
-<h1>Details</h1>
+<h1>Approve</h1>
 
+<p class="text-danger">@Model.ErrorMessage</p>
+
+<h3>Are you sure you want to approve this?</h3>
 <div>
     <h4>Gig</h4>
     <hr />
@@ -48,12 +51,9 @@
             <img src="@Model.Gig.ImageUrl" height="150">
         </dd>
     </dl>
-</div>
-<div>
-    <a class="btn btn-outline-secondary" role="button" asp-page="./Index">Back</a>
-    <a class="btn btn-primary" role="button" asp-page="./Edit" asp-route-id="@Model.Gig.ID">Edit</a>
-    @if (!Model.Gig.Approved)
-    {
-        <a class="btn btn-success" role="button" asp-page="./Approve" asp-route-id="@Model.Gig.ID">Approve</a>
-    }
+
+    <form method="post">
+        <a class="btn btn-outline-secondary" role="button" asp-page="./Index">Cancel</a>
+        <input type="submit" value="Approve" class="btn btn-success" />
+    </form>
 </div>

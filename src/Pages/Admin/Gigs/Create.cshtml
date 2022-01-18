@@ -3,15 +3,13 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "_AdminLayout";
 }
 
-<h2>Create</h2>
-<h4>Gig</h4>
-<hr />
+<h2>Create a Gig</h2>
 <div class="row">
+    <partial name="_StatusMessage" for="StatusMessage">
     <div class="col-md-6">
-        <form enctype="multipart/form-data" method="post">
+        <form id="create-form" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Gig.ArtistName" class="control-label"></label>
@@ -30,7 +28,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Gig.FormFile"></label>
-                <input asp-for="Gig.FormFile" type="file" accept="image/*" />
+                <input asp-for="Gig.FormFile" class="form-control-file" type="file" accept="image/*" />
                 <span asp-validation-for="Gig.FormFile" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -42,9 +40,10 @@
                 <input asp-for="Gig.Date" class="form-control" placeholder="yyyy-mm-dd" />
                 <span asp-validation-for="Gig.Date" class="text-danger"></span>
             </div>
+            <input asp-for="Gig.RecaptchaToken" type="hidden" />
             <div class="form-group">
                 <a class="btn btn-outline-secondary" role="button" asp-page="Index">Cancel</a>
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button id="submit-button" type="submit" class="btn btn-primary">Create</button>
             </div>
         </form>
     </div>
@@ -52,7 +51,20 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/api.js?render=@Model.RecaptchaSiteKey"></script>
     <script>
         setDateInputMinToToday("Gig.Date");
+        $("#submit-button").click(function (e) {
+            e.preventDefault();
+            if ($("#create-form").valid()) {
+                grecaptcha.ready(function() {
+                    grecaptcha.execute("@Model.RecaptchaSiteKey", {action: "submit"}).then(function(token) {
+                        console.log(token);
+                        document.getElementById("Gig_RecaptchaToken").value = token;
+                        document.getElementById("create-form").submit();
+                    });
+                });
+            }
+        });
     </script>
 }
