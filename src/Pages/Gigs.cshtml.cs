@@ -31,7 +31,8 @@ public class GigsModel : PageModel
             .AsNoTracking()
             .Include(g => g.Artist)
             .Include(g => g.Venue)
-            .Where(g => g.Date >= startDate
+            .Where(g => g.Approved
+                        && g.Date >= startDate
                         && g.Date <= endDate
                         && (EF.Functions.Like(g.Venue.Address, $"%Northcote VIC%")
                             || EF.Functions.Like(g.Venue.Address, $"%Thornbury VIC%")))

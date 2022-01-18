@@ -37,7 +37,8 @@ public class DetailsModel : PageModel
             Date = gig.Date,
             Description = gig.Description ?? gig.Artist.Description,
             EventUrl = gig.EventUrl ?? gig.Venue.Website,
-            ImageUrl = gig.ImageUrl ?? gig.Artist.ImageUrl
+            ImageUrl = gig.ImageUrl ?? gig.Artist.ImageUrl,
+            Approved = gig.Approved
         };
 
         return Page();

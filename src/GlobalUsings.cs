@@ -7,6 +7,7 @@ global using System.Globalization;
 global using System.Diagnostics;
 global using System.ComponentModel.DataAnnotations;
 global using System.Collections.Generic;
+global using System.Text.Json.Serialization;
 global using SixLabors.ImageSharp;
 global using SixLabors.ImageSharp.Processing;
 global using Microsoft.Extensions.Options;

@@ -1,14 +1,12 @@
 ﻿namespace GigLocal.Pages.Admin.Gigs;
 
-public class DeleteModel : PageModel
+public class ApproveModel : PageModel
 {
     private readonly GigContext _context;
-    private IImageService _imageService;
 
-    public DeleteModel(GigContext context, IImageService imageService)
+    public ApproveModel(GigContext context)
     {
         _context = context;
-        _imageService = imageService;
     }
 
     public string ErrorMessage { get; set; }
@@ -63,34 +61,9 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        _context.Gigs.Remove(gig);
+        gig.Approved = true;
         await _context.SaveChangesAsync();
-        if (gig.ImageUrl != null)
-        {
-            await _imageService.DeleteImageAsync(gig.ImageUrl);
-        }
+
         return RedirectToPage("./Index");
     }
-}
-
-public class GigReadModel
-{
-    [Display(Name = "Artist")]
-    public string ArtistName { get; set; }
-
-    [Display(Name = "Venue")]
-    public string VenueName { get; set; }
-
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
-    public DateTime Date { get; set; }
-
-    public string Description { get; set; }
-
-    [Display(Name = "Event URL")]
-    public string EventUrl { get; set; }
-
-    [Display(Name = "Image")]
-    public string ImageUrl { get; set; }
-
-    public bool Approved { get; set; }
 }

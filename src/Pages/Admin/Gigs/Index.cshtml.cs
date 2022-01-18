@@ -11,9 +11,11 @@ public class IndexModel : PageModel
 
     public string CurrentFilter { get; set; }
 
+    public bool PendingFilter { get; set; }
+
     public PaginatedList<GigIndexModel> Gigs { get; set; }
 
-    public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
+    public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex, bool pending = false)
     {
         if (searchString != null)
         {
@@ -25,6 +27,7 @@ public class IndexModel : PageModel
         }
 
         CurrentFilter = searchString;
+        PendingFilter = pending;
 
         IQueryable<GigIndexModel> GigsIQ = _context.Gigs
             .Include(g => g.Artist)
@@ -33,14 +36,22 @@ public class IndexModel : PageModel
                 ID = a.ID,
                 ArtistName = a.ArtistName ?? a.Artist.Name,
                 VenueName = a.Venue.Name,
-                Date = a.Date
+                Date = a.Date,
+                Approved = a.Approved
             });
 
         if (!string.IsNullOrEmpty(searchString))
         {
             GigsIQ = GigsIQ.Where(s =>
-                s.ArtistName.Contains(searchString)|| s.VenueName.Contains(searchString)).OrderByDescending(g => g.Date);
+                s.ArtistName.Contains(searchString)|| s.VenueName.Contains(searchString));
         }
+
+        if (pending)
+        {
+            GigsIQ = GigsIQ.Where(g => !g.Approved);
+        }
+
+        GigsIQ = GigsIQ.OrderByDescending(g => g.Date);
 
         Gigs = await PaginatedList<GigIndexModel>.CreateAsync(GigsIQ.AsNoTracking(), pageIndex ?? 1, 10);
     }
@@ -58,4 +69,6 @@ public class GigIndexModel
 
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
     public DateTime Date { get; set; }
+
+    public bool Approved { get; set; }
 }

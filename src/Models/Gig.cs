@@ -12,6 +12,8 @@ public class Gig
 
     public string ImageUrl { get; set; }
 
+    public bool Approved { get; set; }
+
     public int ArtistID { get; set; }
 
     public int VenueID { get; set; }

@@ -4,18 +4,27 @@ public class CreateModel : PageModel
 {
     private readonly GigContext _context;
     private readonly IImageService _imageService;
+    private readonly IRecaptchaService _recaptchaService;
 
     [BindProperty]
     public GigCreateModel Gig { get; set; }
+
+    [TempData]
+    public string StatusMessage { get; set; }
+
+    public string RecaptchaSiteKey { get; set; }
 
     public IEnumerable<SelectListItem> Venues { get; set; }
 
     public CreateModel(
         GigContext context,
-        IImageService storageService)
+        IImageService storageService,
+        IRecaptchaService recaptchaService)
     {
         _context = context;
         _imageService = storageService;
+        _recaptchaService = recaptchaService;
+        RecaptchaSiteKey = _recaptchaService.RecaptchaSiteKey;
     }
 
     public async Task<IActionResult> OnGetAsync()
@@ -27,6 +36,13 @@ public class CreateModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         await PopulateSelectListsAsync();
+
+        var passedRecaptcha = await _recaptchaService.ValidateAsync(Gig.RecaptchaToken);
+        if (!passedRecaptcha)
+        {
+            StatusMessage = "Error: sorry, no robots allowed!";
+            return Page();
+        }
 
         if (!ModelState.IsValid)
         {
@@ -58,11 +74,19 @@ public class CreateModel : PageModel
             ArtistName = Gig.ArtistName,
             Description = Gig.Description,
             EventUrl = Gig.EventUrl,
-            ImageUrl = imageUrl
+            ImageUrl = imageUrl,
+            Approved = HttpContext.User.Identity.IsAuthenticated
         };
 
         _context.Gigs.Add(newGig);
         await _context.SaveChangesAsync();
+
+        if (!newGig.Approved)
+        {
+            // Status message with basic gig detials
+            StatusMessage = $"Gig '{Gig.ArtistName} on {Gig.Date} at {foundVenue.Name}' has been created and is awaiting approval.";
+            return RedirectToPage("/Admin/Gigs/Create");
+        }
 
         return RedirectToPage("./Index");
     }
@@ -89,7 +113,7 @@ public class GigCreateModel
 
     [Required]
     [MaxLength(100)]
-    [Display(Name = "Artist Name")]
+    [Display(Name = "Artist name")]
     public string ArtistName { get; set; }
 
     [Required]
@@ -103,4 +127,6 @@ public class GigCreateModel
     [Required]
     [Display(Name = "Image")]
     public IFormFile FormFile { get; set; }
+
+    public string RecaptchaToken { get; set; }
 }

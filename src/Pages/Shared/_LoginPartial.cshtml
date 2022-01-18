@@ -2,6 +2,13 @@
 {
     <form asp-page="/Index" asp-page-handler="Logout" method="post" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
+            <a class="navbar-brand font-weight-bold" asp-area="" asp-page="/Admin/Index">Admin</a>
+            <li class="nav-item">
+                <a class="nav-link text-dark font-weight-bold" asp-area="" asp-page="/Admin/Venues/Index">Venues</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark font-weight-bold" asp-area="" asp-page="/Admin/Gigs/Index">Gigs</a>
+            </li>
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
             </li>
