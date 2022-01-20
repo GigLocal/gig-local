@@ -139,6 +139,8 @@ jobs:
             authGoogleClientId=${{ secrets.AUTH_GOOGLE_CLIENT_ID }}
             authGoogleClientSecret=${{ secrets.AUTH_GOOGLE_CLIENT_SECRET }}
             authAdminEmail=${{ secrets.AUTH_ADMIN_EMAILS }}
+            recaptchaSiteKey=${{ secrets.RECAPTCHA_SITE_KEY }}
+            recaptchaSecretKey=${{ secrets.RECAPTCHA_SECRET_KEY }}
     - name: Set Deployment Outputs
       id: set_outputs
       run: |
