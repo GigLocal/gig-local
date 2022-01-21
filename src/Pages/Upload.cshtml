@@ -61,7 +61,6 @@
             if ($("#create-form").valid()) {
                 grecaptcha.ready(function() {
                     grecaptcha.execute("@Model.RecaptchaSiteKey", {action: "submit"}).then(function(token) {
-                        console.log(token);
                         document.getElementById("Gig_RecaptchaToken").value = token;
                         document.getElementById("create-form").submit();
                     });
