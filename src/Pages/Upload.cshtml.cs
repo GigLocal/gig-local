@@ -1,25 +1,30 @@
-﻿namespace GigLocal.Pages.Admin.Gigs;
+﻿namespace GigLocal.Pages;
 
-public class CreateModel : PageModel
+public class UploadModel : PageModel
 {
     private readonly GigContext _context;
     private readonly IImageService _imageService;
+    private readonly IRecaptchaService _recaptchaService;
 
     [BindProperty]
-    public GigCreateModel Gig { get; set; }
+    public GigUploadModel Gig { get; set; }
 
     [TempData]
     public string StatusMessage { get; set; }
 
+    public string RecaptchaSiteKey { get; set; }
+
     public IEnumerable<SelectListItem> Venues { get; set; }
 
-    public CreateModel(
+    public UploadModel(
         GigContext context,
         IImageService storageService,
         IRecaptchaService recaptchaService)
     {
         _context = context;
         _imageService = storageService;
+        _recaptchaService = recaptchaService;
+        RecaptchaSiteKey = _recaptchaService.RecaptchaSiteKey;
     }
 
     public async Task<IActionResult> OnGetAsync()
@@ -31,6 +36,13 @@ public class CreateModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         Venues = await VenueHelper.GetSelectListAsync(_context);
+
+        var passedRecaptcha = await _recaptchaService.ValidateAsync(Gig.RecaptchaToken);
+        if (!passedRecaptcha)
+        {
+            StatusMessage = "Error: sorry, no robots allowed!";
+            return Page();
+        }
 
         if (!ModelState.IsValid)
         {
@@ -63,41 +75,18 @@ public class CreateModel : PageModel
             Description = Gig.Description,
             EventUrl = Gig.EventUrl,
             ImageUrl = imageUrl,
-            Approved = true
+            Approved = false
         };
 
         _context.Gigs.Add(newGig);
         await _context.SaveChangesAsync();
 
-        return RedirectToPage("./Index");
+        StatusMessage = $"Gig '{Gig.ArtistName} on {Gig.Date} at {foundVenue.Name}' has been created and is awaiting approval.";
+        return RedirectToPage("/Upload");
     }
 }
 
-public class GigCreateModel
+public class GigUploadModel : GigCreateModel
 {
-    [Required]
-    [Display(Name = "Venue")]
-    public string VenueID { get; set; }
-
-    [Required]
-    [FutureDate(ErrorMessage = "The date must be in the future.")]
-    [Display(Name = "Date and time")]
-    public DateTime Date { get; set; }
-
-    [Required]
-    [MaxLength(100)]
-    [Display(Name = "Artist name")]
-    public string ArtistName { get; set; }
-
-    [Required]
-    [MaxLength(300)]
-    public string Description { get; set; }
-
-    [Required]
-    [Display(Name = "Event URL")]
-    public string EventUrl { get; set; }
-
-    [Required]
-    [Display(Name = "Image")]
-    public IFormFile FormFile { get; set; }
+    public string RecaptchaToken { get; set; }
 }

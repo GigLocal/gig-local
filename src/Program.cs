@@ -39,7 +39,6 @@ builder.Services.AddAuthorization(options =>
 
 var mvcBuilder = builder.Services.AddRazorPages(options => {
     options.Conventions.AuthorizeFolder("/Admin", "AllowedUsersOnly");
-    options.Conventions.AllowAnonymousToPage("/Admin/Gigs/Create");
 });
 
 if (environment.IsDevelopment())
