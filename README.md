@@ -6,19 +6,22 @@ Gig Local website, an ASP.NET Core web app.
 
 ## Getting started
 
-1. Install latest [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
-2. Install [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1)
-2. Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
-3. Add the [dotnet user secrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=linux#set-a-secret). Please request these from a repository owner.
-    - Azure Storage Connection String: `Storage:ConnectionString`
-    - Google Authentication client id: `Authentication:Google:ClientId`
-    - Google Authentication client secret: `Authentication:Google:ClientSecret`
-    - Google email address: `Authentication:Admin:Emails` as a comma separate list
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop) for your system.
+2. Install latest [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) for your system.
+3. Install [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1) for your system.
+4. Run the following commands to add user secrets (ask @marcusturewicz for the secret values):
+    - `dotnet user-secrets set Storage:ConnectionString "<SecretValue>"`
+    - `dotnet user-secrets set Authentication:Google:ClientId "<SecretValue>"`
+    - `dotnet user-secrets set Authentication:Google:ClientSecret "<SecretValue>"`
+    - `dotnet user-secrets set Authentication:Admin:Emails "<SecretValue>"`
+    - `dotnet user-secrets set Recaptcha:SiteKey "<SecretValue>"`
+    - `dotnet user-secrets set Recaptcha:SecretKey "<SecretValue>"`
 
 ## Running locally
 
 1. Start Docker and wait for it to be ready
-2. Start `./run.ps1` from PowerShell
+2. If this is the first time you're running the app, run `./create-local-db.ps1`
+3. Run `./run.ps1`
 
 ## License
 
