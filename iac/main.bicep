@@ -46,9 +46,11 @@ var hostingPlanName = 'HostingPlan${resourceNameSuffix}'
 var websiteName = 'Website${resourceNameSuffix}'
 var sqlServerName = 'SqlServer${resourceNameSuffix}'
 var storageName = toLower(resourceNameSuffix)
+var cdnEndpointName = 'CdnEndpoint${resourceNameSuffix}'
+var cdnProfileName = 'CdnProfile${resourceNameSuffix}'
 var appInsightsName = 'AppInsights${resourceNameSuffix}'
 
-// Storage account
+// Storage account with CDN
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
     name: storageName
     location: location
@@ -57,10 +59,47 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
     }
     kind: 'StorageV2'
 }
+var storageAccountHostName = replace(replace(storageAccount.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
 resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
     name: '${storageAccount.name}/default/${containerName}'
     properties: {
         publicAccess: 'Blob'
+    }
+}
+resource cdnProfile 'Microsoft.Cdn/profiles@2020-09-01' = {
+    name: cdnProfileName
+    location: location
+    tags: {
+      displayName: cdnProfileName
+    }
+    sku: {
+      name: 'Standard_Verizon'
+    }
+}
+resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
+    parent: cdnProfile
+    name: cdnEndpointName
+    location: location
+    tags: {
+        displayName: cdnEndpointName
+    }
+    properties: {
+        originHostHeader: storageAccountHostName
+        isHttpAllowed: true
+        isHttpsAllowed: true
+        queryStringCachingBehavior: 'IgnoreQueryString'
+        contentTypesToCompress: [
+            'image/jpeg'
+        ]
+        isCompressionEnabled: true
+        origins: [
+            {
+                name: storageAccount.name
+                properties: {
+                    hostName: storageAccountHostName
+                }
+            }
+        ]
     }
 }
 
