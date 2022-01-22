@@ -9,6 +9,7 @@ Create a new Azure Subscription via the Portal. Name it: `SubscriptionGigLocal[D
 - Microsoft.Web
 - Microsoft.Sql
 - Microsoft.Storage
+- Microsoft.Cdn
 - microsoft.insights
 
 ## Step 2: Resource Group
