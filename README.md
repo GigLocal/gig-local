@@ -16,6 +16,9 @@ Gig Local website, an ASP.NET Core web app.
     - `dotnet user-secrets set Authentication:Admin:Emails "<SecretValue>"`
     - `dotnet user-secrets set Recaptcha:SiteKey "<SecretValue>"`
     - `dotnet user-secrets set Recaptcha:SecretKey "<SecretValue>"`
+5. Install the following .NET tools:
+    - `dotnet tool install -g dotnet-ef --version 6.0.1`
+    - `dotnet tool install -g Microsoft.Web.LibraryManager.Cli --version 2.1.113`
 
 ## Running locally
 
