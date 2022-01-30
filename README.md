@@ -29,7 +29,7 @@ Gig Local website, an ASP.NET Core web app.
 
 1. Start Docker and wait for it to be ready
 2. Clone/Open this repository in VS Code
-3. Open the command pallete (F1) and run `Remote-Containers: Open Folder in Containter...` and wait for container to be built
+3. Open the command pallete (F1) and run `Remote-Containers: Reopen in Container` and wait for container to be built
 4. F5 to run the website
 
 ## License
