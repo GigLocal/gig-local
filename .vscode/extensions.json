@@ -1,9 +1,0 @@
-{
-    "recommendations": [
-        "ms-dotnettools.csharp",
-        "editorconfig.editorconfig",
-        "ms-azuretools.vscode-bicep",
-        "ms-vscode.powershell",
-        "ms-mssql.mssql"
-    ]
-}
