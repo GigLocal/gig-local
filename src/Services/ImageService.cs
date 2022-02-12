@@ -38,12 +38,12 @@ public class ImageService : IImageService
         var blobClient = GetBlobClient();
         var binaryContent = new BinaryData(outStream.GetBuffer());
         await blobClient.UploadAsync(binaryContent);
-        return blobClient.Uri.ToString();
+        return $"{_options.CdnEndpointHostname}/{blobClient.BlobContainerName}/{blobClient.Name}";
     }
 
     public Task DeleteImageAsync(string imageUrl)
     {
-        var blobName = imageUrl.Split("public/")[1];
+        var blobName = imageUrl.Split($"{ContainerName}/")[1];
         var blobClient = new BlobClient(_options.ConnectionString, ContainerName, blobName);
         return blobClient.DeleteAsync();
     }
