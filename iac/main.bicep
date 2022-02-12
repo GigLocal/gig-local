@@ -38,7 +38,7 @@ param authAdminEmail string
 param recaptchaSiteKey string
 param recaptchaSecretKey string
 
-var location = resourceGroup().location
+param location string = resourceGroup().location
 var resourceNameSuffix = '${appName}${env}${uniqueString(resourceGroup().id)}'
 
 // Variables
