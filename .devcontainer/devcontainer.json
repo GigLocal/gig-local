@@ -25,7 +25,8 @@
         "ms-dotnettools.csharp",
         "ms-mssql.mssql",
         "editorconfig.editorconfig",
-        "ms-azuretools.vscode-bicep"
+        "ms-azuretools.vscode-bicep",
+        "GitHub.copilot"
     ],
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     "forwardPorts": [
