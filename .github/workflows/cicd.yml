@@ -130,6 +130,7 @@ jobs:
             appName=GigLocal
             env=Prd
             containerName=public
+            customStorageDomain=storage.giglocal.live
             webAppSku=B1
             webAppSkuCapacity=1
             sqlAdminLogin=${{ secrets.AZURE_SQL_LOGIN }}

@@ -6,6 +6,7 @@ param env string
 
 // Storage account container name
 param containerName string
+param customStorageDomain string
 
 // Web App params
 @allowed([
@@ -183,11 +184,12 @@ resource websiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
     }
   }
 }
+var cdnEndpointHostname = customStorageDomain ?? endpoint.properties.hostName
 resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${website.name}/appsettings'
   properties: {
     'Storage__ConnectionString': storageConnectionString
-    'Storage__CdnEndpointHostname': 'https://${endpoint.properties.hostName}'
+    'Storage__CdnEndpointHostname': 'https://${cdnEndpointHostname}'
     'Authentication__Google__ClientId': authGoogleClientId
     'Authentication__Google__ClientSecret': authGoogleClientSecret
     'Authentication__Admin__Emails': authAdminEmail
