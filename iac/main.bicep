@@ -5,8 +5,8 @@ param appName string
 param env string
 
 // Storage account container name
-param containerName string = ''
-param customStorageDomain string
+param containerName string
+param customStorageDomain string = ''
 
 // Web App params
 @allowed([
