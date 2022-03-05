@@ -5,7 +5,7 @@ param appName string
 param env string
 
 // Storage account container name
-param containerName string = ''
+param containerName string
 param customStorageDomain string
 
 // Web App params
@@ -184,7 +184,7 @@ resource websiteConnectionStrings 'Microsoft.Web/sites/config@2021-01-15' = {
     }
   }
 }
-var cdnEndpointHostname = customStorageDomain == '' ? endpoint.properties.hostName : customStorageDomain
+var cdnEndpointHostname = customStorageDomain == 'none' ? endpoint.properties.hostName : customStorageDomain
 resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${website.name}/appsettings'
   properties: {

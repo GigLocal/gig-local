@@ -73,6 +73,7 @@ jobs:
             appName=GigLocal
             env=Dev
             containerName=public
+            customStorageDomain=none
             webAppSku=F1
             webAppSkuCapacity=1
             sqlAdminLogin=${{ secrets.AZURE_SQL_LOGIN }}
