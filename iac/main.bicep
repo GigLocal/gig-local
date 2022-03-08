@@ -101,6 +101,36 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
                 }
             }
         ]
+        deliveryPolicy: {
+            rules: [
+                {
+                    order: 1
+                    conditions: [
+                        {
+                            name: 'UrlPath'
+                            parameters: {
+                                '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlPathMatchConditionParameters'
+                                operator: 'Any'
+                                matchValues: [
+                                    '/public/images/*'
+                                ]
+                            }
+                        }
+                    ]
+                    actions: [
+                        {
+                            name: 'CacheExpiration'
+                            parameters: {
+                                '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleCacheExpirationActionParameters'
+                                cacheBehavior: 'Override'
+                                cacheType: 'All'
+                                cacheDuration: '365.00:00:00'
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
     }
 }
 
