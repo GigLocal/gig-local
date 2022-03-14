@@ -23,7 +23,6 @@ public class EditModel : PageModel
         }
 
         var gig = await _context.Gigs.AsNoTracking()
-                                        .Include(g => g.Artist)
                                         .Include(g => g.Venue)
                                         .FirstOrDefaultAsync(g => g.ID == id);
 
@@ -36,9 +35,9 @@ public class EditModel : PageModel
         {
             VenueID = gig.VenueID.ToString(),
             Date = gig.Date,
-            ArtistName = gig.ArtistName ?? gig.Artist.Name,
-            Description = gig.Description ?? gig.Artist.Description,
-            EventUrl = gig.EventUrl ?? gig.Venue.Website
+            ArtistName = gig.ArtistName,
+            Description = gig.Description,
+            EventUrl = gig.EventUrl
         };
 
         await PopulateSelectListsAsync();

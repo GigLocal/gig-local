@@ -22,7 +22,6 @@ public class ApproveModel : PageModel
 
         Gig gig = await _context.Gigs
             .AsNoTracking()
-            .Include(g => g.Artist)
             .Include(g => g.Venue)
             .FirstOrDefaultAsync(m => m.ID == id);
 
@@ -38,12 +37,12 @@ public class ApproveModel : PageModel
 
         Gig = new GigReadModel
         {
-            ArtistName = gig.ArtistName ?? gig.Artist.Name,
+            ArtistName = gig.ArtistName,
             VenueName = gig.Venue.Name,
             Date = gig.Date,
-            Description = gig.Description ?? gig.Artist.Description,
-            EventUrl = gig.EventUrl ?? gig.Venue.Website,
-            ImageUrl = gig.ImageUrl ?? gig.Artist.ImageUrl
+            Description = gig.Description,
+            EventUrl = gig.EventUrl,
+            ImageUrl = gig.ImageUrl
         };
 
         return Page();

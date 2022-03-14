@@ -29,7 +29,6 @@ public class GigsModel : PageModel
         var endDate = startDate.AddDays(14);
         var gigsQuery = _context.Gigs
             .AsNoTracking()
-            .Include(g => g.Artist)
             .Include(g => g.Venue)
             .Where(g => g.Approved
                         && g.Date >= startDate
@@ -40,10 +39,10 @@ public class GigsModel : PageModel
         Gigs = gigsQuery.Select(g => new GigRecord(
             g.Date.ToDayOfWeekDateMonthName(),
             g.Date.ToTimeHourMinuteAmPm(),
-            g.ArtistName ?? g.Artist.Name,
-            g.Description ?? g.Artist.Description,
-            g.EventUrl ?? g.Venue.Website,
-            g.ImageUrl ?? g.Artist.ImageUrl,
+            g.ArtistName,
+            g.Description,
+            g.EventUrl,
+            g.ImageUrl,
             g.Venue.Name));
     }
 }

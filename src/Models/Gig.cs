@@ -14,13 +14,9 @@ public class Gig
 
     public bool Approved { get; set; }
 
-    public int ArtistID { get; set; }
-
     public int VenueID { get; set; }
 
     public DateTime Date { get; set; }
-
-    public Artist Artist { get; set; }
 
     public Venue Venue { get; set; }
 }
