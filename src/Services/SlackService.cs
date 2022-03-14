@@ -31,7 +31,12 @@ public class SlackService : ISlackService
 
     public async Task PostGigUploadedMessageAsync(int gigId)
     {
-        var link = _linkGenerator.GetUriByPage(_httpContext, "/Admin/Gigs/Approve", values: new { id = gigId });
+        var link = _linkGenerator.GetUriByPage(
+            _httpContext,
+            "/Admin/Gigs/Approve",
+            values: new { id = gigId },
+            scheme: "https"
+        );
         var result = await _httpClient.PostAsJsonAsync<SlackMessage>(
             _options.GigUploadWebhook,
             new SlackMessage(
