@@ -31,6 +31,11 @@ public class ApproveModel : PageModel
             return NotFound();
         }
 
+        if (gig.Approved)
+        {
+            return RedirectToPage("./Index");
+        }
+
         Gig = new GigReadModel
         {
             ArtistName = gig.ArtistName ?? gig.Artist.Name,

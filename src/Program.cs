@@ -51,8 +51,11 @@ builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Services.Configure<StorageOptions>(configuration.GetSection("Storage"));
 builder.Services.Configure<RecaptchaOptions>(configuration.GetSection("Recaptcha"));
+builder.Services.Configure<SlackOptions>(configuration.GetSection("Slack"));
 builder.Services.AddSingleton<IImageService, ImageService>();
 builder.Services.AddHttpClient<IRecaptchaService, RecaptchaService>();
+builder.Services.AddHttpClient<ISlackService, SlackService>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

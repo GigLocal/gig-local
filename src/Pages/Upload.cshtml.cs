@@ -5,6 +5,8 @@ public class UploadModel : PageModel
     private readonly GigContext _context;
     private readonly IImageService _imageService;
     private readonly IRecaptchaService _recaptchaService;
+    private readonly ISlackService _slackService;
+    private readonly ILogger<UploadModel> _logger;
 
     [BindProperty]
     public GigUploadModel Gig { get; set; }
@@ -19,11 +21,15 @@ public class UploadModel : PageModel
     public UploadModel(
         GigContext context,
         IImageService storageService,
-        IRecaptchaService recaptchaService)
+        IRecaptchaService recaptchaService,
+        ISlackService slackService,
+        ILogger<UploadModel> logger)
     {
         _context = context;
         _imageService = storageService;
         _recaptchaService = recaptchaService;
+        _slackService = slackService;
+        _logger = logger;
         RecaptchaSiteKey = _recaptchaService.RecaptchaSiteKey;
     }
 
@@ -80,6 +86,15 @@ public class UploadModel : PageModel
 
         _context.Gigs.Add(newGig);
         await _context.SaveChangesAsync();
+
+        try
+        {
+            await _slackService.PostGigUploadedMessageAsync(newGig.ID);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error posting to Slack");
+        }
 
         StatusMessage = $"Gig '{Gig.ArtistName} on {Gig.Date} at {foundVenue.Name}' has been created and is awaiting approval.";
         return RedirectToPage("/Upload");

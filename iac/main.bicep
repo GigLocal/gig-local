@@ -38,6 +38,7 @@ param authGoogleClientSecret string
 param authAdminEmail string
 param recaptchaSiteKey string
 param recaptchaSecretKey string
+param slackGigUploadWebhook string
 
 param location string = resourceGroup().location
 var resourceNameSuffix = '${appName}${env}${uniqueString(resourceGroup().id)}'
@@ -226,6 +227,7 @@ resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
     'ApplicationInsights__ConnectionString': appInsights.properties.ConnectionString
     'Recaptcha__SiteKey': recaptchaSiteKey
     'Recaptcha__SecretKey': recaptchaSecretKey
+    'Slack__GigUploadWebhook': slackGigUploadWebhook
   }
 }
 
