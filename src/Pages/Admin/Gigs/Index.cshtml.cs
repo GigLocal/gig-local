@@ -30,11 +30,10 @@ public class IndexModel : PageModel
         PendingFilter = pending;
 
         IQueryable<GigIndexModel> GigsIQ = _context.Gigs
-            .Include(g => g.Artist)
             .Include(g => g.Venue)
             .Select(a => new GigIndexModel{
                 ID = a.ID,
-                ArtistName = a.ArtistName ?? a.Artist.Name,
+                ArtistName = a.ArtistName,
                 VenueName = a.Venue.Name,
                 Date = a.Date,
                 Approved = a.Approved

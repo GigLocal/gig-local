@@ -30,7 +30,6 @@ public class CreateModel : PageModel
         {
             Gig gig = await _context.Gigs
                 .AsNoTracking()
-                .Include(g => g.Artist)
                 .Include(g => g.Venue)
                 .FirstOrDefaultAsync(m => m.ID == templateId);
 
@@ -41,11 +40,11 @@ public class CreateModel : PageModel
 
             Gig = new GigCreateModel
             {
-                ArtistName = gig.ArtistName ?? gig.Artist.Name,
+                ArtistName = gig.ArtistName,
                 VenueID = gig.VenueID.ToString(),
                 Date = gig.Date,
-                Description = gig.Description ?? gig.Artist.Description,
-                EventUrl = gig.EventUrl ?? gig.Venue.Website
+                Description = gig.Description,
+                EventUrl = gig.EventUrl
             };
         }
 
@@ -72,15 +71,8 @@ public class CreateModel : PageModel
         using var imageStream = Gig.FormFile.OpenReadStream();
         var imageUrl = await _imageService.UploadImageAsync(imageStream);
 
-        // To preserve existing data model, can be removed in future
-        // once all old data is no longer needed.
-        var placeholderArtist = new Artist();
-        _context.Artists.Add(placeholderArtist);
-        await _context.SaveChangesAsync();
-
         var newGig = new Gig
         {
-            ArtistID = placeholderArtist.ID,
             VenueID = foundVenue.ID,
             Date = Gig.Date,
             ArtistName = Gig.ArtistName,

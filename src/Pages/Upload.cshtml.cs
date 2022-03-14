@@ -66,15 +66,8 @@ public class UploadModel : PageModel
         using var imageStream = Gig.FormFile.OpenReadStream();
         var imageUrl = await _imageService.UploadImageAsync(imageStream);
 
-        // To preserve existing data model, can be removed in future
-        // once all old data is no longer needed.
-        var placeholderArtist = new Artist();
-        _context.Artists.Add(placeholderArtist);
-        await _context.SaveChangesAsync();
-
         var newGig = new Gig
         {
-            ArtistID = placeholderArtist.ID,
             VenueID = foundVenue.ID,
             Date = Gig.Date,
             ArtistName = Gig.ArtistName,
