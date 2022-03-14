@@ -22,9 +22,33 @@ public class CreateModel : PageModel
         _imageService = storageService;
     }
 
-    public async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync(int? templateId)
     {
         Venues = await VenueHelper.GetSelectListAsync(_context);
+
+        if (templateId != null)
+        {
+            Gig gig = await _context.Gigs
+                .AsNoTracking()
+                .Include(g => g.Artist)
+                .Include(g => g.Venue)
+                .FirstOrDefaultAsync(m => m.ID == templateId);
+
+            if (gig == null)
+            {
+                return NotFound();
+            }
+
+            Gig = new GigCreateModel
+            {
+                ArtistName = gig.ArtistName ?? gig.Artist.Name,
+                VenueID = gig.VenueID.ToString(),
+                Date = gig.Date,
+                Description = gig.Description ?? gig.Artist.Description,
+                EventUrl = gig.EventUrl ?? gig.Venue.Website
+            };
+        }
+
         return Page();
     }
 
