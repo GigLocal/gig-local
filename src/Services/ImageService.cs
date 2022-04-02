@@ -4,6 +4,7 @@ public interface IImageService
 {
     Task<string> UploadImageAsync(Stream stream);
     Task DeleteImageAsync(string imageUrl);
+    Task<string> CopyImageAsync(string imageUrl);
 }
 
 public class ImageService : IImageService
@@ -46,5 +47,14 @@ public class ImageService : IImageService
         var blobName = imageUrl.Split($"{ContainerName}/")[1];
         var blobClient = new BlobClient(_options.ConnectionString, ContainerName, blobName);
         return blobClient.DeleteAsync();
+    }
+
+    public async Task<string> CopyImageAsync(string imageUrl)
+    {
+        var blobName = imageUrl.Split($"{ContainerName}/")[1];
+        var blobClient = new BlobClient(_options.ConnectionString, ContainerName, blobName);
+        var destBlobClient = GetBlobClient();
+        await destBlobClient.StartCopyFromUriAsync(blobClient.Uri);
+        return $"{_options.CdnEndpointHostname}/{destBlobClient.BlobContainerName}/{destBlobClient.Name}";
     }
 }

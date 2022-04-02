@@ -1,19 +1,19 @@
-﻿namespace GigLocal.Pages.Admin.Gigs;
+namespace GigLocal.Pages.Admin.Gigs;
 
-public class CreateModel : PageModel
+public class DuplicateModel : PageModel
 {
     private readonly GigContext _context;
     private readonly IImageService _imageService;
 
     [BindProperty]
-    public GigCreateModel Gig { get; set; }
+    public GigDuplicateModel Gig { get; set; }
 
     [TempData]
     public string StatusMessage { get; set; }
 
     public IEnumerable<SelectListItem> Venues { get; set; }
 
-    public CreateModel(
+    public DuplicateModel(
         GigContext context,
         IImageService storageService,
         IRecaptchaService recaptchaService)
@@ -22,9 +22,31 @@ public class CreateModel : PageModel
         _imageService = storageService;
     }
 
-    public async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync(int? templateId)
     {
         Venues = await VenueHelper.GetSelectListAsync(_context);
+
+        if (templateId != null)
+        {
+            Gig gig = await _context.Gigs
+                .AsNoTracking()
+                .Include(g => g.Venue)
+                .FirstOrDefaultAsync(m => m.ID == templateId);
+
+            if (gig == null)
+            {
+                return NotFound();
+            }
+
+            Gig = new GigDuplicateModel
+            {
+                ArtistName = gig.ArtistName,
+                VenueID = gig.VenueID.ToString(),
+                Description = gig.Description,
+                ImageUrl = gig.ImageUrl,
+                Date = null
+            };
+        }
 
         return Page();
     }
@@ -46,13 +68,12 @@ public class CreateModel : PageModel
             return NotFound();
         }
 
-        using var imageStream = Gig.FormFile.OpenReadStream();
-        var imageUrl = await _imageService.UploadImageAsync(imageStream);
+        string imageUrl = await _imageService.CopyImageAsync(Gig.ImageUrl);
 
         var newGig = new Gig
         {
             VenueID = foundVenue.ID,
-            Date = Gig.Date,
+            Date = (DateTime)Gig.Date,
             ArtistName = Gig.ArtistName,
             Description = Gig.Description,
             EventUrl = Gig.EventUrl,
@@ -67,7 +88,7 @@ public class CreateModel : PageModel
     }
 }
 
-public class GigCreateModel
+public class GigDuplicateModel
 {
     [Required]
     [Display(Name = "Venue")]
@@ -76,7 +97,7 @@ public class GigCreateModel
     [Required]
     [FutureDate(ErrorMessage = "The date must be in the future.")]
     [Display(Name = "Date and time")]
-    public DateTime Date { get; set; }
+    public DateTime? Date { get; set; }
 
     [Required]
     [MaxLength(100)]
@@ -93,5 +114,5 @@ public class GigCreateModel
 
     [Required]
     [Display(Name = "Image")]
-    public IFormFile FormFile { get; set; }
+    public string ImageUrl { get; set; }
 }
