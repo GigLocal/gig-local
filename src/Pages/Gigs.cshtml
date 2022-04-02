@@ -8,8 +8,8 @@
     @foreach (var gig in Model.Gigs)
     {
         <div class="col mb-4">
-            <div class="card">
-                <img class="img-fluid" src="@gig.Image" alt="Image of music artist @gig.ArtistName.">
+            <div class="card h-100">
+                <img class="card-img-top" src="@gig.Image" alt="Image of music artist @gig.ArtistName.">
                 <div class="card-body">
                     <h4 class="card-title">
                         <a href="@gig.EventUrl" class="stretched-link text-reset">@gig.ArtistName | @gig.VenueName</a>
