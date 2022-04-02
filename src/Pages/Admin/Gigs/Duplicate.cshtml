@@ -1,14 +1,11 @@
-﻿@page
-@model GigLocal.Pages.Admin.Gigs.EditModel
+@page
+@model GigLocal.Pages.Admin.Gigs.DuplicateModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Duplicate Gig";
 }
 
-<h1>Edit</h1>
-
-<h4>Gig</h4>
-<hr />
+<h2>Duplicate a Gig</h2>
 <div class="row">
     <div class="col-md-6">
         <form enctype="multipart/form-data" method="post">
@@ -29,9 +26,9 @@
                 <span asp-validation-for="Gig.EventUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Gig.FormFile"></label>
-                <input asp-for="Gig.FormFile" type="file" accept="image/*" />
-                <span asp-validation-for="Gig.FormFile" class="text-danger"></span>
+                <label asp-for="Gig.ImageUrl" class="control-label"></label>
+                <input asp-for="Gig.ImageUrl" type="hidden" />
+                <img src="@Model.Gig.ImageUrl" class="img-thumbnail" />
             </div>
             <div class="form-group">
                 <label asp-for="Gig.VenueID" class="control-label"></label>
@@ -45,8 +42,8 @@
                 <span asp-validation-for="Gig.Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <a class="btn btn-outline-secondary" role="button" asp-page="./Index">Cancel</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <a class="btn btn-outline-secondary" role="button" asp-page="Index">Cancel</a>
+                <input type="submit" class="btn btn-primary" value="Create">
             </div>
         </form>
     </div>
