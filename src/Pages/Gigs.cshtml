@@ -8,13 +8,14 @@
     @foreach (var gig in Model.Gigs)
     {
         <div class="col mb-4">
-            <div class="card h-100">
+            <div class="card h-100 shadow">
                 <img class="card-img-top" src="@gig.Image" alt="Image of music artist @gig.ArtistName.">
                 <div class="card-body">
                     <h4 class="card-title">
-                        <a href="@gig.EventUrl" class="stretched-link text-reset">@gig.ArtistName | @gig.VenueName</a>
+                        <a href="@gig.EventUrl" class="stretched-link text-reset">@gig.ArtistName</a>
                     </h4>
-                    <p class="card-text font-weight-bold">@gig.Date | @gig.Time</p>
+                    <p class="card-text font-weight-bolder">@gig.Date, @gig.Time</p>
+                    <h5 class="text-secondary">@gig.VenueName</h5>
                     <p>@gig.Description</p>
                 </div>
             </div>
