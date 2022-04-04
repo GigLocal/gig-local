@@ -18,4 +18,9 @@ public class VenueHelper
     {
         return $"{address}, {suburb} {state} {postcode}";
     }
+
+    public static string GetFormattedNameLocation(string name, string suburb, string state)
+    {
+        return $"{name}, {suburb} {state}";
+    }
 }

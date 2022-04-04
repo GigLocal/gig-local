@@ -43,6 +43,7 @@ public class GigsModel : PageModel
             g.Description,
             g.EventUrl,
             g.ImageUrl,
-            g.Venue.Name));
+            VenueHelper.GetFormattedNameLocation(g.Venue.Name, g.Venue.Suburb, g.Venue.State)
+            ));
     }
 }
