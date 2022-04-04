@@ -27,7 +27,10 @@ public class CreateModel : PageModel
             Name = Venue.Name,
             Description = Venue.Description,
             Address = Venue.Address,
-            Website = Venue.Website
+            Website = Venue.Website,
+            Suburb = Venue.Suburb,
+            State = Venue.State,
+            Postcode = Venue.Postcode
         };
 
         _context.Venues.Add(newVenue);
@@ -49,4 +52,13 @@ public class VenueCreateModel
 
     [Required]
     public string Website { get; set; }
+
+    [Required]
+    public string Suburb { get; set; }
+
+    [Required]
+    public string State { get; set; }
+
+    [Required]
+    public int Postcode { get; set; }
 }

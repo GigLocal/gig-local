@@ -10,6 +10,12 @@ public class Venue
 
     public string Address { get; set; }
 
+    public string Suburb { get; set; }
+
+    public string State { get; set; }
+
+    public int Postcode { get; set; }
+
     public string Website { get; set; }
 
     public ICollection<Gig> Gigs { get; set; }
