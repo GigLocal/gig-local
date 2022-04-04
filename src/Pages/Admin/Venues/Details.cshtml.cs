@@ -32,7 +32,7 @@ public class DetailsModel : PageModel
             ID = venue.ID,
             Name = venue.Name,
             Description = venue.Description,
-            Address = venue.Address,
+            Address = VenueHelper.GetFormattedAddress(venue.Address, venue.Suburb, venue.State, venue.Postcode),
             Website = venue.Website
         };
 

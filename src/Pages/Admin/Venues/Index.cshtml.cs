@@ -30,7 +30,7 @@ public class IndexModel : PageModel
             ID = a.ID,
             Name = a.Name,
             Description = a.Description,
-            Address = a.Address,
+            Address = VenueHelper.GetFormattedAddress(a.Address, a.Suburb, a.State, a.Postcode),
             Website = a.Website
         });
 
