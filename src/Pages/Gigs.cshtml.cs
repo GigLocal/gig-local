@@ -4,7 +4,6 @@ public class GigsModel : PageModel
 {
     private readonly GigContext _context;
 
-    [BindProperty]
     public IEnumerable<GigRecord> Gigs { get; set; }
 
     public GigsModel(GigContext context)
@@ -23,7 +22,7 @@ public class GigsModel : PageModel
         string VenueName
     );
 
-    public void OnGet()
+    public async Task<IActionResult> OnGetAsync(string venueName, int? venueId)
     {
         var startDate = DateTime.Now;
         var endDate = startDate.AddDays(14);
@@ -32,9 +31,26 @@ public class GigsModel : PageModel
             .Include(g => g.Venue)
             .Where(g => g.Approved
                         && g.Date >= startDate
-                        && g.Date <= endDate)
-            .OrderBy(g => g.Date)
-            .ToArray();
+                        && g.Date <= endDate);
+
+        ViewData["Title"] = "Gigs";
+
+        if (venueId is not null)
+        {
+            var venue = await _context.Venues
+                                          .AsNoTracking()
+                                          .FirstOrDefaultAsync(v => v.ID == venueId);
+            if (venue is null)
+            {
+                return NotFound();
+            }
+
+            ViewData["Title"] = $"Gigs at {VenueHelper.GetFormattedNameLocation(venue.Name, venue.Suburb, venue.State)}";
+
+            gigsQuery = gigsQuery.Where(g => g.Venue.ID == venueId);
+        }
+
+        var gigs = await gigsQuery.OrderBy(g => g.Date).ToArrayAsync();
 
         Gigs = gigsQuery.Select(g => new GigRecord(
             g.Date.ToDayOfWeekDateMonthName(),
@@ -45,5 +61,7 @@ public class GigsModel : PageModel
             g.ImageUrl,
             VenueHelper.GetFormattedNameLocation(g.Venue.Name, g.Venue.Suburb, g.Venue.State)
             ));
+
+        return Page();
     }
 }
