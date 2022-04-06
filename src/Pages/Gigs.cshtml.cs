@@ -11,18 +11,7 @@ public class GigsModel : PageModel
         _context = context;
     }
 
-    public record GigRecord
-    (
-        string Date,
-        string Time,
-        string ArtistName,
-        string Description,
-        string EventUrl,
-        string Image,
-        string VenueName
-    );
-
-    public async Task<IActionResult> OnGetAsync(string venueName, int? venueId)
+    public async Task OnGetAsync()
     {
         var startDate = DateTime.Now;
         var endDate = startDate.AddDays(14);
@@ -31,26 +20,10 @@ public class GigsModel : PageModel
             .Include(g => g.Venue)
             .Where(g => g.Approved
                         && g.Date >= startDate
-                        && g.Date <= endDate);
+                        && g.Date <= endDate)
+            .OrderBy(g => g.Date);
 
-        ViewData["Title"] = "Gigs";
-
-        if (venueId is not null)
-        {
-            var venue = await _context.Venues
-                                          .AsNoTracking()
-                                          .FirstOrDefaultAsync(v => v.ID == venueId);
-            if (venue is null)
-            {
-                return NotFound();
-            }
-
-            ViewData["Title"] = $"Gigs at {VenueHelper.GetFormattedNameLocation(venue.Name, venue.Suburb, venue.State)}";
-
-            gigsQuery = gigsQuery.Where(g => g.Venue.ID == venueId);
-        }
-
-        var gigs = await gigsQuery.OrderBy(g => g.Date).ToArrayAsync();
+        var gigs = await gigsQuery.ToArrayAsync();
 
         Gigs = gigsQuery.Select(g => new GigRecord(
             g.Date.ToDayOfWeekDateMonthName(),
@@ -61,7 +34,16 @@ public class GigsModel : PageModel
             g.ImageUrl,
             VenueHelper.GetFormattedNameLocation(g.Venue.Name, g.Venue.Suburb, g.Venue.State)
             ));
-
-        return Page();
     }
 }
+
+public record GigRecord
+(
+    string Date,
+    string Time,
+    string ArtistName,
+    string Description,
+    string EventUrl,
+    string Image,
+    string VenueName
+);

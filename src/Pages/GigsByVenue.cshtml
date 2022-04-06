@@ -1,7 +1,7 @@
-﻿@page
-@model GigsModel
+@page
+@model GigsByVenueModel
 @{
-    ViewData["Title"] = "Gigs";
+    ViewData["Title"] = $"Gigs at {Model.VenueName}";
 }
 
 <div class="row row-cols-1 row-cols-md-3">
@@ -15,7 +15,7 @@
                         <a href="@gig.EventUrl" class="stretched-link text-reset" target="_blank" rel="noopener noreferrer">@gig.ArtistName</a>
                     </h5>
                     <h6>@gig.Date, @gig.Time</h6>
-                    <h6 class="text-secondary">@gig.VenueName</h6>
+                    <h6 class="text-secondary">@Model.VenueName</h6>
                     <p>@gig.Description</p>
                 </div>
             </div>
