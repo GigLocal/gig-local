@@ -28,10 +28,13 @@ public class GigsByVenueModel : PageModel
             return NotFound();
         }
 
+        var startDate = DateTime.Now;
+
         var gigsQuery = _context.Gigs
                                 .AsNoTracking()
                                 .Include(g => g.Venue)
                                 .Where(g => g.Approved
+                                            && g.Date >= startDate
                                             && g.Venue.ID == venueId)
                                 .OrderBy(g => g.Date);
 
