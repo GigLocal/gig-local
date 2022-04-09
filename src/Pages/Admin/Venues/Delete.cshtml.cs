@@ -3,12 +3,15 @@
 public class DeleteModel : PageModel
 {
     private readonly GigContext _context;
+    private readonly IImageService _imageService;
     private readonly ILogger<DeleteModel> _logger;
 
     public DeleteModel(GigContext context,
+                        IImageService imageService,
                         ILogger<DeleteModel> logger)
     {
         _context = context;
+        _imageService = imageService;
         _logger = logger;
     }
 
@@ -43,7 +46,8 @@ public class DeleteModel : PageModel
                 Name = venue.Name,
                 Description = venue.Description,
                 Address = VenueHelper.GetFormattedAddress(venue.Address, venue.Suburb, venue.State, venue.Postcode),
-                Website = venue.Website
+                Website = venue.Website,
+                ImageUrl = venue.ImageUrl
             };
         }
 
@@ -71,6 +75,10 @@ public class DeleteModel : PageModel
         {
             _context.Venues.Remove(venue);
             await _context.SaveChangesAsync();
+            if (venue.ImageUrl != null)
+            {
+                await _imageService.DeleteImageAsync(venue.ImageUrl);
+            }
             return RedirectToPage("./Index");
         }
         catch (DbUpdateException ex)
@@ -91,4 +99,6 @@ public class VenueReadModel
     public string Address { get; set; }
 
     public string Website { get; set; }
+
+    public string ImageUrl { get; set; }
 }

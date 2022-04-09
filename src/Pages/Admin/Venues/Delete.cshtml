@@ -38,6 +38,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Venue.Website)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Venue.ImageUrl)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.Venue.ImageUrl" height="150">
+        </dd>
     </dl>
 
     <form method="post">

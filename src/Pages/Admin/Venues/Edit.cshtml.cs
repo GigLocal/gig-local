@@ -4,9 +4,12 @@ public class EditModel : PageModel
 {
     private readonly GigContext _context;
 
-    public EditModel(GigContext context)
+    private readonly IImageService _imageService;
+
+    public EditModel(GigContext context, IImageService imageService)
     {
         _context = context;
+        _imageService = imageService;
     }
 
     [BindProperty]
@@ -59,6 +62,14 @@ public class EditModel : PageModel
             return NotFound();
         }
 
+        if (venueToUpdate.ImageUrl != null)
+        {
+            await _imageService.DeleteImageAsync(venueToUpdate.ImageUrl);
+        }
+
+        using var imageStream = Venue.FormFile.OpenReadStream();
+        var imageUrl = await _imageService.UploadImageAsync(imageStream);
+
         venueToUpdate.Name = Venue.Name;
         venueToUpdate.Description = Venue.Description;
         venueToUpdate.Address = Venue.Address;
@@ -66,6 +77,7 @@ public class EditModel : PageModel
         venueToUpdate.Suburb = Venue.Suburb;
         venueToUpdate.State = Venue.State;
         venueToUpdate.Postcode = Venue.Postcode;
+        venueToUpdate.ImageUrl = imageUrl;
 
         await _context.SaveChangesAsync();
         return RedirectToPage("./Index");
