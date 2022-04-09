@@ -5,7 +5,7 @@
 }
 <div class="jumbotron text-center">
     <h1 class="display-4">Gigs</h1>
-    <p class="lead">All upcoming gigs on Gig Local. Click on a gig to learn more about it.</p>
+    <p class="lead">All upcoming gigs in the next fortnight. Click on a gig to learn more about it.</p>
 </div>
 <div class="row row-cols-1 row-cols-md-3">
     @foreach (var gig in Model.Gigs)
@@ -17,7 +17,7 @@
                     <h5 class="card-title">
                         <a href="@gig.EventUrl" class="stretched-link text-reset" target="_blank" rel="noopener noreferrer">@gig.ArtistName</a>
                     </h5>
-                    <h6>@gig.Date, @gig.Time</h6>
+                    <h6 class="font-weight-bold">@gig.Date, @gig.Time</h6>
                     <h6 class="text-secondary">@gig.VenueName</h6>
                     <p>@gig.Description</p>
                 </div>

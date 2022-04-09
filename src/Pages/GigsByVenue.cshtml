@@ -12,21 +12,30 @@
         <a href="@Model.Venue.GoogleMapsUrl" target="_blank" rel="noopener noreferrer">Get Directions</a>
     </p>
 </div>
-<div class="row row-cols-1 row-cols-md-3">
-    @foreach (var gig in Model.Gigs)
-    {
-        <div class="col mb-4">
-            <div class="card h-100 shadow">
-                <img class="card-img-top" src="@gig.Image" alt="Image of music artist @gig.ArtistName.">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="@gig.EventUrl" class="stretched-link text-reset" target="_blank" rel="noopener noreferrer">@gig.ArtistName</a>
-                    </h5>
-                    <h6>@gig.Date, @gig.Time</h6>
-                    <h6 class="text-secondary">@Model.Venue.NameLocation</h6>
-                    <p>@gig.Description</p>
+@if (Model.Gigs.Count() == 0)
+{
+    <h4>There are no upcoming gigs listed at this venue.</h4>
+    <p>If you manage this venue's gigs, or are a community member wanting to get involved,
+        please upload gigs via our <a asp-page="/Upload">upload page</a>.</p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3">
+        @foreach (var gig in Model.Gigs)
+        {
+            <div class="col mb-4">
+                <div class="card h-100 shadow">
+                    <img class="card-img-top" src="@gig.Image" alt="Image of music artist @gig.ArtistName.">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="@gig.EventUrl" class="stretched-link text-reset" target="_blank" rel="noopener noreferrer">@gig.ArtistName</a>
+                        </h5>
+                        <h6 class="font-weight-bold">@gig.Date, @gig.Time</h6>
+                        <h6 class="text-secondary">@Model.Venue.NameLocation</h6>
+                        <p>@gig.Description</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
