@@ -33,7 +33,8 @@ public class DetailsModel : PageModel
             Name = venue.Name,
             Description = venue.Description,
             Address = VenueHelper.GetFormattedAddress(venue.Address, venue.Suburb, venue.State, venue.Postcode),
-            Website = venue.Website
+            Website = venue.Website,
+            ImageUrl = venue.ImageUrl
         };
 
         return Page();
