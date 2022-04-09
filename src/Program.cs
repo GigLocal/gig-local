@@ -39,7 +39,7 @@ builder.Services.AddAuthorization(options =>
 
 var mvcBuilder = builder.Services.AddRazorPages(options => {
     options.Conventions.AuthorizeFolder("/Admin", "AllowedUsersOnly");
-    options.Conventions.AddPageRoute("/GigsByVenue", "venues/{venueId}/{venueName}/gigs");
+    options.Conventions.AddPageRoute("/GigsByVenue", "venues/{venueId}/{venueName}");
 });
 
 if (environment.IsDevelopment())

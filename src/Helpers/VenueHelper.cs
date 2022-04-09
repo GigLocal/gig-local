@@ -23,4 +23,18 @@ public class VenueHelper
     {
         return $"{name}, {suburb} {state}";
     }
+
+    public static string GetUrlFriendlyName(string name, string suburb, string state)
+    {
+        var nameLocation = $"{name} {suburb} {state}".ToLowerInvariant();
+        var encodedNameLocation = HttpUtility.UrlEncode(nameLocation).Replace('+', '-');
+        return encodedNameLocation;
+    }
+
+    public static string GetGoogleMapsUrl(string name, string address, string suburb, string state, int postcode)
+    {
+        var nameLocation = $"{name}, {GetFormattedAddress(address, suburb, state, postcode)}";
+        var encodedNameLocation = HttpUtility.UrlEncode(nameLocation);
+        return $"https://www.google.com/maps/dir/?api=1&destination={encodedNameLocation}";
+    }
 }

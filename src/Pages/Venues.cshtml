@@ -1,0 +1,26 @@
+﻿@page
+@model VenuesModel
+@{
+    ViewData["Title"] = "Venues";
+}
+<div class="jumbotron text-center">
+    <h1 class="display-4">Venues</h1>
+    <p class="lead">All venues on Gig Local. Click on a venue to see upcoming gigs or to learn more.</p>
+</div>
+<div class="row row-cols-1 row-cols-md-3">
+    @foreach (var venue in Model.Venues)
+    {
+        <div class="col mb-4">
+            <div class="card h-100 shadow">
+                <img class="card-img-top" src="@venue.ImageUrl" alt="Image of live music venue @venue.Name.">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="@venue.Url" class="stretched-link text-reset">@venue.Name</a>
+                    </h5>
+                    <h6 class="text-secondary">@venue.Address</h6>
+                    <p>@venue.Description</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
