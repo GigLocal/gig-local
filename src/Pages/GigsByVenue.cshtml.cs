@@ -28,14 +28,10 @@ public class GigsByVenueModel : PageModel
             return NotFound();
         }
 
-        var startDate = DateTime.Now;
-        var endDate = startDate.AddDays(14);
         var gigsQuery = _context.Gigs
                                 .AsNoTracking()
                                 .Include(g => g.Venue)
                                 .Where(g => g.Approved
-                                            && g.Date >= startDate
-                                            && g.Date <= endDate
                                             && g.Venue.ID == venueId)
                                 .OrderBy(g => g.Date);
 
