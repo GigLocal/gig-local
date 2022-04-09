@@ -6,7 +6,7 @@ public class GigsByVenueModel : PageModel
 
     public IEnumerable<GigByVenueRecord> Gigs { get; set; }
 
-    public string VenueName { get; set; }
+    public VenueRecord Venue { get; set; }
 
     public GigsByVenueModel(GigContext context)
     {
@@ -50,7 +50,14 @@ public class GigsByVenueModel : PageModel
             g.ImageUrl
             ));
 
-        VenueName = VenueHelper.GetFormattedNameLocation(venue.Name, venue.Suburb, venue.State);
+        Venue = new VenueRecord(
+            venue.Name,
+            VenueHelper.GetFormattedNameLocation(venue.Name, venue.Suburb, venue.State),
+            VenueHelper.GetFormattedAddress(venue.Address, venue.Suburb, venue.State, venue.Postcode),
+            venue.Description,
+            venue.Website,
+            VenueHelper.GetGoogleMapsUrl(venue.Name, venue.Address, venue.Suburb, venue.State, venue.Postcode)
+        );
 
         return Page();
     }
@@ -64,4 +71,14 @@ public record GigByVenueRecord
     string Description,
     string EventUrl,
     string Image
+);
+
+public record VenueRecord
+(
+    string Name,
+    string NameLocation,
+    string Address,
+    string Description,
+    string Website,
+    string GoogleMapsUrl
 );

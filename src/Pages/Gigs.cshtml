@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "Gigs";
 }
-
+<div class="jumbotron text-center">
+    <h1 class="display-4">Gigs</h1>
+    <p class="lead">All upcoming gigs on Gig Local. Click on a gig to learn more about it.</p>
+</div>
 <div class="row row-cols-1 row-cols-md-3">
     @foreach (var gig in Model.Gigs)
     {

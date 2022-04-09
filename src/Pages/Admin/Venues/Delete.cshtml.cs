@@ -100,5 +100,7 @@ public class VenueReadModel
 
     public string Website { get; set; }
 
+
+    [Display(Name = "Image")]
     public string ImageUrl { get; set; }
 }

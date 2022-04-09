@@ -1,9 +1,17 @@
 @page
 @model GigsByVenueModel
 @{
-    ViewData["Title"] = $"Gigs at {Model.VenueName}";
+    ViewData["Title"] = $"Gigs at {Model.Venue.NameLocation}";
 }
-
+<div class="jumbotron text-center">
+    <h1 class="display-4">@Model.Venue.Name</h1>
+    <p class="lead">All upcoming gigs at @Model.Venue.Name. Click on a gig to learn more.</p>
+    <small>@Model.Venue.Address</small>
+    <p>
+        <a href="@Model.Venue.Website" target="_blank" rel="noopener noreferrer">Go to Website</a> &middot;
+        <a href="@Model.Venue.GoogleMapsUrl" target="_blank" rel="noopener noreferrer">Get Directions</a>
+    </p>
+</div>
 <div class="row row-cols-1 row-cols-md-3">
     @foreach (var gig in Model.Gigs)
     {
@@ -15,7 +23,7 @@
                         <a href="@gig.EventUrl" class="stretched-link text-reset" target="_blank" rel="noopener noreferrer">@gig.ArtistName</a>
                     </h5>
                     <h6>@gig.Date, @gig.Time</h6>
-                    <h6 class="text-secondary">@Model.VenueName</h6>
+                    <h6 class="text-secondary">@Model.Venue.NameLocation</h6>
                     <p>@gig.Description</p>
                 </div>
             </div>
