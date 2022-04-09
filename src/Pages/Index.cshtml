@@ -1,14 +1,14 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Find local gigs near you";
+    ViewData["Title"] = "Find local live music gigs near you";
 }
 
 <div class="text-center">
     <img src="~/android-chrome-512x512.png" height="144" alt="Gig Local" />
     <br>
     <br>
-    <h1 class="lead">Find local gigs near you.</h1>
+    <h1 class="lead">Find local live music gigs near you.</h1>
     <br>
     <div class="form-group">
         <div class="row">
@@ -19,6 +19,15 @@
             <div class="col"></div>
         </div>
     </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-md-6">
+                <a asp-page="/Venues" class="btn btn-dark btn-lg btn-block" role="button">View Venues</a>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>    
     <div class="form-group">
         <div class="row">
             <div class="col"></div>
