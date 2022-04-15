@@ -2,13 +2,16 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Find local live music gigs near you";
+    ViewData["Description"] = "Gig Local is a not-for-profit community-driven website to share small music gigs at bars, pubs and cafes in your local area.";
+    ViewData["Image"] = $"{HttpContext.Request.GetDisplayUrl()}/android-chrome-192x192.png";
+    ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 }
 
 <div class="text-center">
     <img src="~/logo.svg" height="144" alt="Gig Local logo" />
     <br>
     <br>
-    <h1 class="lead">Find local live music gigs near you.</h1>
+    <h1 class="lead">@ViewData["Title"]</h1>
     <br>
     <div class="form-group">
         <div class="row">
@@ -42,5 +45,5 @@
 <p class="text-left">
     Gig Local is a not-for-profit community-driven website to share small music gigs at bars,
     pubs and cafes in your local area. We are currently starting on our home ground
-    - <b>Northcote, Thornbury & Preston VIC</b> - but will be expanding to nearby suburbs soon!
+    - <b>Northcote, Thornbury, Preston VIC</b> - but will be expanding to nearby suburbs soon!
 </p>

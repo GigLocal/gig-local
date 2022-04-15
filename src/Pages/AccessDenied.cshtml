@@ -2,7 +2,9 @@
 @model AccessDeniedModel
 
 @{
-    ViewData["Title"] = "Access denied";
-    Layout = "_AccessDeniedLayout";
+    ViewData["Title"] = "Access Denied";
+    ViewData["Description"] = "You're not allowed to access that.";
+    ViewData["Image"] = $"{HttpContext.Request.GetDisplayUrl()}/android-chrome-192x192.png";
+    ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 }
 <h1>Nope :(</h1>
