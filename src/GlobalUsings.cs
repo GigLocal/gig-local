@@ -17,6 +17,7 @@ global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.Rendering;
 global using Microsoft.AspNetCore.Mvc.RazorPages;
 global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Http.Extensions;
 global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authentication.Google;
 global using Microsoft.AspNetCore.Authentication.Cookies;

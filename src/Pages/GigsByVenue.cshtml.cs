@@ -55,6 +55,7 @@ public class GigsByVenueModel : PageModel
             VenueHelper.GetFormattedAddress(venue.Address, venue.Suburb, venue.State, venue.Postcode),
             venue.Description,
             venue.Website,
+            venue.ImageUrl,
             VenueHelper.GetGoogleMapsUrl(venue.Name, venue.Address, venue.Suburb, venue.State, venue.Postcode)
         );
 
@@ -79,5 +80,6 @@ public record VenueRecord
     string Address,
     string Description,
     string Website,
+    string Image,
     string GoogleMapsUrl
 );
