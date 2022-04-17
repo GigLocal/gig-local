@@ -37,6 +37,10 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddResponseCompression(options => {
+    options.EnableForHttps = true;
+});
+
 var mvcBuilder = builder.Services.AddRazorPages(options => {
     options.Conventions.AuthorizeFolder("/Admin", "AllowedUsersOnly");
     options.Conventions.AddPageRoute("/GigsByVenue", "venues/{venueId}/{venueName}");
@@ -81,6 +85,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseResponseCompression();
 
 app.MapRazorPages();
 
