@@ -1,6 +1,6 @@
 ﻿namespace GigLocal.Pages;
 
-public class UploadModel : PageModel
+public class UploadModel : BasePageModel
 {
     private readonly GigContext _context;
     private readonly IImageService _imageService;
@@ -23,7 +23,8 @@ public class UploadModel : PageModel
         IImageService storageService,
         IRecaptchaService recaptchaService,
         ISlackService slackService,
-        ILogger<UploadModel> logger)
+        MetaTagService metaTagService,
+        ILogger<UploadModel> logger) : base(metaTagService)
     {
         _context = context;
         _imageService = storageService;
@@ -36,6 +37,12 @@ public class UploadModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         Venues = await VenueHelper.GetSelectListAsync(_context);
+
+        ViewData["Title"] = "Upload";
+        ViewData["Description"] = "Upload gigs to Gig Local. We review all gig uploads and if they fit our community standards we approve them right away.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = MetaTagService.UploadUrl;
+
         return Page();
     }
 

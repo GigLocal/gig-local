@@ -1,11 +1,6 @@
 ﻿@page
 @model VenuesModel
-@{
-    ViewData["Title"] = "Venues";
-    ViewData["Description"] = "All venues on Gig Local. Click on a venue to see upcoming gigs or to learn more.";
-    ViewData["Image"] = $"{HttpContext.Request.GetDisplayUrl()}/android-chrome-192x192.png";
-    ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
-}
+
 <div class="jumbotron text-center">
     <h1 class="display-4">Venues</h1>
     <p class="lead">@ViewData["Description"]</p>

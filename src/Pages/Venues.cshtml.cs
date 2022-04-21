@@ -1,17 +1,14 @@
 ﻿namespace GigLocal.Pages;
 
-public class VenuesModel : PageModel
+public class VenuesModel : BasePageModel
 {
     private readonly GigContext _context;
 
-    private readonly LinkGenerator _linkGenerator;
-
     public IEnumerable<VenueListRecord> Venues { get; set; }
 
-    public VenuesModel(GigContext context, LinkGenerator linkGenerator)
+    public VenuesModel(GigContext context, MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
-        _linkGenerator = linkGenerator;
     }
 
     public async Task OnGetAsync()
@@ -29,6 +26,11 @@ public class VenuesModel : PageModel
             $"/venues/{v.ID}/{VenueHelper.GetUrlFriendlyName(v.Name, v.Suburb, v.State)}",
             v.ImageUrl
         ));
+
+        ViewData["Title"] = "Venues";
+        ViewData["Description"] = "All venues on Gig Local. Click on a venue to see upcoming gigs or to learn more.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = MetaTagService.VenuesUrl;
     }
 }
 

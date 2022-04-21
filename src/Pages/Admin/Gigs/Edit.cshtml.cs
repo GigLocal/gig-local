@@ -1,6 +1,6 @@
 ﻿namespace GigLocal.Pages.Admin.Gigs;
 
-public class EditModel : PageModel
+public class EditModel : BasePageModel
 {
     private readonly GigContext _context;
     private IImageService _imageService;
@@ -9,7 +9,7 @@ public class EditModel : PageModel
     [BindProperty]
     public GigCreateModel Gig { get; set; }
 
-    public EditModel(GigContext context, IImageService imageService)
+    public EditModel(GigContext context, IImageService imageService, MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
         _imageService = imageService;
@@ -41,6 +41,11 @@ public class EditModel : PageModel
         };
 
         await PopulateSelectListsAsync();
+
+        ViewData["Title"] = "Edit Gig";
+        ViewData["Description"] = "Edit a gig on Gig Local admin.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 
         return Page();
     }

@@ -1,16 +1,16 @@
 ﻿namespace GigLocal.Pages;
 
-public class AccessDeniedModel : PageModel
+public class AccessDeniedModel : BasePageModel
 {
-    private readonly ILogger<AccessDeniedModel> _logger;
-
-    public AccessDeniedModel(ILogger<AccessDeniedModel> logger)
+    public AccessDeniedModel(MetaTagService metaTagService) : base(metaTagService)
     {
-        _logger = logger;
     }
 
     public void OnGet()
     {
-
+        ViewData["Title"] = "Access Denied";
+        ViewData["Description"] = "You're not allowed to access that.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = MetaTagService.AccessDeniedUrl;
     }
 }

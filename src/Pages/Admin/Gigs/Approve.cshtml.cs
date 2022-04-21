@@ -1,10 +1,10 @@
 ﻿namespace GigLocal.Pages.Admin.Gigs;
 
-public class ApproveModel : PageModel
+public class ApproveModel : BasePageModel
 {
     private readonly GigContext _context;
 
-    public ApproveModel(GigContext context)
+    public ApproveModel(GigContext context, MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
     }
@@ -44,6 +44,11 @@ public class ApproveModel : PageModel
             EventUrl = gig.EventUrl,
             ImageUrl = gig.ImageUrl
         };
+
+        ViewData["Title"] = "Approve Gig";
+        ViewData["Description"] = "Approve a gig on Gig Local admin.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 
         return Page();
     }
