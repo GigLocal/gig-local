@@ -1,10 +1,10 @@
 ﻿namespace GigLocal.Pages.Admin.Gigs;
 
-public class IndexModel : PageModel
+public class IndexModel : BasePageModel
 {
     private readonly GigContext _context;
 
-    public IndexModel(GigContext context)
+    public IndexModel(GigContext context, MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
     }
@@ -53,6 +53,11 @@ public class IndexModel : PageModel
         GigsIQ = GigsIQ.OrderByDescending(g => g.Date);
 
         Gigs = await PaginatedList<GigIndexModel>.CreateAsync(GigsIQ.AsNoTracking(), pageIndex ?? 1, 10);
+
+        ViewData["Title"] = "Gigs";
+        ViewData["Description"] = "See gigs on Gig Local admin.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
     }
 }
 

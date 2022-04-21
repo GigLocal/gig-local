@@ -1,6 +1,6 @@
 ﻿namespace GigLocal.Pages.Admin.Venues;
 
-public class DeleteModel : PageModel
+public class DeleteModel : BasePageModel
 {
     private readonly GigContext _context;
     private readonly IImageService _imageService;
@@ -8,7 +8,8 @@ public class DeleteModel : PageModel
 
     public DeleteModel(GigContext context,
                         IImageService imageService,
-                        ILogger<DeleteModel> logger)
+                        ILogger<DeleteModel> logger,
+                        MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
         _imageService = imageService;
@@ -50,6 +51,11 @@ public class DeleteModel : PageModel
                 ImageUrl = venue.ImageUrl
             };
         }
+
+        ViewData["Title"] = "Delete Venue";
+        ViewData["Description"] = "Delete a venue on Gig Local admin.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 
         return Page();
     }

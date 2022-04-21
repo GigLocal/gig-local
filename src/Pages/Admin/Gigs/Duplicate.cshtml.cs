@@ -1,6 +1,6 @@
 namespace GigLocal.Pages.Admin.Gigs;
 
-public class DuplicateModel : PageModel
+public class DuplicateModel : BasePageModel
 {
     private readonly GigContext _context;
     private readonly IImageService _imageService;
@@ -16,7 +16,8 @@ public class DuplicateModel : PageModel
     public DuplicateModel(
         GigContext context,
         IImageService storageService,
-        IRecaptchaService recaptchaService)
+        IRecaptchaService recaptchaService,
+        MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
         _imageService = storageService;
@@ -47,6 +48,11 @@ public class DuplicateModel : PageModel
                 Date = null
             };
         }
+
+        ViewData["Title"] = "Duplicate Gig";
+        ViewData["Description"] = "Duplicate a gig on Gig Local admin.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 
         return Page();
     }

@@ -1,6 +1,6 @@
 namespace GigLocal.Pages;
 
-public class GigsByVenueModel : PageModel
+public class GigsByVenueModel : BasePageModel
 {
     private readonly GigContext _context;
 
@@ -8,7 +8,7 @@ public class GigsByVenueModel : PageModel
 
     public VenueRecord Venue { get; set; }
 
-    public GigsByVenueModel(GigContext context)
+    public GigsByVenueModel(GigContext context, MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
     }
@@ -58,6 +58,11 @@ public class GigsByVenueModel : PageModel
             venue.ImageUrl,
             VenueHelper.GetGoogleMapsUrl(venue.Name, venue.Address, venue.Suburb, venue.State, venue.Postcode)
         );
+
+        ViewData["Title"] = $"Gigs at {Venue.NameLocation}";
+        ViewData["Description"] = $"All upcoming gigs at {Venue.Name}. Click on a gig to learn more.";
+        ViewData["Image"] = Venue.Image;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 
         return Page();
     }

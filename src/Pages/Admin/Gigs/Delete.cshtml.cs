@@ -1,11 +1,11 @@
 ﻿namespace GigLocal.Pages.Admin.Gigs;
 
-public class DeleteModel : PageModel
+public class DeleteModel : BasePageModel
 {
     private readonly GigContext _context;
     private IImageService _imageService;
 
-    public DeleteModel(GigContext context, IImageService imageService)
+    public DeleteModel(GigContext context, IImageService imageService, MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
         _imageService = imageService;
@@ -41,6 +41,11 @@ public class DeleteModel : PageModel
             EventUrl = gig.EventUrl,
             ImageUrl = gig.ImageUrl
         };
+
+        ViewData["Title"] = "Delete Gig";
+        ViewData["Description"] = "Delete a gig on Gig Local admin.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 
         return Page();
     }

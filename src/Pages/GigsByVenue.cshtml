@@ -1,11 +1,6 @@
 @page
 @model GigsByVenueModel
-@{
-    ViewData["Title"] = $"Gigs at {Model.Venue.NameLocation}";
-    ViewData["Description"] = $"All upcoming gigs at {Model.Venue.Name}. Click on a gig to learn more.";
-    ViewData["Image"] = Model.Venue.Image;
-    ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
-}
+
 <div class="jumbotron text-center">
     <h1 class="display-4">@Model.Venue.Name</h1>
     <p class="lead">@ViewData["Description"]</p>

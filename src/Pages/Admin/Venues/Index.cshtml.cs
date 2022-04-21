@@ -1,10 +1,10 @@
 ﻿namespace GigLocal.Pages.Admin.Venues;
 
-public class IndexModel : PageModel
+public class IndexModel : BasePageModel
 {
     private readonly GigContext _context;
 
-    public IndexModel(GigContext context)
+    public IndexModel(GigContext context, MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
     }
@@ -40,6 +40,11 @@ public class IndexModel : PageModel
         }
 
         Venues = await PaginatedList<VenueIndexModel>.CreateAsync(VenuesIQ.AsNoTracking(), pageIndex ?? 1, 10);
+
+        ViewData["Title"] = "Venues";
+        ViewData["Description"] = "See venues on Gig Local admin.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
     }
 }
 

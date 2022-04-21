@@ -1,6 +1,6 @@
 ﻿namespace GigLocal.Pages.Admin.Gigs;
 
-public class CreateModel : PageModel
+public class CreateModel : BasePageModel
 {
     private readonly GigContext _context;
     private readonly IImageService _imageService;
@@ -16,7 +16,8 @@ public class CreateModel : PageModel
     public CreateModel(
         GigContext context,
         IImageService storageService,
-        IRecaptchaService recaptchaService)
+        IRecaptchaService recaptchaService,
+        MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
         _imageService = storageService;
@@ -25,6 +26,11 @@ public class CreateModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         Venues = await VenueHelper.GetSelectListAsync(_context);
+
+        ViewData["Title"] = "Create Gig";
+        ViewData["Description"] = "Create a gig on Gig Local admin.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 
         return Page();
     }

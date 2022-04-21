@@ -1,13 +1,6 @@
 ﻿@page
 @model GigLocal.Pages.UploadModel
 
-@{
-    ViewData["Title"] = "Upload";
-    ViewData["Description"] = "Upload gigs to Gig Local. We review all gig uploads and if they fit our community standards we approve them right away.";
-    ViewData["Image"] = $"{HttpContext.Request.GetDisplayUrl()}/android-chrome-192x192.png";
-    ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
-}
-
 <div class="row">
     <div class="col"></div>
     <div class="col-md-6">
@@ -31,7 +24,7 @@
                 if you don't see a venue listed, please
                 <a href="mailto:giglocallive@gmail.com?subject=Add a venue">contact us</a>
                 and we will do our best to add it as quickly as we can.
-            </li>            
+            </li>
         </ul>
         <hr>
         <form id="create-form" enctype="multipart/form-data" method="post">

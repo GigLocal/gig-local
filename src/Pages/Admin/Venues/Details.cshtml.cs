@@ -1,10 +1,10 @@
 ﻿namespace GigLocal.Pages.Admin.Venues;
 
-public class DetailsModel : PageModel
+public class DetailsModel : BasePageModel
 {
     private readonly GigContext _context;
 
-    public DetailsModel(GigContext context)
+    public DetailsModel(GigContext context, MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
     }
@@ -36,6 +36,11 @@ public class DetailsModel : PageModel
             Website = venue.Website,
             ImageUrl = venue.ImageUrl
         };
+
+        ViewData["Title"] = "Details Venue";
+        ViewData["Description"] = "See details of a venue on Gig Local admin.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 
         return Page();
     }

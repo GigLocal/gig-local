@@ -1,12 +1,12 @@
 ﻿namespace GigLocal.Pages.Admin.Venues;
 
-public class EditModel : PageModel
+public class EditModel : BasePageModel
 {
     private readonly GigContext _context;
 
     private readonly IImageService _imageService;
 
-    public EditModel(GigContext context, IImageService imageService)
+    public EditModel(GigContext context, IImageService imageService, MetaTagService metaTagService) : base(metaTagService)
     {
         _context = context;
         _imageService = imageService;
@@ -41,6 +41,11 @@ public class EditModel : PageModel
             Postcode = venue.Postcode,
             Website = venue.Website
         };
+
+        ViewData["Title"] = "Edit Venue";
+        ViewData["Description"] = "Edit a venue on Gig Local admin.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
 
         return Page();
     }

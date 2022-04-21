@@ -1,11 +1,5 @@
 ﻿@page
 @model ErrorModel
-@{
-    ViewData["Title"] = "Error";
-    ViewData["Description"] = "Whoops, something has gone wrong.";
-    ViewData["Image"] = $"{HttpContext.Request.GetDisplayUrl()}/android-chrome-192x192.png";
-    ViewData["Url"] = $"{HttpContext.Request.GetDisplayUrl()}/";
-}
 
 <h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>

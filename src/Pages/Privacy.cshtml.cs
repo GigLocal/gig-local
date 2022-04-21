@@ -1,15 +1,16 @@
 ﻿namespace GigLocal.Pages;
 
-public class PrivacyModel : PageModel
+public class PrivacyModel : BasePageModel
 {
-    private readonly ILogger<PrivacyModel> _logger;
-
-    public PrivacyModel(ILogger<PrivacyModel> logger)
+    public PrivacyModel(MetaTagService metaTagService) : base(metaTagService)
     {
-        _logger = logger;
     }
 
     public void OnGet()
     {
+        ViewData["Title"] = "Privacy Policy";
+        ViewData["Description"] = "Privacy Policy of Gig Local.";
+        ViewData["Image"] = MetaTagService.LogoUrl;
+        ViewData["Url"] = MetaTagService.PrivacyUrl;
     }
 }
