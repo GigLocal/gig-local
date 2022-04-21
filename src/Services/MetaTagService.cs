@@ -21,7 +21,7 @@ public class MetaTagService
 
 
         IndexUrl = $"{linkGenerator.GetUriByPage(httpContext, "/Index", scheme: scheme)}";
-        LogoUrl = $"{IndexUrl}logo.svg";
+        LogoUrl = $"{IndexUrl}android-chrome-384x384.png";
         VenuesUrl = $"{linkGenerator.GetUriByPage(httpContext, "/Venues", scheme: scheme)}/";
         GigsUrl = $"{linkGenerator.GetUriByPage(httpContext, "/Gigs", scheme: scheme)}/";
         UploadUrl = $"{linkGenerator.GetUriByPage(httpContext, "/Upload", scheme: scheme)}/";
