@@ -33,9 +33,14 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="Gig.Date" class="control-label"></label>
-                <input asp-for="Gig.Date" class="form-control" placeholder="yyyy-mm-dd" />
-                <span asp-validation-for="Gig.Date" class="text-danger"></span>
+                <label asp-for="Gig.StartDate" class="control-label"></label>
+                <input asp-for="Gig.StartDate" class="form-control" placeholder="yyyy-mm-dd hh:mm tt" />
+                <span asp-validation-for="Gig.StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gig.EndDate" class="control-label"></label>
+                <input asp-for="Gig.EndDate" class="form-control" placeholder="yyyy-mm-dd hh:mm tt" />
+                <span asp-validation-for="Gig.EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <a class="btn btn-outline-secondary" role="button" asp-page="Index">Cancel</a>
@@ -48,6 +53,7 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        setDateInputMinToToday("Gig.Date");
+        setDateInputMinToToday("Gig.StartDate");
+        setDateInputMinToToday("Gig.EndDate");
     </script>
 }

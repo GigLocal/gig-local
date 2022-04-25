@@ -34,7 +34,8 @@ public class EditModel : BasePageModel
         Gig = new GigCreateModel
         {
             VenueID = gig.VenueID.ToString(),
-            Date = gig.Date,
+            StartDate = gig.StartDate,
+            EndDate = gig.EndDate,
             ArtistName = gig.ArtistName,
             Description = gig.Description,
             EventUrl = gig.EventUrl
@@ -83,7 +84,8 @@ public class EditModel : BasePageModel
         var imageUrl = await _imageService.UploadImageAsync(imageStream);
 
         gigToUpdate.VenueID = foundVenue.ID;
-        gigToUpdate.Date = Gig.Date;
+        gigToUpdate.StartDate = Gig.StartDate;
+        gigToUpdate.EndDate = Gig.EndDate;
         gigToUpdate.ArtistName = Gig.ArtistName;
         gigToUpdate.Description = Gig.Description;
         gigToUpdate.EventUrl = Gig.EventUrl;

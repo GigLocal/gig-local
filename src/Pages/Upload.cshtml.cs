@@ -76,7 +76,8 @@ public class UploadModel : BasePageModel
         var newGig = new Gig
         {
             VenueID = foundVenue.ID,
-            Date = Gig.Date,
+            StartDate = Gig.StartDate,
+            EndDate = Gig.EndDate,
             ArtistName = Gig.ArtistName,
             Description = Gig.Description,
             EventUrl = Gig.EventUrl,
@@ -96,7 +97,7 @@ public class UploadModel : BasePageModel
             _logger.LogError(e, "Error posting to Slack");
         }
 
-        StatusMessage = $"Gig '{Gig.ArtistName} on {Gig.Date} at {foundVenue.Name}' has been created and is awaiting approval.";
+        StatusMessage = $"Gig '{Gig.ArtistName} on {Gig.StartDate} at {foundVenue.Name}' has been created and is awaiting approval.";
         return RedirectToPage("/Upload");
     }
 }

@@ -19,15 +19,14 @@ public class GigsModel : BasePageModel
             .AsNoTracking()
             .Include(g => g.Venue)
             .Where(g => g.Approved
-                        && g.Date >= startDate
-                        && g.Date <= endDate)
-            .OrderBy(g => g.Date);
+                        && g.StartDate >= startDate
+                        && g.StartDate <= endDate)
+            .OrderBy(g => g.StartDate);
 
         var gigs = await gigsQuery.ToArrayAsync();
 
         Gigs = gigsQuery.Select(g => new GigRecord(
-            g.Date.ToDayOfWeekDateMonthName(),
-            g.Date.ToTimeHourMinuteAmPm(),
+            GigHelper.GetDateTime(g.StartDate, g.EndDate),
             g.ArtistName,
             g.Description,
             g.EventUrl,
@@ -44,8 +43,7 @@ public class GigsModel : BasePageModel
 
 public record GigRecord
 (
-    string Date,
-    string Time,
+    string DateTime,
     string ArtistName,
     string Description,
     string EventUrl,

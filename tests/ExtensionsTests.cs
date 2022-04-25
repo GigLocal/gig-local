@@ -62,7 +62,7 @@ public class ExtensionsTests
     }
 
     [Theory]
-    [InlineData(8, 8, 2021, "Sunday 8th August")]
+    [InlineData(8, 8, 2021, "Sun 8th Aug")]
     public void ToDayOfWeekDateMonthNameTests(int day, int month, int year, string expectedDate)
     {
         // Arrange
