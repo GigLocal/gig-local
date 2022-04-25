@@ -90,7 +90,7 @@ public class GigReadModel
     public DateTime StartDate { get; set; }
 
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     public string Description { get; set; }
 

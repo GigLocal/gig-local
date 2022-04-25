@@ -76,7 +76,7 @@ public class GigIndexModel
     public DateTime StartDate { get; set; }
 
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     public bool Approved { get; set; }
 }

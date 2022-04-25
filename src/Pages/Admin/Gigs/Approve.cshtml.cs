@@ -40,7 +40,7 @@ public class ApproveModel : BasePageModel
             ArtistName = gig.ArtistName,
             VenueName = gig.Venue.Name,
             StartDate = gig.StartDate,
-            EndDate = gig.EndDate,
+            EndDate = (DateTime)gig.EndDate,
             Description = gig.Description,
             EventUrl = gig.EventUrl,
             ImageUrl = gig.ImageUrl

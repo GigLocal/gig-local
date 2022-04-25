@@ -88,7 +88,7 @@ public class GigCreateModel : IValidatableObject
     [Required]
     [FutureDate(ErrorMessage = "End date must be in the future.")]
     [Display(Name = "End date and time")]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     [Required]
     [MaxLength(100)]

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GigLocal.Data.Migrations
 {
     [DbContext(typeof(GigContext))]
-    [Migration("20220425070000_GigEndDate")]
+    [Migration("20220425072122_GigEndDate")]
     partial class GigEndDate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,7 @@ namespace GigLocal.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EventUrl")
