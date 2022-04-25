@@ -35,7 +35,8 @@ public class IndexModel : BasePageModel
                 ID = a.ID,
                 ArtistName = a.ArtistName,
                 VenueName = a.Venue.Name,
-                Date = a.Date,
+                StartDate = a.StartDate,
+                EndDate = a.EndDate,
                 Approved = a.Approved
             });
 
@@ -50,7 +51,7 @@ public class IndexModel : BasePageModel
             GigsIQ = GigsIQ.Where(g => !g.Approved);
         }
 
-        GigsIQ = GigsIQ.OrderByDescending(g => g.Date);
+        GigsIQ = GigsIQ.OrderByDescending(g => g.StartDate);
 
         Gigs = await PaginatedList<GigIndexModel>.CreateAsync(GigsIQ.AsNoTracking(), pageIndex ?? 1, 10);
 
@@ -72,7 +73,10 @@ public class GigIndexModel
     public string VenueName { get; set; }
 
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
-    public DateTime Date { get; set; }
+    public DateTime StartDate { get; set; }
+
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
+    public DateTime EndDate { get; set; }
 
     public bool Approved { get; set; }
 }

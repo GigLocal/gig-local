@@ -31,7 +31,10 @@
                 @Html.DisplayNameFor(model => model.Gigs[0].VenueName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Gigs[0].Date)
+                @Html.DisplayNameFor(model => model.Gigs[0].StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gigs[0].EndDate)
             </th>
             <th>
                 Action
@@ -49,7 +52,10 @@
                     @Html.DisplayFor(modelItem => item.VenueName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Date)
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
                 </td>
                 <td>
                     <div class="dropdown">

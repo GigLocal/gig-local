@@ -58,7 +58,8 @@ public class CreateModel : BasePageModel
         var newGig = new Gig
         {
             VenueID = foundVenue.ID,
-            Date = Gig.Date,
+            StartDate = Gig.StartDate,
+            EndDate = Gig.EndDate,
             ArtistName = Gig.ArtistName,
             Description = Gig.Description,
             EventUrl = Gig.EventUrl,
@@ -73,7 +74,7 @@ public class CreateModel : BasePageModel
     }
 }
 
-public class GigCreateModel
+public class GigCreateModel : IValidatableObject
 {
     [Required]
     [Display(Name = "Venue")]
@@ -82,7 +83,12 @@ public class GigCreateModel
     [Required]
     [FutureDate(ErrorMessage = "The date must be in the future.")]
     [Display(Name = "Date and time")]
-    public DateTime Date { get; set; }
+    public DateTime StartDate { get; set; }
+
+    [Required]
+    [FutureDate(ErrorMessage = "The date must be in the future.")]
+    [Display(Name = "Date and time")]
+    public DateTime EndDate { get; set; }
 
     [Required]
     [MaxLength(100)]
@@ -100,4 +106,15 @@ public class GigCreateModel
     [Required]
     [Display(Name = "Image")]
     public IFormFile FormFile { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+       if (EndDate < StartDate)
+       {
+           yield return new ValidationResult(
+               errorMessage: "End date/time must be after Start date/time",
+               memberNames: new[] { "EndDate" }
+          );
+       }
+    }
 }

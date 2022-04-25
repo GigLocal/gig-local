@@ -36,7 +36,8 @@ public class DeleteModel : BasePageModel
         {
             ArtistName = gig.ArtistName,
             VenueName = gig.Venue.Name,
-            Date = gig.Date,
+            StartDate = gig.StartDate,
+            EndDate = gig.EndDate,
             Description = gig.Description,
             EventUrl = gig.EventUrl,
             ImageUrl = gig.ImageUrl
@@ -86,7 +87,10 @@ public class GigReadModel
     public string VenueName { get; set; }
 
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
-    public DateTime Date { get; set; }
+    public DateTime StartDate { get; set; }
+
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}")]
+    public DateTime EndDate { get; set; }
 
     public string Description { get; set; }
 

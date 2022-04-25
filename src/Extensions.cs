@@ -32,7 +32,7 @@ public static class Extensions
 
     public static string ToDayOfWeekDateMonthName(this DateTime dateTime)
     {
-        return $"{dateTime.ToString("dddd")} {dateTime.Day}{dateTime.Day.ToDaySuffix()} {dateTime.ToString("MMMM")}";
+        return $"{dateTime.ToString("ddd")} {dateTime.Day}{dateTime.Day.ToDaySuffix()} {dateTime.ToString("MMM")}";
     }
 
     public static string ToTimeHourMinuteAmPm(this DateTime dateTime)
