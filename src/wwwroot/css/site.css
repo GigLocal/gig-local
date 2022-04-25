@@ -56,12 +56,12 @@ button.accept-policy {
 html {
   position: relative;
   min-height: 100%;
-  font-family: 'Eczar', serif;  
 }
 
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  font-family: 'Eczar', serif;  
 }
 .footer {
   position: absolute;
