@@ -131,7 +131,7 @@ public class GigDuplicateModel : IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-       if (EndDate < StartDate)
+       if (EndDate <= StartDate)
        {
            yield return new ValidationResult(
                errorMessage: "End date/time must be after Start date/time",
