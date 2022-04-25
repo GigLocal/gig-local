@@ -81,13 +81,13 @@ public class GigCreateModel : IValidatableObject
     public string VenueID { get; set; }
 
     [Required]
-    [FutureDate(ErrorMessage = "The date must be in the future.")]
-    [Display(Name = "Date and time")]
+    [FutureDate(ErrorMessage = "Start date must be in the future.")]
+    [Display(Name = "Start date and time")]
     public DateTime StartDate { get; set; }
 
     [Required]
-    [FutureDate(ErrorMessage = "The date must be in the future.")]
-    [Display(Name = "Date and time")]
+    [FutureDate(ErrorMessage = "End date must be in the future.")]
+    [Display(Name = "End date and time")]
     public DateTime EndDate { get; set; }
 
     [Required]
