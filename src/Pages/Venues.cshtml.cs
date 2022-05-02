@@ -23,7 +23,7 @@ public class VenuesModel : BasePageModel
             v.Name,
             v.Description,
             VenueHelper.GetFormattedAddress(v.Address, v.Suburb, v.State, v.Postcode),
-            $"/venues/{v.ID}/{VenueHelper.GetUrlFriendlyName(v.Name, v.Suburb, v.State)}",
+            VenueHelper.GetUrlFriendlyName(v.ID, v.Name, v.Suburb, v.State),
             v.ImageUrl
         ));
 

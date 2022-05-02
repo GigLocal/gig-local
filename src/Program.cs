@@ -59,6 +59,7 @@ builder.Services.Configure<RecaptchaOptions>(configuration.GetSection("Recaptcha
 builder.Services.Configure<SlackOptions>(configuration.GetSection("Slack"));
 builder.Services.AddSingleton<IImageService, ImageService>();
 builder.Services.AddSingleton<MetaTagService>();
+builder.Services.AddScoped<ISiteMapService, SitemapService>();
 builder.Services.AddHttpClient<IRecaptchaService, RecaptchaService>();
 builder.Services.AddHttpClient<ISlackService, SlackService>();
 builder.Services.AddHttpContextAccessor();

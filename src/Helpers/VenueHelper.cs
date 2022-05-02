@@ -24,11 +24,11 @@ public class VenueHelper
         return $"{name}, {suburb} {state}";
     }
 
-    public static string GetUrlFriendlyName(string name, string suburb, string state)
+    public static string GetUrlFriendlyName(int id, string name, string suburb, string state)
     {
         var nameLocation = $"{name} {suburb} {state}".ToLowerInvariant();
         var encodedNameLocation = HttpUtility.UrlEncode(nameLocation).Replace('+', '-');
-        return encodedNameLocation;
+        return $"venues/{id}/{encodedNameLocation}";
     }
 
     public static string GetGoogleMapsUrl(string name, string address, string suburb, string state, int postcode)

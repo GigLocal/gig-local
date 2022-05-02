@@ -1,4 +1,5 @@
 global using System;
+global using System.Net.Mime;
 global using System.Threading.Tasks;
 global using System.Security.Claims;
 global using System.Linq;
@@ -9,6 +10,7 @@ global using System.ComponentModel.DataAnnotations;
 global using System.Collections.Generic;
 global using System.Text.Json.Serialization;
 global using System.Web;
+global using System.Xml;
 global using SixLabors.ImageSharp;
 global using SixLabors.ImageSharp.Processing;
 global using Microsoft.Extensions.Options;

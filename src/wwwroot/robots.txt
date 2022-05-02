@@ -1,4 +1,6 @@
-User-agent: *
-Disallow: /admin/
-Disallow: /error
-Disallow: /accessdenied
+user-agent: *
+disallow: /admin/
+disallow: /error
+disallow: /accessdenied
+
+sitemap: https://giglocal.live/sitemap
