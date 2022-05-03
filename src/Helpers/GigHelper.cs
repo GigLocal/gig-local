@@ -21,6 +21,6 @@ public class GigHelper
 
         var endDateString = endDate?.ToDayOfWeekDateMonthName();
 
-        return $"{startDateString} {startTime}, - {endDateString} {endTime}";
+        return $"{startDateString}, {startTime} - {endDateString}, {endTime}";
     }
 }
