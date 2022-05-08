@@ -11,3 +11,19 @@ public class FutureDate : ValidationAttribute
         return futureDate >= nowDate;
     }
 }
+
+public class AustralianTimeZone : ValidationAttribute
+{
+    public override bool IsValid(object value)
+    {
+        try
+        {
+            var timeZone = TimeZoneInfo.FindSystemTimeZoneById(value.ToString());
+            return timeZone.Id.StartsWith("Australia");
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+}

@@ -20,5 +20,7 @@ public class Venue
 
     public string ImageUrl { get; set; }
 
+    public string TimeZone { get; set; }
+
     public ICollection<Gig> Gigs { get; set; }
 }

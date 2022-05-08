@@ -34,7 +34,8 @@ public class DetailsModel : BasePageModel
             Description = venue.Description,
             Address = VenueHelper.GetFormattedAddress(venue.Address, venue.Suburb, venue.State, venue.Postcode),
             Website = venue.Website,
-            ImageUrl = venue.ImageUrl
+            ImageUrl = venue.ImageUrl,
+            TimeZone = TimeZoneInfo.FindSystemTimeZoneById(venue.TimeZone).DisplayName
         };
 
         ViewData["Title"] = "Details Venue";
