@@ -39,7 +39,8 @@ public class EditModel : BasePageModel
             Suburb = venue.Suburb,
             State = venue.State,
             Postcode = venue.Postcode,
-            Website = venue.Website
+            Website = venue.Website,
+            TimeZone = venue.TimeZone
         };
 
         ViewData["Title"] = "Edit Venue";
@@ -83,6 +84,7 @@ public class EditModel : BasePageModel
         venueToUpdate.State = Venue.State;
         venueToUpdate.Postcode = Venue.Postcode;
         venueToUpdate.ImageUrl = imageUrl;
+        venueToUpdate.TimeZone = Venue.TimeZone;
 
         await _context.SaveChangesAsync();
         return RedirectToPage("./Index");

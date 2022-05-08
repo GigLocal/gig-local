@@ -39,7 +39,8 @@ public class CreateModel : BasePageModel
             Suburb = Venue.Suburb,
             State = Venue.State,
             Postcode = Venue.Postcode,
-            ImageUrl = imageUrl
+            ImageUrl = imageUrl,
+            TimeZone = Venue.TimeZone
         };
 
         _context.Venues.Add(newVenue);
@@ -75,4 +76,9 @@ public class VenueCreateModel
     [Required]
     [Display(Name = "Image")]
     public IFormFile FormFile { get; set; }
+
+    [Required]
+    [AustralianTimeZone]
+    [Display(Name = "Time Zone")]
+    public string TimeZone { get; set; }
 }

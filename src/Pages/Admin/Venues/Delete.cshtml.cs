@@ -48,7 +48,8 @@ public class DeleteModel : BasePageModel
                 Description = venue.Description,
                 Address = VenueHelper.GetFormattedAddress(venue.Address, venue.Suburb, venue.State, venue.Postcode),
                 Website = venue.Website,
-                ImageUrl = venue.ImageUrl
+                ImageUrl = venue.ImageUrl,
+                TimeZone = TimeZoneInfo.FindSystemTimeZoneById(venue.TimeZone).DisplayName
             };
         }
 
@@ -106,7 +107,9 @@ public class VenueReadModel
 
     public string Website { get; set; }
 
-
     [Display(Name = "Image")]
     public string ImageUrl { get; set; }
+
+    [Display(Name = "Time Zone")]
+    public string TimeZone { get; set; }
 }

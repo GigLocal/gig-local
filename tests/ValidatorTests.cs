@@ -18,4 +18,21 @@ public class ValidatorTests
         // Assert
         Assert.Equal(expected, result);
     }
+
+    [Theory]
+    [InlineData("Australia/Melbourne", true)]
+    [InlineData("Australia/Adelaide", true)]
+    [InlineData("America/Denver", false)]
+    [InlineData("jlakjsldkjf", false)]
+    public void AustralianTimeZoneTest(string timeZoneId, bool expected)
+    {
+        // Arrange
+        var attrib = new AustralianTimeZone();
+
+        // Act
+        var result = attrib.IsValid(timeZoneId);
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
 }

@@ -37,4 +37,11 @@ public class VenueHelper
         var encodedNameLocation = HttpUtility.UrlEncode(nameLocation);
         return $"https://www.google.com/maps/dir/?api=1&destination={encodedNameLocation}";
     }
+
+    public static IEnumerable<SelectListItem> GetTimeZoneSelectList()
+    {
+        return TimeZoneInfo.GetSystemTimeZones()
+                           .Where(x => x.Id.StartsWith("Australia"))
+                           .Select(x => new SelectListItem(x.DisplayName, x.Id));
+    }
 }
