@@ -21,7 +21,7 @@ public class AustralianTimeZone : ValidationAttribute
             var timeZone = TimeZoneInfo.FindSystemTimeZoneById(value.ToString());
             return timeZone.Id.StartsWith("Australia");
         }
-        catch (Exception)
+        catch (TimeZoneNotFoundException)
         {
             return false;
         }

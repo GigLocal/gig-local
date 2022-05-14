@@ -44,6 +44,7 @@ builder.Services.AddResponseCompression(options => {
 var mvcBuilder = builder.Services.AddRazorPages(options => {
     options.Conventions.AuthorizeFolder("/Admin", "AllowedUsersOnly");
     options.Conventions.AddPageRoute("/GigsByVenue", "venues/{venueId}/{venueName}");
+    options.Conventions.AddPageRoute("/Gig", "gigs/{gigId}/{gigName}");
 });
 
 if (environment.IsDevelopment())
@@ -51,8 +52,9 @@ if (environment.IsDevelopment())
     mvcBuilder.AddRazorRuntimeCompilation();
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 }
-
-builder.Services.AddApplicationInsightsTelemetry();
+else {
+    builder.Services.AddApplicationInsightsTelemetry();
+}
 
 builder.Services.Configure<StorageOptions>(configuration.GetSection("Storage"));
 builder.Services.Configure<RecaptchaOptions>(configuration.GetSection("Recaptcha"));
