@@ -34,20 +34,10 @@ public class SitemapService : ISiteMapService
 
         // Venues
         var venueNames = await _context.Venues
-                                 .AsNoTracking()
                                  .Select(v => new { v.ID, v.Name, v.Suburb, v.State })
                                  .ToListAsync();
         var venueUrls = venueNames.Select(v => $"{_metaTagService.IndexUrl}{VenueHelper.GetUrlFriendlyName(v.ID, v.Name, v.Suburb, v.State)}");
         urls.AddRange(venueUrls);
-
-        // Gigs
-        var gigNames = await _context.Gigs
-                                 .AsNoTracking()
-                                 .Include(g => g.Venue)
-                                 .Select(g => new { g.ID, g.ArtistName, g.Venue.Name, g.StartDate })
-                                 .ToListAsync();
-        var gigUrls = gigNames.Select(g => $"{_metaTagService.IndexUrl}{GigHelper.GetUrlFriendlyName(g.ID, g.ArtistName, g.Name, g.StartDate)}");
-        urls.AddRange(gigUrls);
 
         // Sitemap document
         var sitemap = new XmlDocument();
