@@ -29,7 +29,7 @@ public class GigsModel : BasePageModel
             GigHelper.GetDateTime(g.StartDate, g.EndDate),
             g.ArtistName,
             g.Description,
-            GigHelper.GetUrlFriendlyName(g.ID, g.ArtistName, g.Venue.Name, g.StartDate),
+            g.EventUrl,
             g.ImageUrl,
             VenueHelper.GetFormattedNameLocation(g.Venue.Name, g.Venue.Suburb, g.Venue.State)
             ));

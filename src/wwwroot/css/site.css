@@ -61,7 +61,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
-  font-family: 'Eczar', serif;
+  font-family: 'Eczar', serif;  
 }
 .footer {
   position: absolute;
