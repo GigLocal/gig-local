@@ -32,7 +32,7 @@ public class GigModel : BasePageModel
         Gig = new GigDetailRecord(
             GigHelper.GetDateTime(gig.StartDate, gig.EndDate),
             gig.StartDate,
-            (DateTime)gig.EndDate,
+            gig.EndDate,
             gig.ArtistName,
             gig.Description,
             gig.EventUrl,
@@ -51,7 +51,6 @@ public class GigModel : BasePageModel
         var googleEvent = new Event {
             Name = Gig.ArtistName,
             StartDate = new DateTimeOffset(Gig.StartDate, venueTimeZone.GetUtcOffset(Gig.StartDate)),
-            EndDate = new DateTimeOffset(Gig.EndDate, venueTimeZone.GetUtcOffset(Gig.EndDate)),
             EventStatus = EventStatusType.EventScheduled,
             Location = new Place {
                 Name = Gig.VenueName,
@@ -74,6 +73,12 @@ public class GigModel : BasePageModel
             }
         };
 
+        if (Gig.EndDate is not null)
+        {
+            var endDate = (DateTime)Gig.EndDate;
+            googleEvent.EndDate = new DateTimeOffset(endDate, venueTimeZone.GetUtcOffset(endDate));
+        }
+
         ViewData["Title"] = $"{Gig.ArtistName} at {Gig.VenueName}, {Gig.StartDate:ddd d MMM yyyy}";
         ViewData["Description"] = Gig.Description;
         ViewData["Image"] = Gig.Image;
@@ -87,7 +92,7 @@ public class GigModel : BasePageModel
 public record GigDetailRecord(
     string DateTime,
     DateTime StartDate,
-    DateTime EndDate,
+    DateTime? EndDate,
     string ArtistName,
     string Description,
     string EventUrl,
