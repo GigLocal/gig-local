@@ -44,7 +44,7 @@ public class GigsByVenueModel : BasePageModel
             GigHelper.GetDateTime(g.StartDate, g.EndDate),
             g.ArtistName,
             g.Description,
-            g.EventUrl,
+            GigHelper.GetUrlFriendlyName(g.ID, g.ArtistName, g.Venue.Name, g.StartDate),
             g.ImageUrl
             ));
 
