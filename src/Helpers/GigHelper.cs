@@ -26,8 +26,8 @@ public class GigHelper
 
     public static string GetUrlFriendlyName(int id, string name, string venue, DateTime date)
     {
-        var nameLocation = $"{name} {venue} {date.ToString("yyyyMMdd")}".ToLowerInvariant();
-        var encodedNameLocation = HttpUtility.UrlEncode(nameLocation).Replace('+', '-').Replace('/', '-');
+        var nameLocation = $"{name}-{venue}-{date.ToString("yyyyMMdd")}".ToLowerInvariant().Replace('/', '-');
+        var encodedNameLocation = HttpUtility.UrlEncode(nameLocation).Replace('+', '-');
         return $"/gigs/{id}/{encodedNameLocation}";
     }
 }

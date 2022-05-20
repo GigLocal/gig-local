@@ -26,8 +26,8 @@ public class VenueHelper
 
     public static string GetUrlFriendlyName(int id, string name, string suburb, string state)
     {
-        var nameLocation = $"{name} {suburb} {state}".ToLowerInvariant();
-        var encodedNameLocation = HttpUtility.UrlEncode(nameLocation).Replace('+', '-').Replace('/', '-');
+        var nameLocation = $"{name}-{suburb}-{state}".ToLowerInvariant().Replace('/', '-');
+        var encodedNameLocation = HttpUtility.UrlEncode(nameLocation).Replace('+', '-');
         return $"venues/{id}/{encodedNameLocation}";
     }
 
