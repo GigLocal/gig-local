@@ -7,36 +7,14 @@
     <br>
     <h1 class="lead">@ViewData["Title"]</h1>
     <br>
-    <div class="form-group">
-        <div class="row">
-            <div class="col"></div>
-            <div class="col-md-6">
-                <a asp-page="/Gigs" class="btn btn-dark btn-lg btn-block" role="button">View Gigs</a>
-            </div>
-            <div class="col"></div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col"></div>
-            <div class="col-md-6">
-                <a asp-page="/Venues" class="btn btn-dark btn-lg btn-block" role="button">View Venues</a>
-            </div>
-            <div class="col"></div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col"></div>
-            <div class="col-md-6">
-                <a asp-page="/Upload" class="btn btn-dark btn-lg btn-block" role="button">Upload Gigs</a>
-            </div>
-            <div class="col"></div>
-        </div>
+    <div class="d-grid gap-3 col-md-6 mx-auto">
+        <a asp-page="/Gigs" class="btn btn-dark btn-lg" role="button">View Gigs</a>
+        <a asp-page="/Venues" class="btn btn-dark btn-lg" role="button">View Venues</a>
+        <a asp-page="/Upload" class="btn btn-dark btn-lg" role="button">Upload Gigs</a>
     </div>
 </div>
 <hr class="my-4">
-<p class="text-left">
+<p class="text-center">
     Gig Local is a not-for-profit community-driven website to share small music gigs at bars,
     pubs and cafes in your local area.
 </p>
