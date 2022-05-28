@@ -10,56 +10,56 @@
     <div class="col-md-6">
         <form enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Venue.Name" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="Venue.Name" class="control-label"></label>
                 <input asp-for="Venue.Name" class="form-control" />
                 <span asp-validation-for="Venue.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Venue.Description" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="Venue.Description" class="control-label"></label>
                 <textarea asp-for="Venue.Description" class="form-control" rows="5"></textarea>
                 <span asp-validation-for="Venue.Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Venue.FormFile"></label>
-                <input asp-for="Venue.FormFile" class="form-control-file" type="file" accept="image/*" />
+            <div class="mb-3">
+                <label class="form-label" asp-for="Venue.FormFile"></label>
+                <input class="form-control" asp-for="Venue.FormFile" type="file" accept="image/*">
                 <span asp-validation-for="Venue.FormFile" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Venue.Website" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="Venue.Website" class="control-label"></label>
                 <input asp-for="Venue.Website" class="form-control" />
                 <span asp-validation-for="Venue.Website" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Venue.TimeZone" class="control-label"></label>
-                <select asp-for="Venue.TimeZone" asp-items="VenueHelper.GetTimeZoneSelectList()" class="custom-select">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Venue.TimeZone" class="control-label"></label>
+                <select asp-for="Venue.TimeZone" asp-items="VenueHelper.GetTimeZoneSelectList()" class="form-select">
                     <option value="">-- Select a time zone --</option>
                 </select>
                 <span asp-validation-for="Venue.TimeZone" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Venue.Address" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="Venue.Address" class="control-label"></label>
                 <input asp-for="Venue.Address" class="form-control" />
                 <span asp-validation-for="Venue.Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Venue.Suburb" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="Venue.Suburb" class="control-label"></label>
                 <input asp-for="Venue.Suburb" class="form-control" />
                 <span asp-validation-for="Venue.Suburb" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Venue.State" class="control-label"></label>
-                <select asp-for="Venue.State" asp-items="VenueHelper.States" class="custom-select">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Venue.State" class="control-label"></label>
+                <select asp-for="Venue.State" asp-items="VenueHelper.States" class="form-select">
                     <option value="">-- Select a state --</option>
                 </select>
                 <span asp-validation-for="Venue.State" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Venue.Postcode" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="Venue.Postcode" class="control-label"></label>
                 <input asp-for="Venue.Postcode" class="form-control" />
                 <span asp-validation-for="Venue.Postcode" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <a class="btn btn-outline-secondary" role="button" asp-page="./Index">Cancel</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

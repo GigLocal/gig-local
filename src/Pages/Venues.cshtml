@@ -1,10 +1,15 @@
 ﻿@page
 @model VenuesModel
 
-<div class="jumbotron text-center">
-    <h1 class="display-4">Venues</h1>
-    <p class="lead">@ViewData["Description"]</p>
+<div class="p-5 bg-light rounded-3 text-center">
+    <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold">Venues</h1>
+        <p class="fs-4">
+            @ViewData["Description"]
+        </p>
+    </div>
 </div>
+<br>
 <div class="row row-cols-1 row-cols-md-3">
     @foreach (var venue in Model.Venues)
     {

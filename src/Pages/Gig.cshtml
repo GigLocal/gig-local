@@ -8,12 +8,14 @@
     </div>
     <div class="col-md-6">
         <h1 class="display-4">@Model.Gig.ArtistName</h1>
-        <h4 class="display-5 font-weight-bold">@Model.Gig.DateTime</h4>
+        <h4 class="display-5 fw-bold">@Model.Gig.DateTime</h4>
         <h3 class="display-6 text-secondary">@Model.Gig.VenueName</h3>
         <p class="lead">@Model.Gig.Description</p>
-        <a class="btn btn-primary btn-lg mr-2" role="button" href="@Model.Gig.EventUrl" target="_blank"
-            rel="noopener noreferrer">Event Website</a>
-        <a class="btn btn-outline-secondary btn-lg" role="button" href="@Model.Gig.GoogleMapsUrl" target="_blank"
-            rel="noopener noreferrer">Get Directions</a>
+        <div class="d-grid gap-2 d-md-block">
+            <a class="btn btn-primary btn-lg" role="button" href="@Model.Gig.EventUrl" target="_blank"
+                rel="noopener noreferrer">Event Website</a>
+            <a class="btn btn-outline-secondary btn-lg" role="button" href="@Model.Gig.GoogleMapsUrl" target="_blank"
+                rel="noopener noreferrer">Get Directions</a>
+        </div>
     </div>
 </div>
