@@ -219,15 +219,15 @@ var cdnEndpointHostname = customStorageDomain == '' ? endpoint.properties.hostNa
 resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
   name: '${website.name}/appsettings'
   properties: {
-    'Storage__ConnectionString': storageConnectionString
-    'Storage__CdnEndpointHostname': 'https://${cdnEndpointHostname}'
-    'Authentication__Google__ClientId': authGoogleClientId
-    'Authentication__Google__ClientSecret': authGoogleClientSecret
-    'Authentication__Admin__Emails': authAdminEmail
-    'ApplicationInsights__ConnectionString': appInsights.properties.ConnectionString
-    'Recaptcha__SiteKey': recaptchaSiteKey
-    'Recaptcha__SecretKey': recaptchaSecretKey
-    'Slack__GigUploadWebhook': slackGigUploadWebhook
+    Storage__ConnectionString: storageConnectionString
+    Storage__CdnEndpointHostname: 'https://${cdnEndpointHostname}'
+    Authentication__Google__ClientId: authGoogleClientId
+    Authentication__Google__ClientSecret: authGoogleClientSecret
+    Authentication__Admin__Emails: authAdminEmail
+    ApplicationInsights__ConnectionString: appInsights.properties.ConnectionString
+    Recaptcha__SiteKey: recaptchaSiteKey
+    Recaptcha__SecretKey: recaptchaSecretKey
+    Slack__GigUploadWebhook: slackGigUploadWebhook
   }
 }
 
