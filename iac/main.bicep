@@ -4,6 +4,9 @@ param appName string
 // Environment name for deployment
 param env string
 
+// Environment for ASP.NET Core
+param envAspNetCore string
+
 // Storage account container name
 param containerName string
 param customStorageDomain string = ''
@@ -228,6 +231,7 @@ resource websiteAppSettings 'Microsoft.Web/sites/config@2021-01-15' = {
     Recaptcha__SiteKey: recaptchaSiteKey
     Recaptcha__SecretKey: recaptchaSecretKey
     Slack__GigUploadWebhook: slackGigUploadWebhook
+    ASPNETCORE_ENVIRONMENT: envAspNetCore
   }
 }
 

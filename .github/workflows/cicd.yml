@@ -72,6 +72,7 @@ jobs:
         parameters: >
             appName=GigLocal
             env=Dev
+            envAspNetCore=Staging
             containerName=public
             webAppSku=F1
             webAppSkuCapacity=1
@@ -130,6 +131,7 @@ jobs:
         parameters: >
             appName=GigLocal
             env=Prd
+            envAspNetCore=Production
             containerName=public
             customStorageDomain=storage.giglocal.live
             webAppSku=B1
