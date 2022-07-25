@@ -23,4 +23,10 @@
     <ProjectReference Include="..\src\GigLocal.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="html\squarespace.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
