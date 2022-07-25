@@ -115,15 +115,4 @@ public class ScraperService : IHostedService, IDisposable
     {
         _timer?.Dispose();
     }
-
-    private string GetCookieString(string domain)
-    {
-        var cookie = new Cookie("crumb", "value")
-        {
-            Domain = "wesleyanne.com.au",
-            Expires = DateTime.Now.AddDays(1),
-        };
-
-        return cookie.ToString();
-    }
 }
