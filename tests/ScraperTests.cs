@@ -11,7 +11,7 @@ public class SquarespaceScraperTests
         var html = File.ReadAllText(Path.Combine("html", "squarespace.html"));
         var gigs = scraper.Scrape(html).ToList();
 
-        Assert.Equal(13, gigs.Count);
+        Assert.Equal(12, gigs.Count);
         Assert.Equal("Triana Whitt", gigs[0].EventTitle);
         Assert.Equal(new DateTime(2022, 7, 23, 18, 0, 0), gigs[0].StartDate);
         Assert.Equal(new DateTime(2022, 7, 23, 20, 0, 0), gigs[0].EndDate);
