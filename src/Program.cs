@@ -54,6 +54,8 @@ if (environment.IsDevelopment())
 }
 else {
     builder.Services.AddApplicationInsightsTelemetry();
+    builder.Services.Configure<ScraperOptions>(configuration.GetSection("Scraper"));
+    services.AddHostedService<ScraperService>();
 }
 
 builder.Services.Configure<StorageOptions>(configuration.GetSection("Storage"));

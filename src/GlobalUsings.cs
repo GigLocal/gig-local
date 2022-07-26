@@ -30,3 +30,5 @@ global using GigLocal.Options;
 global using GigLocal.Pages.Admin.Gigs;
 global using GigLocal.Services;
 global using Azure.Storage.Blobs;
+global using Cronos;
+global using HtmlAgilityPack;
