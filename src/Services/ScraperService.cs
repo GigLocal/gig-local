@@ -19,7 +19,7 @@ public class ScraperService : IHostedService, IDisposable
         IImageService imageService,
         IServiceScopeFactory scopeFactory)
     {
-        _expression = CronExpression.Parse("0 3 * * *");
+        _expression = CronExpression.Parse("0 9 * * *");
         _timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Australia/Melbourne");
         _options = optionsAccessor.Value;
         _httpClient = httpClientFactory.CreateClient("ScraperService");
