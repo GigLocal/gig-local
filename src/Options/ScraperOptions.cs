@@ -7,7 +7,9 @@ public class ScraperOptions
 
 public class ScraperOption
 {
-    public string Url { get; set; }
+    public string BaseUrl { get; set; }
+    public string GigPath { get; set; }
+    public string GigUrl => $"{BaseUrl}/{GigPath}";
     public string Scraper { get; set; }
     public int VenueId { get; set; }
 }
