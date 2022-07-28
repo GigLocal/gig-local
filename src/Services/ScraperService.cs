@@ -72,8 +72,8 @@ public class ScraperService : IHostedService, IDisposable
         {
             if (option.Scraper == nameof(SquarespaceScraper))
             {
-                var scraper = new SquarespaceScraper(option.Url);
-                var html = await _httpClient.GetStringAsync(option.Url);
+                var scraper = new SquarespaceScraper(option.BaseUrl);
+                var html = await _httpClient.GetStringAsync(option.GigUrl);
                 var scrapedGigs = scraper.Scrape(html);
                 foreach (var scrapedGig in scrapedGigs)
                 {
