@@ -36,11 +36,17 @@ param sqlDatabaseName string
 param sqlDatabaseSku string
 
 // Auth params
+@secure()
 param authGoogleClientId string
+@secure()
 param authGoogleClientSecret string
+@secure()
 param authAdminEmail string
+@secure()
 param recaptchaSiteKey string
+@secure()
 param recaptchaSecretKey string
+@secure()
 param slackGigUploadWebhook string
 
 param location string = resourceGroup().location
