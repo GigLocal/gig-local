@@ -23,7 +23,7 @@ public class ScraperService : IHostedService, IDisposable
         _timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Australia/Melbourne");
         _options = optionsAccessor.Value;
         _httpClient = httpClientFactory.CreateClient("ScraperService");
-        _httpClient.DefaultRequestHeaders.Add(("User-Agent", "GigLocalScraper/1.0 (+https://giglocal.live/about)");
+        _httpClient.DefaultRequestHeaders.Add("User-Agent", "GigLocalScraper/1.0 (+https://giglocal.live/about)");
         _imageService = imageService;
         _scopeFactory = scopeFactory;
     }
