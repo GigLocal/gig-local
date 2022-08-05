@@ -23,6 +23,7 @@ public class ScraperService : IHostedService, IDisposable
         _timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Australia/Melbourne");
         _options = optionsAccessor.Value;
         _httpClient = httpClientFactory.CreateClient("ScraperService");
+        _httpClient.DefaultRequestHeaders.Add(("User-Agent", "GigLocalScraper/1.0 (+https://giglocal.live/about)");
         _imageService = imageService;
         _scopeFactory = scopeFactory;
     }
@@ -67,7 +68,6 @@ public class ScraperService : IHostedService, IDisposable
     {
         using var scope = _scopeFactory.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<GigContext>();
-        _httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36");
         foreach (var option in _options.Scrapers)
         {
             if (option.Scraper == nameof(SquarespaceScraper))
