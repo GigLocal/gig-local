@@ -64,7 +64,14 @@ public class SquarespaceScraper
             var listItemNode = GetChildNode(listNode, "eventlist-meta-date");
             var spanNodes = GetChildNodes(listItemNode, "eventlist-meta-time");
             var index = target == "start" ? 0 : 1;
-            timeNode = GetChildNode(spanNodes.ElementAt(index), $"event-time-12hr");
+            try
+            {
+                timeNode = GetChildNode(spanNodes.ElementAt(index), "event-time-12hr");
+            }
+            catch (InvalidOperationException)
+            {
+                timeNode = GetChildNode(spanNodes.ElementAt(index), "event-time-localized");
+            }
         }
 
         var dateString = timeNode.Attributes["datetime"].Value;
