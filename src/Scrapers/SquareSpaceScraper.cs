@@ -84,8 +84,19 @@ public class SquarespaceScraper
 
     protected string GetImageUrl(HtmlNode articleNode)
     {
-        var imageAnchorNode = GetChildNode(articleNode, "eventlist-column-thumbnail");
-        var image = imageAnchorNode.ChildNodes.Where(x => x.Name == "img").First();
+        HtmlNode image;
+        try
+        {
+            var imageAnchorNode = GetChildNode(articleNode, "eventlist-column-thumbnail");
+            image = imageAnchorNode.ChildNodes.Where(x => x.Name == "img").First();
+
+        }
+        catch (InvalidOperationException)
+        {
+            var imageAnchorNode = GetChildNode(articleNode, "eventlist-column-info");
+            image = imageAnchorNode.SelectNodes("//img[contains(@class, 'thumb-image')]").First();
+        }
+
         return image.Attributes["data-src"].Value;
     }
 
