@@ -73,32 +73,39 @@ public class ScraperService : IHostedService, IDisposable
             if (option.Scraper == nameof(SquarespaceScraper))
             {
                 var scraper = new SquarespaceScraper(option.BaseUrl);
-                var html = await _httpClient.GetStringAsync(option.GigUrl);
-                var scrapedGigs = scraper.Scrape(html);
-                foreach (var scrapedGig in scrapedGigs)
+                try
                 {
-                    var foundGig = await context.Gigs
-                                                .AsNoTracking()
-                                                .FirstOrDefaultAsync(g => g.EventUrl == scrapedGig.EventUrl);
-                    if (foundGig is not null)
+                    var html = await _httpClient.GetStringAsync(option.GigUrl);
+                    var scrapedGigs = scraper.Scrape(html);
+                    foreach (var scrapedGig in scrapedGigs)
                     {
-                        continue;
+                        var foundGig = await context.Gigs
+                                                    .AsNoTracking()
+                                                    .FirstOrDefaultAsync(g => g.EventUrl == scrapedGig.EventUrl);
+                        if (foundGig is not null)
+                        {
+                            continue;
+                        }
+                        var image = await _httpClient.GetByteArrayAsync(scrapedGig.ImageUrl);
+                        using var memStream = new MemoryStream(image);
+                        var imageUrl = await _imageService.UploadImageAsync(memStream);
+                        Gig gig = new Gig
+                        {
+                            ArtistName = scrapedGig.EventTitle,
+                            Description = scrapedGig.Description.Truncate(300),
+                            VenueID = option.VenueId,
+                            StartDate = scrapedGig.StartDate,
+                            EndDate = scrapedGig.EndDate,
+                            EventUrl = scrapedGig.EventUrl,
+                            ImageUrl = imageUrl,
+                            Approved = true
+                        };
+                        await context.AddAsync(gig);
                     }
-                    var image = await _httpClient.GetByteArrayAsync(scrapedGig.ImageUrl);
-                    using var memStream = new MemoryStream(image);
-                    var imageUrl = await _imageService.UploadImageAsync(memStream);
-                    Gig gig = new Gig
-                    {
-                        ArtistName = scrapedGig.EventTitle,
-                        Description = scrapedGig.Description.Truncate(300),
-                        VenueID = option.VenueId,
-                        StartDate = scrapedGig.StartDate,
-                        EndDate = scrapedGig.EndDate,
-                        EventUrl = scrapedGig.EventUrl,
-                        ImageUrl = imageUrl,
-                        Approved = true
-                    };
-                    await context.AddAsync(gig);
+                }
+                catch (Exception)
+                {
+                    
                 }
             }
         }

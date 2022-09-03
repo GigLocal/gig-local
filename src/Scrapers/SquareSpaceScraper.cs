@@ -94,7 +94,7 @@ public class SquarespaceScraper
         catch (InvalidOperationException)
         {
             var imageAnchorNode = GetChildNode(articleNode, "eventlist-column-info");
-            image = imageAnchorNode.SelectNodes("//img[contains(@class, 'thumb-image')]").First();
+            image = imageAnchorNode.Descendants(level: 12).Where(x => x.HasClass("thumb-image")).First();
         }
 
         return image.Attributes["data-src"].Value;
