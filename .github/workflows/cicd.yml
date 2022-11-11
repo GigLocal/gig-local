@@ -20,11 +20,12 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '7.0.x'
+          dotnet-quality: 'ga'
       - name: Install .NET tools
         run: |
           dotnet tool install -g dotnet-ef
@@ -40,7 +41,7 @@ jobs:
       - name: Publish app
         run: dotnet publish src -c Release -o publish-artifacts --no-build
       - name: Create migrations bundle
-        run: dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/bundle --no-build
+        run: dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/bundle --no-build --verbose
       - name: Upload artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
@@ -55,11 +56,12 @@ jobs:
     environment:
       name: Dev
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '7.0.x'
+        dotnet-quality: 'ga'
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -114,11 +116,12 @@ jobs:
     environment:
       name: Prod
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '7.0.x'
+        dotnet-quality: 'ga'
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
