@@ -24,7 +24,8 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '7.0.x'
+          dotnet-quality: 'ga'
       - name: Install .NET tools
         run: |
           dotnet tool install -g dotnet-ef
@@ -59,7 +60,8 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '7.0.x'
+        dotnet-quality: 'ga'
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -118,7 +120,8 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '7.0.x'
+        dotnet-quality: 'ga'
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
