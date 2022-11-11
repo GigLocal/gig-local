@@ -41,7 +41,7 @@ jobs:
       - name: Publish app
         run: dotnet publish src -c Release -o publish-artifacts --no-build
       - name: Create migrations bundle
-        run: dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/bundle --no-build
+        run: dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/bundle --no-build --verbose
       - name: Upload artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
