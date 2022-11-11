@@ -89,8 +89,8 @@ jobs:
     - name: Set Deployment Outputs
       id: set_outputs
       run: |
-        echo "::set-output name=websiteName::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.websiteName.value | tr -d '"')"
-        echo "::set-output name=sqlConnectionString::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.sqlConnectionString.value | tr -d '"')"
+        echo "websiteName=$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.websiteName.value | tr -d '"')" >> $GITHUB_OUTPUT
+        echo "sqlConnectionString=$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.sqlConnectionString.value | tr -d '"')" >> $GITHUB_OUTPUT
     - name: Download Publish Artifacts
       uses: actions/download-artifact@v2
     - name: Run EF Migrations
@@ -149,8 +149,8 @@ jobs:
     - name: Set Deployment Outputs
       id: set_outputs
       run: |
-        echo "::set-output name=websiteName::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.websiteName.value | tr -d '"')"
-        echo "::set-output name=sqlConnectionString::$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.sqlConnectionString.value | tr -d '"')"
+        echo "websiteName=$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.websiteName.value | tr -d '"')" >> $GITHUB_OUTPUT
+        echo "sqlConnectionString=$(az deployment group show -g ${{ secrets.AZURE_RG }} -n main --query properties.outputs.sqlConnectionString.value | tr -d '"')" >> $GITHUB_OUTPUT
     - name: Download Publish Artifacts
       uses: actions/download-artifact@v2
     - name: Run EF Migrations
