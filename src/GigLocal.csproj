@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <UserSecretsId>91188907-dc75-4aae-8f00-39a6949edd1a</UserSecretsId>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>

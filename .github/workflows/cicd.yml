@@ -31,17 +31,17 @@ jobs:
           dotnet tool install -g dotnet-ef
           dotnet tool install -g Microsoft.Web.LibraryManager.Cli
       - name: Install dependencies
-        run: dotnet restore -r linux-x64
+        run: dotnet restore
       - name: Install libs
         run: cd src && libman restore
       - name: Build
-        run: dotnet build -r linux-x64 -c Release --no-restore
+        run: dotnet build -c Release --no-restore
       - name: Test
-        run: dotnet test -r linux-x64 -c Release --verbosity normal --no-build
+        run: dotnet test -c Release --verbosity normal --no-build
       - name: Publish app
-        run: dotnet publish -r linux-x64 src -c Release -o publish-artifacts --no-build
+        run: dotnet publish src -c Release -o publish-artifacts --no-build
       - name: Create migrations bundle
-        run: dotnet ef migrations bundle -r linux-x64 --configuration Release -p src -o publish-artifacts/bundle --no-build --verbose
+        run: dotnet ef migrations bundle --configuration Release -p src -o publish-artifacts/bundle --no-build --verbose
       - name: Upload artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
