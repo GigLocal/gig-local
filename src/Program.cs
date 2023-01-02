@@ -68,6 +68,12 @@ builder.Services.AddHttpClient<IRecaptchaService, RecaptchaService>();
 builder.Services.AddHttpClient<ISlackService, SlackService>();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddOutputCache(options =>
+{
+    options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromDays(1)));
+    options.AddPolicy("NoCache", builder => builder.SetVaryByRouteValue("admin").NoCache());
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -87,6 +93,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseOutputCache();
 
 app.UseAuthentication();
 
