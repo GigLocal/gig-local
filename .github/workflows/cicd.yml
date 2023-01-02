@@ -62,9 +62,12 @@ jobs:
       with:
         dotnet-version: '7.0.x'
         dotnet-quality: 'ga'
-    - uses: azure/login@v1
+    - name: Login to Azure
+      uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}        
     - name: Deploy Azure Resources
       uses: azure/arm-deploy@v1
       with:
