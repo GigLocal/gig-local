@@ -15,6 +15,10 @@ on:
       - 'src/**'
       - 'tests/**'
       - '.github/workflows/**'
+      
+permissions:
+      id-token: write
+      contents: read      
 
 jobs:
   Build:
